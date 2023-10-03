@@ -2,29 +2,26 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+
+import { useEffect, useRef, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
+
+import useAuth from "../hooks/useAuth";
+import useAuthentication from "../hooks/useAuthentication";
 
 const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 const FormLogin = () => {
-  const onSubmit = async (
-    { email, password },
-    { setSubmitting, setErrors, resetForm }
-  ) => {
-    try {
-      console.log({ email, password });
-    } catch (error) {
-      if (error.code === "error de email")
-        return setErrors({ email: "Usuario no registrado !!" });
+  const { login } = useAuth();
+  const { onSubmit } = useAuthentication({ login });
+  const [visibilityPassword, setVisibilityPassword] = useState(true);
+  const emailRef = useRef();
 
-      if (error.code === "error de password")
-        return setErrors({ password: "Contraseña incorrecta !!" });
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  useEffect(() => {
+    emailRef.current.focus();
+  }, []);
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -40,6 +37,10 @@ const FormLogin = () => {
         "La contraseña debe tener al menos 6 caracteres, una mayúscula, una minúscula, un número y alguno de estos caracteres especiales '! @ # $ %' !"
       ),
   });
+
+  const handleVisibilityPassword = () => {
+    return setVisibilityPassword(!visibilityPassword);
+  };
 
   return (
     <Formik
@@ -69,6 +70,7 @@ const FormLogin = () => {
               type="email"
               name="email"
               id="email"
+              ref={emailRef}
               autoComplete="off"
               value={values.email}
               onChange={handleChange}
@@ -85,6 +87,7 @@ const FormLogin = () => {
             >
               E-mail
             </label>
+
             <span
               className={`
               absolute -right-2 top-[.7rem]  px-1 bg-white 
@@ -92,22 +95,30 @@ const FormLogin = () => {
               ${values.email !== "" ? "block" : "hidden"} 
               `}
             >
-              {touched && errors.email ? (
+              {touched.email && errors.email ? (
                 <ErrorOutlineIcon sx={{ fontSize: 22 }} />
               ) : (
                 <CheckCircleOutlineIcon sx={{ fontSize: 22 }} />
               )}
             </span>
+
             <span>
               {errors.email && touched.email && values.email !== "" && (
                 <div className="text-sm p-1 text-red-400">{errors.email}</div>
               )}
             </span>
           </div>
+
           <div className="relative">
             <input
-              className="peer w-full p-3 rounded-xl outline-none border focus:ring-1 focus:border-sky-300 transition-colors duration-300 invalid:border-red-400"
-              type="password"
+              className={`peer w-full p-3 rounded-xl outline-none border focus:ring-1 focus:border-sky-300 transition-colors duration-300 
+              ${
+                values.password !== "" &&
+                touched.password &&
+                errors.password &&
+                "border-red-400"
+              }`}
+              type={visibilityPassword ? "password" : "text"}
               name="password"
               id="password"
               value={values.password}
@@ -116,24 +127,54 @@ const FormLogin = () => {
             />
             <label
               htmlFor="password"
-              className="absolute left-4 top-[.8rem] transition-all duration-300 ease-in-out text-gray-400 bg-white peer-focus:left-5 peer-focus:-top-3 peer-focus:text-sm peer-invalid:-top-3 peer-invalid:text-sm"
+              className={`absolute transition-all duration-300 ease-in-out text-gray-400 bg-white peer-focus:left-5 peer-focus:-top-3 peer-focus:text-sm
+              ${
+                values.password === ""
+                  ? "left-4 top-[.8rem]"
+                  : "left-5 -top-3 text-sm"
+              }`}
             >
               Password
             </label>
 
-            <span className="text-gray-400 absolute right-5 top-[.8rem] hover:text-gray-500 hover:scale-105 transition-all duration-300 ease-in-out">
-              <RemoveRedEyeIcon />
-              {/* <VisibilityOffIcon /> */}
+            <span
+              className="text-gray-400 absolute right-5 top-[.8rem] hover:text-gray-500 hover:scale-105 transition-all duration-300 ease-in-out"
+              onClick={handleVisibilityPassword}
+            >
+              {visibilityPassword ? (
+                <RemoveRedEyeIcon />
+              ) : (
+                <VisibilityOffIcon />
+              )}
             </span>
+
+            <span
+              className={`
+              absolute -right-2 -top-[.7rem] px-1 bg-white
+              ${errors.password ? "text-red-400" : "text-green-500"}
+              ${values.password !== "" ? "block" : "hidden"}
+            `}
+            >
+              {touched.password && errors.password ? (
+                <ErrorOutlineIcon sx={{ fontSize: 22 }} />
+              ) : (
+                <CheckCircleOutlineIcon sx={{ fontSize: 22 }} />
+              )}
+            </span>
+
             <span>
               {errors.password &&
                 touched.password &&
-                values.password !== "" && <div>{errors.password}</div>}
+                values.password !== "" && (
+                  <div className="text-sm p-1 text-red-400">
+                    {errors.password}
+                  </div>
+                )}
             </span>
           </div>
 
           <button
-            className="bg-blue-700 rounded-xl text-white font-bold p-3 transition-all duration-300 ease-in-out hover:bg-blue-600 hover:shadow-xl"
+            className="bg-gradient-to-r from-blue-600 to-cyan-500 rounded-xl text-white font-bold p-3 transition-all duration-300 ease-in-out hover:bg-blue-600 hover:shadow-xl"
             type="submit"
             disabled={isSubmitting}
           >

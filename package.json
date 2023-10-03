@@ -14,10 +14,13 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.9",
     "@mui/material": "^5.14.10",
+    "axios": "^1.5.0",
     "formik": "^2.4.5",
-    "lucide-react": "^0.279.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "6.4",
+    "sweetalert2": "^11.7.31",
+    "sweetalert2-react-content": "^5.0.7",
     "yup": "^1.2.0"
   },
   "devDependencies": {

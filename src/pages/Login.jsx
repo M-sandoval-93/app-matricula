@@ -1,25 +1,27 @@
-import img_03 from "./assets/lvl_03.jpg";
-import img_logo from "./assets/logo.png";
+import img_03 from "../assets/lvl_03.jpg";
+import img_logo from "../assets/logo.png";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import LanguageIcon from "@mui/icons-material/Language";
-import FormLogin from "./components/FormLogin";
+import FormLogin from "../components/FormLogin";
 
-const App = () => {
+const Login = () => {
   return (
-    <section className="bg-blue-100 min-h-screen flex items-center justify-center p-10">
-      <div className="bg-white flex rounded-xl shadow-xl max-w-7xl p-5">
-        <div className="w-full md:w-3/5 lg:w-1/2 sm:px-12">
+    <div className=" bg-gradient-to-tr from-cyan-200  to-blue-300 w-screen h-screen p-10 flex items-center justify-center">
+      <div className="bg-white w-full h-full rounded-xl flex shadow-xl max-w-6xl max-h-[45rem] p-4 lg:p-8 gap-2 lg:gap-4 opacity-95">
+        <div className="w-full md:w-1/2 lg:w-3/5 sm:px-12">
           <div className="w-full flex justify-center items-center">
             <img
-              className="w-1/6 md:w-1/4"
+              className="w-1/5 mt-5"
               src={img_logo}
               alt="Logo del establecimiento"
             />
           </div>
+
           <h2 className="font-bold text-3xl text-blue-700 text-center mt-8">
             MATRÍCULAS
           </h2>
+
           <p className="text-md sm:text-xl mt-4 text-center text-gray-500">
             Registro de matriculas periodo 2024
           </p>
@@ -32,8 +34,7 @@ const App = () => {
             </span>
           </div>
 
-          {/* redirección a redes sociales */}
-          <div className="flex justify-center items-center gap-8 my-8 transition-all duration-300 ease-in-out text-gray-500">
+          <div className="flex justify-center items-center gap-10 my-8 transition-all duration-300 ease-in-out text-gray-500">
             <span className="hover:scale-110 transition-all duration-300 ease-in-out hover:text-blue-500">
               <FacebookIcon sx={{ fontSize: 40 }} />
             </span>
@@ -48,17 +49,16 @@ const App = () => {
           </div>
         </div>
 
-        {/* sección imagen pantalla principal */}
-        <div className="hidden md:block md:w-2/5 lg:w-1/2">
+        <div className="hidden md:block w-full md:w-1/2 lg:w-2/5">
           <img
             src={img_03}
-            alt="Imagen directora"
-            className="rounded-xl w-full h-full"
+            alt="directora"
+            className="h-full w-full rounded-xl"
           />
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
-export default App;
+export default Login;
