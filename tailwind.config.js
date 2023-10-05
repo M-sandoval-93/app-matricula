@@ -7,6 +7,21 @@ export default {
         "primary-blue": "#4474e3",
         "secondary-blue": "#0bc6ff",
       },
+
+      animation: {
+        rotateY: "rotateY 5s linear infinite",
+      },
+
+      keyframes: {
+        rotateY: {
+          "0%": {
+            transform: "rotateY(0deg)",
+          },
+          "100%": {
+            transform: "rotateY(360deg)",
+          },
+        },
+      },
     },
   },
   plugins: [],

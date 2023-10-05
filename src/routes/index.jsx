@@ -43,6 +43,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/app/setting",
+        // revisar por que no funciona la toma de privilegios al hacer login
         element: (
           <PrivateRutes privilege={"1"}>
             <Setting />

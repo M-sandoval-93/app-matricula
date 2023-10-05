@@ -1,6 +1,4 @@
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-
 import useAuth from "../../hooks/useAuth";
 
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
@@ -13,7 +11,7 @@ import Sidebar from "./Sidebar";
 import SidebarItem from "./SidebarItem";
 
 const Aside = () => {
-  const { authPrivilege, logout } = useAuth();
+  const { logout } = useAuth();
   const [activeItem, setActiveItem] = useState(0);
 
   useEffect(() => {
@@ -27,21 +25,17 @@ const Aside = () => {
   };
 
   return (
-    <aside
-      className="flex min-h-screen"
-      // className="flex flex-col overflow-hidden w-0 md:w-[5.5rem] lg:w-56 bg-gradient-to-br from-blue-500 to-cyan-500
-      //   transition-all duration-300 relative min-h-screen"
-    >
+    <aside className="relative flex min-h-screen">
       <Sidebar>
-        {/* <SidebarItem
+        <SidebarItem
           icon={<HomeRoundedIcon sx={{ fontSize: 30 }} />}
           text={"Home"}
           to="/app/home"
           active={activeItem === 0}
           onClick={() => handlerActiveItem(0)}
-        /> */}
+        />
 
-        {/* <SidebarItem
+        <SidebarItem
           icon={<AssignmentIndIcon sx={{ fontSize: 30 }} />}
           text={"Estudiante"}
           to="/app/estudiante"
@@ -57,22 +51,20 @@ const Aside = () => {
           onClick={() => handlerActiveItem(2)}
         />
 
-        {authPrivilege === "1" && (
-          <SidebarItem
-            icon={<SettingsIcon sx={{ fontSize: 30 }} />}
-            text={"Setting"}
-            to="/app/setting"
-            active={activeItem === 3}
-            onClick={() => handlerActiveItem(3)}
-          />
-        )}
+        <SidebarItem // proteger privilegios
+          icon={<SettingsIcon sx={{ fontSize: 30 }} />}
+          text={"Setting"}
+          to="/app/setting"
+          active={activeItem === 3}
+          onClick={() => handlerActiveItem(3)}
+        />
 
         <SidebarItem
           icon={<LogoutIcon sx={{ fontSize: 30 }} />}
           text={"Logout"}
           onClick={() => logout()}
           isLast={true}
-        /> */}
+        />
       </Sidebar>
     </aside>
   );

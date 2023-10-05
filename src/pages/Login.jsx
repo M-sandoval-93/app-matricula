@@ -12,7 +12,7 @@ const Login = () => {
         <div className="w-full md:w-1/2 lg:w-3/5 sm:px-12">
           <div className="w-full flex justify-center items-center">
             <img
-              className="w-1/5 mt-5"
+              className="w-1/5 mt-5 animate-rotateY"
               src={img_logo}
               alt="Logo del establecimiento"
             />

@@ -5,7 +5,7 @@ const AuthContext = createContext({});
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(() => ({
     auth: sessionStorage.getItem("auth") ?? false,
-    authPrivilege: sessionStorage.getItem("authPrivilege") ?? 0,
+    authPrivilege: sessionStorage.getItem("authPrivilege") ?? null,
     authToken: sessionStorage.getItem("authToken" ?? null),
     authEmail: sessionStorage.getItem("authEmail" ?? null),
     authUserName: sessionStorage.getItem("authUserName" ?? null),
