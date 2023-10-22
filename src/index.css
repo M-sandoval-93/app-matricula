@@ -10,14 +10,11 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  scrollbar-width: none;
 }
 
 .custom-hover span {
   transition: all 0.4s ease;
-  /* -webkit-transition: all 0.4s ease;
-  -moz-transition: all 0.4s ease;
-  -ms-transition: all 0.4s ease;
-  -o-transition: all 0.4s ease; */
 }
 
 .custom-hover-expand:hover span {
@@ -27,11 +24,6 @@
 .custom-hover-contract:hover span {
   margin-left: 0.5rem;
 }
-
-/* .custom-hidden h3 {
-  background-color: red;
-  display: none;
-} */
 
 @media screen and (max-width: 1024px) {
   .custom-hover-expand:hover span {

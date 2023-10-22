@@ -11,7 +11,7 @@ import Sidebar from "./Sidebar";
 import SidebarItem from "./SidebarItem";
 
 const Aside = () => {
-  const { logout } = useAuth();
+  const { logout, authPrivilege } = useAuth();
   const [activeItem, setActiveItem] = useState(0);
 
   useEffect(() => {
@@ -35,10 +35,18 @@ const Aside = () => {
           onClick={() => handlerActiveItem(0)}
         />
 
-        <SidebarItem
+        {/* <SidebarItem
           icon={<AssignmentIndIcon sx={{ fontSize: 30 }} />}
           text={"Estudiante"}
           to="/app/estudiante"
+          active={activeItem === 1}
+          onClick={() => handlerActiveItem(1)}
+        /> */}
+
+        <SidebarItem
+          icon={<AssignmentIndIcon sx={{ fontSize: 30 }} />}
+          text={"Altas/Bajas"}
+          to="/app/altasbajas"
           active={activeItem === 1}
           onClick={() => handlerActiveItem(1)}
         />
@@ -51,13 +59,15 @@ const Aside = () => {
           onClick={() => handlerActiveItem(2)}
         />
 
-        <SidebarItem // proteger privilegios
-          icon={<SettingsIcon sx={{ fontSize: 30 }} />}
-          text={"Setting"}
-          to="/app/setting"
-          active={activeItem === 3}
-          onClick={() => handlerActiveItem(3)}
-        />
+        {authPrivilege === "1" && (
+          <SidebarItem
+            icon={<SettingsIcon sx={{ fontSize: 30 }} />}
+            text={"Setting"}
+            to="/app/setting"
+            active={activeItem === 3}
+            onClick={() => handlerActiveItem(3)}
+          />
+        )}
 
         <SidebarItem
           icon={<LogoutIcon sx={{ fontSize: 30 }} />}

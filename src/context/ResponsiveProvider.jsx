@@ -14,25 +14,6 @@ export const DesigneProvider = ({ children }) => {
     theme: sessionStorage.getItem("theme") === "dark",
   }));
 
-  // const handlerResponsive = useCallback(() => {
-  //   setDesigne({ responsive: !designe.responsive });
-  //   sessionStorage.setItem("responsive", !designe.responsive);
-  // }, [designe.responsive]);
-
-  // const handlerTheme = useCallback(() => {
-  //   setDesigne({ theme: !designe.theme });
-  // }, [designe.theme]);
-
-  // useEffect(() => {
-  //   if (designe.theme) {
-  //     document.documentElement.classList.add("dark");
-  //     sessionStorage.setItem("theme", "dark");
-  //   } else {
-  //     document.documentElement.classList.remove("dark");
-  //     sessionStorage.setItem("theme", "light");
-  //   }
-  // }, [designe.theme]);
-
   const handlerResponsive = useCallback(() => {
     setDesigne((prevDesigne) => ({
       ...prevDesigne,

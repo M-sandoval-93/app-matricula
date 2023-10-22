@@ -4,7 +4,7 @@ import Header from "../main/Header";
 
 const Main = ({ children }) => {
   return (
-    <main className="flex flex-col min-h-screen flex-1">
+    <main className="relative flex flex-col min-h-screen flex-1 w-full overflow-hidden overflow-x-auto">
       <Header />
       <Section>{children}</Section>
       <Footer />

@@ -90,7 +90,7 @@ const FormLogin = () => {
 
             <span
               className={`
-              absolute -right-2 top-[.7rem]  px-1 bg-white 
+              absolute -right-2 top-[.7rem] px-1 bg-white 
               ${errors.email ? "text-red-400" : "text-green-500"}
               ${values.email !== "" ? "block" : "hidden"} 
               `}

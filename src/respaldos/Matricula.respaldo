@@ -1,0 +1,94 @@
+import { useLoaderData } from "react-router-dom";
+import axios from "../api/axios";
+import handlerError from "../utils/handlerError";
+import MUIDataTable from "mui-datatables";
+import { useEffect, useState } from "react";
+
+const Matricula = () => {
+  const { response, error } = useLoaderData();
+  handlerError({ error }); // ver como manejar el control de sesiones dentro del componente
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    setData(response?.data);
+  }, []);
+
+  // console.log(response.data);
+
+  const columns = [
+    {
+      name: "id_estudiante",
+      label: "Id",
+      options: {
+        display: false,
+      },
+    },
+    {
+      name: "nombres_estudiante",
+      label: "Nombres",
+      options: {
+        filter: true,
+      },
+    },
+    {
+      name: "ap_estudiante",
+      label: "Apellido paterno",
+    },
+    {
+      name: "am_estudiante",
+      label: "Apellido materno",
+    },
+  ];
+
+  const renderExpandableRow = (rowData, rowMeta) => {
+    // const colSpan = rowData.length + 1; // ColSpan para ocupar toda la fila
+    return (
+      <tr className=" col-span-full">
+        <td>
+          {/* Contenido adicional para la fila expandible */}
+          Detalles para: {rowData[0]}
+        </td>
+      </tr>
+    );
+  };
+
+  const options = {
+    selectableRows: "none",
+    expandableRows: true,
+    expandableRowsHeader: false,
+    expandableRowsOnClick: true,
+    renderExpandableRow: renderExpandableRow,
+  };
+
+  return (
+    <div>
+      <MUIDataTable
+        title="Estudiante matriculados"
+        data={data}
+        columns={columns}
+        options={options}
+      />
+    </div>
+  );
+};
+
+export default Matricula;
+
+export const loaderMatricula = async () => {
+  const STUDENT_URL = "/student";
+  const token = sessionStorage.getItem("authToken") ?? null;
+  try {
+    const response = await axios.get(STUDENT_URL, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    return { response };
+  } catch (error) {
+    if (error.response) return { error: error.response.data.message };
+    return { error: error.message };
+  }
+};

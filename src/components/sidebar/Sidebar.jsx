@@ -10,7 +10,7 @@ const Sidebar = ({ children }) => {
       className={`
         absolute md:relative h-full z-10
         transition-all duration-300
-        bg-gradient-to-tr from-blue-500 to-cyan-500
+        bg-gradient-to-tr from-blue-500 dark:from-cyan-600 to-cyan-500 dark:to-blue-600
         ${
           responsive
             ? "md:w-[5.5rem] lg:w-56 w-0 opacity-0 md:opacity-100"

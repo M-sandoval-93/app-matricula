@@ -15,7 +15,7 @@ const useAuthentication = ({ login }) => {
       );
 
       if (response?.status === 200) {
-        const privilege = response?.data?.privilege;
+        const privilege = response?.data?.privilege.toString();
         const token = response?.data?.token;
         const userName = response?.data?.userName;
 

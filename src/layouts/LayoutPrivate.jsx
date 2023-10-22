@@ -14,7 +14,7 @@ const LayoutPrivate = () => {
   }, [auth]);
 
   return (
-    <div className="relative h-screen bg-gray-400 dark:bg-gray-200 min-h-[500px] flex transition-all duration-300">
+    <div className="relative w-screen h-screen bg-zinc-800 dark:bg-white min-h-[500px] flex overflow-auto">
       <DesigneProvider>
         <Aside />
         <Main>{<Outlet />}</Main>
