@@ -3,9 +3,11 @@ import TableMatricula from "../components/matricula/TableMatricula";
 import HeaderMatricula from "../components/matricula/HeaderMatricula";
 import ErrorHandler from "../components/ErrorHandler";
 import { MatriculaProvider } from "../context/MatriculaProvider";
+import SelectPeriodo from "../components/SelectPeriodo";
+import { useEffect } from "react";
 
 const Matricula = () => {
-  const { error } = useLoaderData();
+  const { response, error } = useLoaderData();
 
   return (
     <>
@@ -13,7 +15,8 @@ const Matricula = () => {
         <ErrorHandler error={error} />
       ) : (
         <section className="relative w-auto flex flex-col gap-2 mb-3 overflow-hidden overflow-x-auto">
-          <MatriculaProvider>
+          <MatriculaProvider response={response}>
+            <SelectPeriodo />
             <HeaderMatricula />
             <TableMatricula />
           </MatriculaProvider>

@@ -9,34 +9,35 @@ import {
 } from "../../utils/providerDataTable";
 import { customStyle } from "./styleDataTable";
 import SubTableMatricula from "./SubTableMatricula";
-import ModalMatricula from "../../templates/ModalMatricula";
 import useMatricula from "../../hooks/useMatricula";
 import apiGet from "../../api/apiGet";
 
-const TableMatricula = () => {
-  const { matricula, getCountMatricula, getDataMatricula } = useMatricula();
-  const [filter, setFilter] = useState("");
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+import ModalMatricula from "../../templates/ModalMatricula";
+import ErrorHandler from "../ErrorHandler";
 
+const TableMatricula = () => {
+  const { matricula, getDataMatricula, periodo } = useMatricula();
+  const [filter, setFilter] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const onClose = () => setOpen(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
-      // actualización de los datos de matrícula
-      apiGet({ route: "matricula/getAll" })
+      apiGet({ route: "matricula/getAll", param: periodo })
         .then((response) => {
           getDataMatricula(response.data);
         })
-        .catch((error) => console.log(error))
+        .catch((error) => setError(error))
         .finally(() => setLoading(false));
     }, 200);
-  }, []);
+  }, [periodo]);
 
   return (
-    <div className="relative rounded-md border border-gray-200 p-2">
-      <div>
+    <main className="relative rounded-md border border-gray-200 p-2">
+      <section>
         <DataTable
           customStyles={customStyle}
           fixedHeader
@@ -60,10 +61,11 @@ const TableMatricula = () => {
           expandableRowsComponent={SubTableMatricula}
           progressPending={loading}
         />
-      </div>
+      </section>
 
       <ModalMatricula open={open} onClose={onClose} />
-    </div>
+      <ErrorHandler error={error} />
+    </main>
   );
 };
 

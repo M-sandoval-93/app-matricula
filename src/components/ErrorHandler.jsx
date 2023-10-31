@@ -15,8 +15,8 @@ const ErrorHandler = ({ error }) => {
         icon: "warning",
         title: "Excepción detectada",
         text: errorText,
-        showConfirmButton: false,
-        timer: 1500,
+        // showConfirmButton: false,
+        // timer: 1500,
       }).then(() => {
         // aqui trabajar la renovacion del token
         if (errorText === "Expired token") {

@@ -1,161 +1,52 @@
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 import { Formik } from "formik";
-import * as Yup from "yup";
 import { numberFormat } from "../../utils/funciones";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ErrorHandler from "../../components/ErrorHandler";
-import axios from "../../api/axios";
-import apiGet from "../../api/apiGet";
-import useMatricula from "../../hooks/useMatricula";
-import Swal from "sweetalert2";
 import RutName from "../formComponents/RutName";
+import FooterForm from "../formComponents/FooterForm";
+import useSubmitMatricula from "../../hooks/useSubmitMatricula";
+import ErrorMessageInput from "../formComponents/ErrorMessageInput";
+import validationMatricula from "../../validation/validationMatricula";
+import { initialValuesMatricula } from "../../utils/initialValues";
 
-const FormMatricula = ({ onClose, edit = true }) => {
+const FormMatricula = ({
+  open,
+  onClose,
+  notEditMatricula,
+  editSubForm,
+  setFormStudent,
+  setFormRepresentative,
+  setRut,
+}) => {
   const [error, setError] = useState(null);
-  const { getDataMatricula, getCountMatricula } = useMatricula();
   const [id, setId] = useState({
     idEstudiante: "",
     idTitular: "",
     idSuplente: "",
   });
+  const { onSubmit } = useSubmitMatricula({ setError, id });
+  const initialValues = initialValuesMatricula();
+  const validationSchema = validationMatricula();
+  const formikRef = useRef();
 
-  const initialValues = {
-    n_matricula: "",
-    fecha_matricula: "",
-    rut_estudiante: "",
-    dv_rut_estudiante: "",
-    nombres_estudiante: "",
-    grado: "",
-    rut_titular: "",
-    dv_rut_titular: "",
-    nombres_titular: "Asignar apoderado(a) titular !",
-    rut_suplente: "",
-    dv_rut_suplente: "",
-    nombres_suplente: "Asignar apoderado(a) suplente !",
-  };
-
-  const validationSchema = Yup.object().shape({
-    n_matricula: Yup.string().trim().optional(),
-
-    fecha_matricula: Yup.date().required("Fecha de matrícula requerida !"),
-
-    rut_estudiante: Yup.string()
-      .trim()
-      .min(7, "El rut debe tener un minimo de 7 caracteres !")
-      .max(9, "El rut no debe tener más de 9 caracteres !")
-      .required("Rut de estudiante requerido !"),
-
-    dv_rut_estudiante: Yup.string()
-      .trim()
-      .max(1, "Solo se admite un caracter !")
-      .matches(
-        /^[0-9kK]*$/,
-        "Solo de admite un digito numérico o la letra k/K !"
-      )
-      .required("Digito verificador requerido !"),
-
-    nombres_estudiante: Yup.string().optional().trim(),
-
-    grado: Yup.string()
-      .max(1, "Solo se admite un dígito")
-      .notOneOf([""], "Seleccione un grado válido !")
-      .required("La asignación del grado es obligatorio !"),
-
-    rut_titular: Yup.string()
-      .optional()
-      .trim()
-      .min(7, "El rut debe tener un minimo de 7 caracteres !")
-      .max(9, "El rut no debe tener más de 9 caracteres !"),
-
-    dv_rut_titular: Yup.string()
-      .optional()
-      .trim()
-      .max(1, "Solo se admite un caracter !")
-      .matches(
-        /^[0-9kK]*$/,
-        "Solo de admite un digito numérico o la letra k/K !"
-      ),
-
-    nombres_titular: Yup.string().optional().trim(),
-
-    rut_suplente: Yup.string()
-      .optional()
-      .trim()
-      .min(7, "El rut debe tener un minimo de 7 caracteres !")
-      .max(9, "El rut no debe tener más de 9 caracteres !"),
-
-    dv_rut_suplente: Yup.string()
-      .optional()
-      .trim()
-      .max(1, "Solo se admite un caracter !")
-      .matches(
-        /^[0-9kK]*$/,
-        "Solo de admite un digito numérico o la letra k/K !"
-      ),
-
-    nombres_suplente: Yup.string().optional().trim(),
-  });
-
-  const onSubmit = async (values, { setSubmitting, setErrors }) => {
-    setSubmitting(true);
-    const dataSet = {
-      id_estudiante: id.idEstudiante,
-      id_titular: id.idTitular,
-      id_suplente: id.idSuplente,
-      grado: parseInt(values.grado.trim()),
-      fecha_matricula: values.fecha_matricula,
-      anio_lectivo: 2024, // asignación manual, asignar a una variable global en configuracion
-    };
-
-    console.log(dataSet);
-
-    // const URL = "/matricula/setMatricula";
-    // const token = sessionStorage.getItem("authToken") ?? null;
-
-    // try {
-    //   const response = await axios.post(URL, dataSet, {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //       "Content-Type": "application/json",
-    //     },
-    //   });
-
-    //   if (response.status === 200) {
-    //     // actualización de los datos de matrícula
-    //     apiGet({ route: "matricula/getAll" })
-    //       .then((response) => {
-    //         getDataMatricula(response.data);
-    //       })
-    //       .catch((error) => console.log(error));
-
-    //     // actualización de las cantidades de altas y bajas
-    //     apiGet({ route: "matricula/getCount" })
-    //       .then((response) => {
-    //         getCountMatricula(response.data);
-    //       })
-    //       .catch((error) => console.log(error));
-
-    //     const nMatricula = response?.data?.numero_matricual;
-    //     Swal.fire({
-    //       icon: "success",
-    //       title: "Success",
-    //       text: `Número de matrícua asigada: ${nMatricula}`,
-    //     }).then(() => onClose());
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // } finally {
-    //   setSubmitting(false);
-    // }
-  };
+  // Efecto para limpiar formulario de matricula
+  useEffect(() => {
+    if (!open) {
+      const handleReset = formikRef.current.handleReset;
+      setTimeout(() => {
+        handleReset();
+      }, 100);
+    }
+  }, [open]);
 
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={onSubmit}
       validationSchema={validationSchema}
+      innerRef={formikRef}
     >
       {({
         values,
@@ -167,14 +58,14 @@ const FormMatricula = ({ onClose, edit = true }) => {
         isSubmitting,
         setFieldValue,
       }) => (
-        <form onSubmit={handleSubmit} className="relative flex flex-col h-full">
-          <section className="relative flex flex-col flex-grow overflow-hidden overflow-y-auto mb-2 p-2 gap-y-4">
-            <article className="flex flex-col xs:flex-row gap-2 w-full flex-wrap">
+        <form onSubmit={handleSubmit} className={`relative flex-col h-full`}>
+          <main className="relative flex flex-col flex-grow overflow-hidden overflow-y-auto p-2 gap-y-4 h-[26.5rem]">
+            <section className="relative flex flex-col xs:flex-row gap-2 w-full flex-wrap">
               {/* numero matricula */}
-              <div className="relative flex flex-col gap-y-2 xs:w-32">
+              <article className="relative flex flex-col gap-y-2 xs:w-32">
                 <label
-                  className="text-blue-600 font-semibold"
                   htmlFor="n_matricula"
+                  className="text-blue-600 font-semibold"
                 >
                   Nº Matrícula
                 </label>
@@ -183,16 +74,21 @@ const FormMatricula = ({ onClose, edit = true }) => {
                   name="n_matricula"
                   id="n_matricula"
                   autoComplete="off"
-                  disabled={edit}
+                  disabled={notEditMatricula}
                   value={values.n_matricula}
                   onChange={(val) => handleChange(numberFormat(val))}
                   onBlur={handleBlur}
                   className={`border outline-none rounded-md p-2 text-center w-full bg-gray-200`}
                 />
-              </div>
+                <ErrorMessageInput
+                  touched={touched}
+                  errors={errors}
+                  value={"n_matricula"}
+                />
+              </article>
 
               {/* grado del curso */}
-              <div className="relative flex flex-col gap-y-2 grow">
+              <article className="relative flex flex-col gap-y-2 grow">
                 <label className="text-blue-600 font-semibold" htmlFor="grado">
                   Grado
                 </label>
@@ -202,8 +98,8 @@ const FormMatricula = ({ onClose, edit = true }) => {
                   value={values.grado}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  className={`border outline-none rounded-md p-[.62rem] text-center w-full 
-                  xs:min-w-[8rem] xs:max-w-[8rem] bg-transparent
+                  className={`relative border outline-none rounded-md p-2 text-start w-full
+                  xs:min-w-[8rem] xs:max-w-[8rem] bg-transparent appearance-none hover:cursor-pointer
                   ${touched.grado && errors.grado && "border-red-500"}
                   ${touched.grado && !errors.grado && "border-green-500"}`}
                 >
@@ -217,10 +113,18 @@ const FormMatricula = ({ onClose, edit = true }) => {
                   <option value="3">3º medio</option>
                   <option value="4">4º medio</option>
                 </select>
-              </div>
+                <span className="absolute right-2 xs:left-24 top-[2.6rem] pointer-events-none">
+                  <KeyboardArrowDownIcon sx={{ fontSize: 20 }} />
+                </span>
+                <ErrorMessageInput
+                  touched={touched}
+                  errors={errors}
+                  value={"grado"}
+                />
+              </article>
 
               {/* fecha de matricula */}
-              <div className="relative flex flex-col gap-y-2 xs:w-48">
+              <article className="relative flex flex-col gap-y-2 xs:w-48">
                 <label
                   className="text-blue-600 font-semibold"
                   htmlFor="fecha_matricula"
@@ -247,8 +151,14 @@ const FormMatricula = ({ onClose, edit = true }) => {
                     "border-green-500"
                   }`}
                 />
-              </div>
-            </article>
+                <ErrorMessageInput
+                  touched={touched}
+                  errors={errors}
+                  value={"fecha_matricula"}
+                />
+              </article>
+            </section>
+
             {/* estudiante */}
             <RutName
               labelRut={"Rut estudiante"}
@@ -267,125 +177,19 @@ const FormMatricula = ({ onClose, edit = true }) => {
               route={"student/getName"}
               property={"idEstudiante"}
               type={"estudiante"}
+              showForm={setFormStudent}
+              setRut={setRut}
             />
-
-            {/* estudiante */}
-            {/* <article className="relative flex flex-col md:flex-row gap-4 items-center">
-              <div className="relative flex flex-col gap-y-2 w-full md:w-64">
-                <label
-                  className="text-blue-600 font-semibold"
-                  htmlFor="rut_estudiante"
-                >
-                  Rut estudiante
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    name="rut_estudiante"
-                    id="rut_titular"
-                    autoComplete="off"
-                    value={values.rut_estudiante}
-                    onChange={(val) =>
-                      handleChange(
-                        handleCustomRut({
-                          val: val,
-                          setFieldValue: setFieldValue,
-                          inputDv: "dv_rut_estudiante",
-                          inputNombre: "nombres_estudiante",
-                          setError: setError,
-                          route: "student/getName",
-                          setId: setId,
-                          property: "idEstudiante",
-                        })
-                      )
-                    }
-                    onBlur={handleBlur}
-                    className={`border outline-none rounded-md p-2 text-center w-full xs:w-36 
-                      ${
-                        touched.rut_estudiante &&
-                        errors.rut_estudiante &&
-                        "border-red-500"
-                      }
-                      ${
-                        touched.rut_estudiante &&
-                        !errors.rut_estudiante &&
-                        "border-green-500"
-                      }
-                    `}
-                  />
-
-                  <span className="textlg font-bold"> - </span>
-
-                  <input
-                    type="text"
-                    name="dv_rut_estudiante"
-                    id="dv_rut_estudiante"
-                    autoComplete="off"
-                    disabled
-                    value={values.dv_rut_estudiante}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    className={`border outline-none rounded-md p-2 text-center w-12 bg-gray-200`}
-                  />
-
-                  <button
-                    type="button"
-                    className={`flex items-center justify-center p-1 rounded-full text-white transition-all duration-300
-                    ${
-                      values.nombres_estudiante === ""
-                        ? "invisible scale-x-105 opacity-0"
-                        : "visible scale-100 opacity-100"
-                    } 
-                    ${
-                      values.nombres_estudiante !== "estudiante no registrado"
-                        ? "bg-blue-500"
-                        : "bg-green-500"
-                    }`}
-                  >
-                    {values.nombres_estudiante !== "" &&
-                      values.nombres_estudiante !==
-                        "estudiante no registrado" && (
-                        <EditIcon
-                          sx={{ fontSize: 22 }}
-                          onClick={() => console.log("edita")}
-                        />
-                      )}
-
-                    {(values.nombres_estudiante === "" ||
-                      values.nombres_estudiante ===
-                        "estudiante no registrado") && (
-                      <AddIcon
-                        sx={{ fontSize: 22 }}
-                        onClick={() => console.log("nuevo")}
-                      />
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              <div className="relative flex flex-col gap-y-2 w-full md:grow">
-                <label
-                  className="text-blue-600 font-semibold"
-                  htmlFor="nombres_estudiante"
-                >
-                  Nombres estudiante
-                </label>
-                <div className="flex items-center">
-                  <input
-                    type="text"
-                    name="nombres_estudiante"
-                    id="nombres_estudiante"
-                    autoComplete="off"
-                    disabled
-                    value={values.nombres_estudiante}
-                    onChange={(val) => handleChange(stringFormat(val))}
-                    onBlur={handleBlur}
-                    className={`border outline-none rounded-md p-2 w-full bg-gray-200
-                    transition-all duration-300`}
-                  />
-                </div>
-              </div>
-            </article> */}
+            <ErrorMessageInput
+              touched={touched}
+              errors={errors}
+              value={"rut_estudiante"}
+            />
+            <ErrorMessageInput
+              touched={touched}
+              errors={errors}
+              value={"nombres_estudiante"}
+            />
 
             {/* linea divisoria */}
             <span className="w-full bg-gray-300 p-[1px] my-2"></span>
@@ -408,6 +212,18 @@ const FormMatricula = ({ onClose, edit = true }) => {
               route={"representative/getName"}
               property={"idTitular"}
               type={"apoderado(a)"}
+              showForm={setFormRepresentative}
+              setRut={setRut}
+            />
+            <ErrorMessageInput
+              touched={touched}
+              errors={errors}
+              value={"rut_titular"}
+            />
+            <ErrorMessageInput
+              touched={touched}
+              errors={errors}
+              value={"nombres_titular"}
             />
 
             {/* apoderado suplente */}
@@ -428,28 +244,25 @@ const FormMatricula = ({ onClose, edit = true }) => {
               route={"representative/getName"}
               property={"idSuplente"}
               type={"apoderado(a)"}
+              showForm={setFormRepresentative}
+              setRut={setRut}
             />
-          </section>
+            <ErrorMessageInput
+              touched={touched}
+              errors={errors}
+              value={"rut_suplente"}
+            />
+            <ErrorMessageInput
+              touched={touched}
+              errors={errors}
+              value={"nombres_suplente"}
+            />
 
-          <footer className="relative flex items-center justify-end gap-4 py-2 border-t-[1px]">
-            <button
-              className="bg-red-500 text-white p-3 rounded-md outline-none
-              hover:opacity-90 hover:shadow-sm hover:shadow-gray-600 active:scale-105"
-              type="button"
-              onClick={onClose}
-            >
-              Cancelar
-            </button>
+            {/* linea divisoria */}
+            <span className="w-full bg-gray-300 p-[1px] mt-2"></span>
+          </main>
 
-            <button
-              className="bg-green-500 text-white p-3 rounded-md outline-none
-              hover:opacity-90 hover:shadow-sm hover:shadow-gray-600 active:scale-105"
-              type="submit"
-              disabled={isSubmitting}
-            >
-              Register
-            </button>
-          </footer>
+          <FooterForm onClose={onClose} isSubmitting={isSubmitting} />
           <ErrorHandler error={error} />
         </form>
       )}

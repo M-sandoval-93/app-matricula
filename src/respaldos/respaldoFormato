@@ -1,0 +1,28 @@
+<button
+    type="button"
+    onClick={getRut}
+    className={`flex items-center justify-center p-1 rounded-full text-white transition-all duration-300
+            ${
+                (values[name] === "" && !proceso_matricula) ||
+                values[name] === "Asignar apoderado(a) titular !" ||
+                values[name] === "Asignar apoderado(a) suplente !" ||
+                (!proceso_matricula &&
+                values[name] === `Sin registro de ${type} !`)
+                ? "invisible scale-110 opacity-0"
+                : "visible scale-100 opacity-100"
+            } 
+            ${
+                values[name] !== `Sin registro de ${type} !`
+                ? "bg-blue-500"
+                : "bg-green-500"
+            }`}
+    >
+    {values[name] !== "" &&
+        values[name] !== `Sin registro de ${type} !` && (
+        <EditIcon sx={{ fontSize: 22 }} />
+        )}
+
+    {(values[name] === "" ||
+        values[name] === `Sin registro de ${type} !`) &&
+        !proceso_matricula && <AddIcon sx={{ fontSize: 22 }} />}
+    </button>

@@ -1,12 +1,16 @@
 import { createContext, useCallback, useMemo, useState } from "react";
+import { getCurrentYear } from "../utils/funciones";
 
 const MatriculaContext = createContext({});
 
-export const MatriculaProvider = ({ children }) => {
+export const MatriculaProvider = ({ children, response }) => {
+  const year = getCurrentYear();
   const [data, setData] = useState({
     matricula: [],
     altas: null,
     bajas: null,
+    periodo: localStorage.getItem("periodo") || year,
+    proceso_matricula: localStorage.getItem("proceso_matricula") || response,
   });
 
   const getDataMatricula = useCallback((matricula) => {
@@ -21,13 +25,22 @@ export const MatriculaProvider = ({ children }) => {
     }));
   }, []);
 
+  const getPeriodo = useCallback((periodo) => {
+    localStorage.setItem("periodo", periodo);
+    setData((prevData) => ({
+      ...prevData,
+      periodo: periodo,
+    }));
+  }, []);
+
   const value = useMemo(
     () => ({
       getDataMatricula,
       getCountMatricula,
+      getPeriodo,
       ...data,
     }),
-    [getDataMatricula, getCountMatricula, data]
+    [getDataMatricula, getCountMatricula, getPeriodo, data]
   );
 
   return (

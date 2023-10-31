@@ -25,10 +25,11 @@ const Header = () => {
         >
           <ArrowBackIcon sx={{ fontSize: 30 }} />
         </span>
-        <div className="relative flex items-center justify-end md:justify-between w-full px-4">
+        <div className="relative flex items-center justify-between w-full px-4">
           <span
-            className="relative hidden md:flex flex-col md:text-base lg:text-xl
-            font-semibold ml-16 transition-all duration-300 leading-5 text-blue-600 dark:text-blue-300"
+            className="relative flex flex-col md:text-base lg:text-xl
+            font-semibold ml-16 transition-all duration-300 leading-5 text-blue-600 dark:text-blue-300
+            opacity-0 scale-125 md:opacity-100 md:scale-100"
           >
             <p>Liceo Bicentenario</p>
             <p>Valentín Letelier Madariaga</p>

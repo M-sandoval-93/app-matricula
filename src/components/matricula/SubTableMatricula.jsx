@@ -13,12 +13,12 @@ const SubTableMatricula = ({ data }) => {
         <tbody>
           <tr>
             <td>{data.fecha_nacimiento}</td>
-            <td>{data.fecha_ingreso}</td>
+            <td>{data.fecha_alta}</td>
             <td>{data.sexo}</td>
           </tr>
         </tbody>
       </table>
-      <span>FECHA RETIRO: {data.fecha_retiro ?? "SIN FECHA DE RETIRO"}</span>
+      <span>FECHA RETIRO: {data.fecha_baja ?? "SIN FECHA DE RETIRO"}</span>
 
       <span>Datos apoderados</span>
       <table>

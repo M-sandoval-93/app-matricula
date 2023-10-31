@@ -1,3 +1,4 @@
+import { data } from "autoprefixer";
 import apiGet from "../api/apiGet";
 
 // funcion para restringir number, devuelve un number
@@ -54,7 +55,7 @@ export const validateRut = (rut, dv) => {
 
 // funcion para manejar el rut del estudiante
 // function tomanage the student`s rut
-export const handleCustomRut = ({
+export const getNameStudent = ({
   val,
   setFieldValue,
   inputDv,
@@ -70,7 +71,7 @@ export const handleCustomRut = ({
     setFieldValue(inputDv, calculateCheckDigit(data));
 
     if (inputNombre)
-      getName(data, route)
+      getStudent(data, route)
         .then(({ data }) => {
           const id = data?.id ? data?.id : null;
           const name = data?.message ? data?.message : data?.nombres;
@@ -87,10 +88,37 @@ export const handleCustomRut = ({
   return numberFormat(val);
 };
 
+// export const getDataStudent = ({ rut }) => {
+//   // setFieldValue(inputDv, calculateCheckDigit(data));
+
+//   getStudent(rut, "student/getStudent")
+//     .then(({ data }) => {
+//       console.log(data);
+//     })
+//     .catch((error) => console.log(error));
+// };
+
 // function para obtener el nombre del estudiante
 // function to get student name
-const getName = async (rut, route) => {
+export const getStudent = async (rut, route) => {
   const response = await apiGet({ route: route, param: rut });
   const data = response?.data;
   return { data };
+};
+
+export const getCurrentDate = () => {
+  const fecha = new Date();
+  const y = fecha.getFullYear();
+  const m = fecha.getMonth() + 1;
+  const d = fecha.getDate();
+
+  let number = (data) => (data <= 9 ? "0" + data : data);
+
+  return `${number(y)}-${number(m)}-${number(d)}`;
+};
+
+export const getCurrentYear = () => {
+  const fecha = new Date();
+  const y = fecha.getFullYear();
+  return y;
 };

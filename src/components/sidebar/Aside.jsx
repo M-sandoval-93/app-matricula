@@ -72,6 +72,7 @@ const Aside = () => {
         <SidebarItem
           icon={<LogoutIcon sx={{ fontSize: 30 }} />}
           text={"Logout"}
+          to="/"
           onClick={() => logout()}
           isLast={true}
         />

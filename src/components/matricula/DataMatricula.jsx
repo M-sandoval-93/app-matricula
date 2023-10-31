@@ -14,35 +14,47 @@ export const columnsMatricula = [
   {
     name: "Matrícula",
     selector: (row) => row.matricula,
-    width: "105px",
+    width: "110px",
     center: true,
   },
   {
     name: "Rut",
     selector: (row) => row.rut,
-    width: "115px",
+    width: "130px",
+  },
+
+  {
+    name: "Ap. paterno",
+    selector: (row) => row.paterno,
+    width: "140px",
+  },
+  {
+    name: "Ap. materno",
+    selector: (row) => row.materno,
+    width: "140px",
   },
   {
     name: "Nombres",
     selector: (row) => row.nombres,
-  },
-  {
-    name: "Apellido paterno",
-    selector: (row) => row.paterno,
-  },
-  {
-    name: "Apellido materno",
-    selector: (row) => row.materno,
-  },
-  {
-    name: "Estado",
-    selector: (row) => row.estado,
-    width: "100px",
+    width: "280px",
   },
   {
     name: "Curso",
     selector: (row) => row.curso,
     width: "80px",
+    center: true,
+  },
+  {
+    name: "Estado",
+    cell: (row) => (
+      <span
+        className={`p-2 border hover:shadow-md rounded-md
+        ${row.estado === "ACTIVO(A)" && "border-blue-500  text-blue-500"}`}
+      >
+        {row.estado}
+      </span>
+    ),
+    width: "140px",
     center: true,
   },
   {
