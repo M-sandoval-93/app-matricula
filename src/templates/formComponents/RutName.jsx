@@ -79,7 +79,7 @@ const RutName = ({
                     `}
           />
 
-          <span className="textlg font-bold"> - </span>
+          <span className="text-lg font-bold"> - </span>
 
           <input
             type="text"

@@ -86,6 +86,7 @@ const ModalMatricula = ({ open, onClose, notEditMatricula = false }) => {
           setFormMatricula={setFormMatricula}
           rut={rut}
           setEditSubForm={setEditSubForm}
+          stateModalStudent={modal.formStudent}
         />
       </section>
 

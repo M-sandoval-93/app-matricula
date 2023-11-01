@@ -29,10 +29,13 @@ const Modal = ({ children, open, onClose, title }) => {
           </span>
           <button
             onClick={onClose}
-            className={`relative  p-2 rounded-full text-dark bg-white transition-all duration-200
+            className={`relative p-2 rounded-full w-11 h-11 flex justify-center items-center bg-white text-dark transition-all duration-200
                 hover:text-white hover:bg-red-400 hover:shadow-md hover:shadow-white`}
           >
-            <CloseIcon />
+            <span className="flex justify-center items-center">
+
+            <CloseIcon sx={{fontSize: 25}} />
+            </span>
           </button>
         </header>
 
