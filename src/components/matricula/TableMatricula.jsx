@@ -25,7 +25,7 @@ const TableMatricula = () => {
     loading: false,
     stateModal: false,
     newMatricula: true,
-    dataMatricula: {},
+    idMatricula: "",
     error: null,
   });
 
@@ -38,7 +38,7 @@ const TableMatricula = () => {
     updateStateMatricula({
       stateModal: false,
       newMatricula: true,
-      dataMatricula: {},
+      idMatricula: "",
     });
   };
 
@@ -92,7 +92,7 @@ const TableMatricula = () => {
         stateModal={stateMatricula.stateModal}
         onCloseModal={onCloseModal}
         newMatricula={stateMatricula.newMatricula}
-        dataMatricula={stateMatricula.dataMatricula}
+        idMatricula={stateMatricula.idMatricula}
       />
 
       <ErrorHandler error={stateMatricula.error} />

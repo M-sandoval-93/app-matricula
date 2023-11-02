@@ -15,7 +15,7 @@ const FormMatricula = ({
   stateModal,
   onCloseModal,
   newMatricula,
-  dataMatricula,
+  idMatricula,
 
   setFormStudent,
   setFormRepresentative,
@@ -42,24 +42,25 @@ const FormMatricula = ({
     }
 
     if (!newMatricula) {
+      console.log(idMatricula);
       // console.log(dataMatricula);
-      formikMatriculaRef.current.setValues({
-        ...initialValues,
-        n_matricula: dataMatricula.numero_matricula,
-        fecha_matricula: dataMatricula.fecha_matricula,
-        grado: dataMatricula.grado,
-        rut_estudiante: dataMatricula.rut_estudiante,
-        dv_rut_estudiante: dataMatricula.dv_rut_estudiante,
-        nombres_estudiante: dataMatricula.nombres_estudiante,
-        rut_titular: dataMatricula.rut_titular || "",
-        dv_rut_titular: dataMatricula.dv_rut_titular || "",
-        // nombres_titular,
-        rut_suplente: dataMatricula.rut_suplente || "",
-        dv_rut_suplente: dataMatricula.dv_rut_suplente || "",
+      // formikMatriculaRef.current.setValues({
+      //   ...initialValues,
+      //   n_matricula: dataMatricula.numero_matricula,
+      //   fecha_matricula: dataMatricula.fecha_matricula,
+      //   grado: dataMatricula.grado,
+      //   rut_estudiante: dataMatricula.rut_estudiante,
+      //   dv_rut_estudiante: dataMatricula.dv_rut_estudiante,
+      //   nombres_estudiante: dataMatricula.nombres_estudiante,
+      //   rut_titular: dataMatricula.rut_titular || "",
+      //   dv_rut_titular: dataMatricula.dv_rut_titular || "",
+      //   nombres_titular: dataMatricula.nombres_titular || "Asignar apoderado(a) titular !",
+      //   rut_suplente: dataMatricula.rut_suplente || "",
+      //   dv_rut_suplente: dataMatricula.dv_rut_suplente || "",
         // nombres_suplente,
-      });
+      // });
 
-      console.log(formikMatriculaRef.current.values.n_matricula);
+      // console.log(formikMatriculaRef.current.values.n_matricula);
     }
   }, [stateModal]);
 

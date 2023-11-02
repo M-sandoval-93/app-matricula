@@ -8,7 +8,7 @@ const ModalMatricula = ({
   stateModal,
   onCloseModal,
   newMatricula,
-  dataMatricula,
+  idMatricula,
 }) => {
   const [modalMatricula, setModalMatricula] = useState({
     rut: "",
@@ -40,28 +40,28 @@ const ModalMatricula = ({
   //   }));
   // };
 
-  const setFormStudent = () => {
-    setModal((prev) => ({
-      ...prev,
-      formMatricula: false,
-      formStudent: true,
-    }));
-  };
+  // const setFormStudent = () => {
+  //   setModal((prev) => ({
+  //     ...prev,
+  //     formMatricula: false,
+  //     formStudent: true,
+  //   }));
+  // };
 
-  const setFormRepresentative = () => {
-    setModal((prev) => ({
-      ...prev,
-      formMatricula: false,
-      formRerpesentative: true,
-    }));
-  };
+  // const setFormRepresentative = () => {
+  //   setModal((prev) => ({
+  //     ...prev,
+  //     formMatricula: false,
+  //     formRerpesentative: true,
+  //   }));
+  // };
 
-  const setEditSubForm = () => {
-    setModal((prev) => ({
-      ...prev,
-      editSubForm: true,
-    }));
-  };
+  // const setEditSubForm = () => {
+  //   setModal((prev) => ({
+  //     ...prev,
+  //     editSubForm: true,
+  //   }));
+  // };
 
   // Para controlar que cada vez que se habra el formulario, el estado este correcto
   useEffect(() => {
@@ -93,7 +93,7 @@ const ModalMatricula = ({
           stateModal={stateModal}
           onCloseModal={onCloseModal}
           newMatricula={newMatricula}
-          dataMatricula={dataMatricula}
+          idMatricula={idMatricula}
           // formMatricula={modal.formMatricula}
           // setFormMatricula={setFormMatricula}
           // setFormStudent={setFormStudent}
