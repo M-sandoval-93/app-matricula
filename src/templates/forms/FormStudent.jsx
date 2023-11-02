@@ -11,12 +11,18 @@ import validationStudent from "../../validation/validationStudent";
 import useSubmitStudent from "../../hooks/useSubmitStudent";
 import ErrorMessageInput from "../formComponents/ErrorMessageInput";
 
-const FormStudent = ({ setFormMatricula, open, rut, setEditSubForm, stateModalStudent }) => {
+const FormStudent = ({
+  setFormMatricula,
+  open,
+  rut,
+  editSubForm,
+  stateModalStudent,
+}) => {
   const [error, setError] = useState(null);
   const formikStudentRef = useRef();
   const initialValues = initialValuesStudent();
   const validationSchema = validationStudent();
-  const {onSubmit}  = useSubmitStudent();
+  const { onSubmit } = useSubmitStudent();
 
   // pasar los valores de la consulta del estudiante hacia la api
   // para condicion para cuando tengo que editarlo desde matricula
@@ -60,13 +66,19 @@ const FormStudent = ({ setFormMatricula, open, rut, setEditSubForm, stateModalSt
           <main className="relative flex flex-col flex-grow overflow-hidden overflow-y-auto p-2 gap-y-4 h-[26.5rem]">
             <section className="relative flex w-full">
               <article className="relative flex flex-col gap-y-2 w-full ">
-                <label className="text-blue-600 font-semibold" htmlFor="rut_estudiante">Rut estudiante</label>
+                <label
+                  className="text-blue-600 font-semibold"
+                  htmlFor="rut_estudiante"
+                >
+                  Rut estudiante
+                </label>
                 <div className="flex items-center gap-2">
                   <input
                     type="text"
                     name="rut_estudiante"
                     id="rut_estudiante"
                     autoComplete="off"
+                    disabled={editSubForm}
                     value={values.rut_estudiante}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -100,7 +112,12 @@ const FormStudent = ({ setFormMatricula, open, rut, setEditSubForm, stateModalSt
 
             <section className="relative flex flex-col md:flex-row w-full gap-4">
               <article className="relative flex flex-col gap-y-2 md:w-5/12">
-                <label className="text-blue-600 font-semibold" htmlFor="nombres_estudiante">Nombres estudiante</label>
+                <label
+                  className="text-blue-600 font-semibold"
+                  htmlFor="nombres_estudiante"
+                >
+                  Nombres estudiante
+                </label>
                 <input
                   type="text"
                   name="nombres_estudiante"
@@ -119,7 +136,12 @@ const FormStudent = ({ setFormMatricula, open, rut, setEditSubForm, stateModalSt
               </article>
 
               <article className="relative flex flex-col gap-y-2 md:w-4/12">
-                <label className="text-blue-600 font-semibold" htmlFor="apellido_paterno">Apellido paterno</label>
+                <label
+                  className="text-blue-600 font-semibold"
+                  htmlFor="apellido_paterno"
+                >
+                  Apellido paterno
+                </label>
                 <input
                   type="text"
                   name="apellido_paterno"
@@ -138,7 +160,12 @@ const FormStudent = ({ setFormMatricula, open, rut, setEditSubForm, stateModalSt
               </article>
 
               <article className="relative flex flex-col gap-y-2 md:w-4/12">
-                <label className="text-blue-600 font-semibold" htmlFor="apellido_materno">Apellido materno</label>
+                <label
+                  className="text-blue-600 font-semibold"
+                  htmlFor="apellido_materno"
+                >
+                  Apellido materno
+                </label>
                 <input
                   type="text"
                   name="apellido_materno"
@@ -154,12 +181,17 @@ const FormStudent = ({ setFormMatricula, open, rut, setEditSubForm, stateModalSt
                   errors={errors}
                   value={"apellido_materno"}
                 />
-              </article>         
+              </article>
             </section>
 
             <section className="relative flex flex-col md:flex-row w-full gap-4">
               <article className="relative flex flex-col gap-y-2 md:w-5/12">
-                <label className="text-blue-600 font-semibold" htmlFor="nombre_social">Nombre social</label>
+                <label
+                  className="text-blue-600 font-semibold"
+                  htmlFor="nombre_social"
+                >
+                  Nombre social
+                </label>
                 <input
                   type="text"
                   name="nombre_social"
@@ -178,7 +210,9 @@ const FormStudent = ({ setFormMatricula, open, rut, setEditSubForm, stateModalSt
               </article>
 
               <article className="relative flex flex-col gap-y-2 md:w-4/12">
-                <label className="text-blue-600 font-semibold" htmlFor="genero">Género</label>
+                <label className="text-blue-600 font-semibold" htmlFor="genero">
+                  Género
+                </label>
                 <select
                   name="genero"
                   id="genero"
@@ -201,7 +235,12 @@ const FormStudent = ({ setFormMatricula, open, rut, setEditSubForm, stateModalSt
               </article>
 
               <article className="relative flex flex-col gap-y-2 md:w-4/12">
-                <label className="text-blue-600 font-semibold" htmlFor="fecha_nacimiento">Fecha nacimiento</label>
+                <label
+                  className="text-blue-600 font-semibold"
+                  htmlFor="fecha_nacimiento"
+                >
+                  Fecha nacimiento
+                </label>
                 <input
                   type="date"
                   name="fecha_nacimiento"

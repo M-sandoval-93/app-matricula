@@ -1,4 +1,3 @@
-import { data } from "autoprefixer";
 import apiGet from "../api/apiGet";
 
 // funcion para restringir number, devuelve un number
@@ -88,16 +87,6 @@ export const getNameStudent = ({
   return numberFormat(val);
 };
 
-// export const getDataStudent = ({ rut }) => {
-//   // setFieldValue(inputDv, calculateCheckDigit(data));
-
-//   getStudent(rut, "student/getStudent")
-//     .then(({ data }) => {
-//       console.log(data);
-//     })
-//     .catch((error) => console.log(error));
-// };
-
 // function para obtener el nombre del estudiante
 // function to get student name
 export const getStudent = async (rut, route) => {
@@ -106,6 +95,7 @@ export const getStudent = async (rut, route) => {
   return { data };
 };
 
+// funcion para obtener la fecha actual
 export const getCurrentDate = () => {
   const fecha = new Date();
   const y = fecha.getFullYear();
@@ -117,6 +107,7 @@ export const getCurrentDate = () => {
   return `${number(y)}-${number(m)}-${number(d)}`;
 };
 
+// funcion para obtener el año actual
 export const getCurrentYear = () => {
   const fecha = new Date();
   const y = fecha.getFullYear();

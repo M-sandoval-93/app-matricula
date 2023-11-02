@@ -13,6 +13,9 @@ export const MatriculaProvider = ({ children, response }) => {
     proceso_matricula: localStorage.getItem("proceso_matricula") || response,
   });
 
+  const bloqueo_periodo_actual =
+    parseInt(data.periodo) === parseInt(year) && data.proceso_matricula;
+
   const getDataMatricula = useCallback((matricula) => {
     setData((prevData) => ({ ...prevData, matricula: matricula }));
   }, []);
@@ -35,12 +38,19 @@ export const MatriculaProvider = ({ children, response }) => {
 
   const value = useMemo(
     () => ({
+      bloqueo_periodo_actual,
       getDataMatricula,
       getCountMatricula,
       getPeriodo,
       ...data,
     }),
-    [getDataMatricula, getCountMatricula, getPeriodo, data]
+    [
+      bloqueo_periodo_actual,
+      getDataMatricula,
+      getCountMatricula,
+      getPeriodo,
+      data,
+    ]
   );
 
   return (

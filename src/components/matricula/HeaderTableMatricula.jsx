@@ -1,14 +1,18 @@
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
-import { getCurrentYear } from "../../utils/funciones";
+// import { getCurrentYear } from "../../utils/funciones";
 import useMatricula from "../../hooks/useMatricula";
 
-const HeaderTableMatricula = ({ filter, setFilter, setOpen }) => {
-  const { periodo, proceso_matricula } = useMatricula();
-  const periodo_actual = getCurrentYear();
-  const bloqueo_periodo_actual =
-    parseInt(periodo) === parseInt(periodo_actual) && proceso_matricula;
+const HeaderTableMatricula = ({ filter, updateStateMatricula }) => {
+  const { bloqueo_periodo_actual } = useMatricula();
+  const showModalMatricula = () => {
+    updateStateMatricula({
+      stateModal: true,
+      idMatricula: "",
+      // ver si utilizo esta funcion, o paso el update directamente al click
+    });
+  };
 
   return (
     <div className="relative w-full flex flex-wrap gap-3 items-center justify-center sm:justify-between my-2">
@@ -21,7 +25,7 @@ const HeaderTableMatricula = ({ filter, setFilter, setOpen }) => {
             : "opacity-100 scale-100"
         }`}
         disabled={bloqueo_periodo_actual}
-        onClick={setOpen}
+        onClick={showModalMatricula}
       >
         <OpenInNewIcon sx={{ fontSize: 30 }} />
       </button>
@@ -34,16 +38,16 @@ const HeaderTableMatricula = ({ filter, setFilter, setOpen }) => {
           type="search"
           placeholder="Search ..."
           value={filter}
-          onChange={(event) => setFilter(event.target.value)}
+          onChange={(event) =>
+            updateStateMatricula({ filter: event.target.value })
+          }
           className="border outline-none border-gray-300 focus:shadow focus:shadow-gray-400 rounded-md py-2 pl-10"
         />
         <span
           className={`absolute right-2 text-gray-400 cursor-pointer rounded-full p-1 shadow-sm 
             shadow-gray-200 hover:scale-105 hover:bg-gray-100 transition-all duration-300
-            ${
-              filter ? "opacity-100 scale-100" : "opacity-0 scale-125"
-            }  transition-all duration-300`}
-          onClick={() => setFilter("")}
+            ${filter ? "opacity-100 scale-100" : "opacity-0 scale-125"}`}
+          onClick={() => updateStateMatricula({ filter: "" })}
         >
           <ClearIcon sx={{ fontSize: 25 }} />
         </span>

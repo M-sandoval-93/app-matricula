@@ -1,7 +1,7 @@
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 import { Formik } from "formik";
-import { numberFormat } from "../../utils/funciones";
+import { getNameStudent, numberFormat } from "../../utils/funciones";
 import { useEffect, useRef, useState } from "react";
 import ErrorHandler from "../../components/ErrorHandler";
 import RutName from "../formComponents/RutName";
@@ -12,10 +12,11 @@ import validationMatricula from "../../validation/validationMatricula";
 import { initialValuesMatricula } from "../../utils/initialValues";
 
 const FormMatricula = ({
-  open,
-  onClose,
-  notEditMatricula,
-  editSubForm,
+  stateModal,
+  onCloseModal,
+  newMatricula,
+  dataMatricula,
+
   setFormStudent,
   setFormRepresentative,
   setRut,
@@ -29,24 +30,45 @@ const FormMatricula = ({
   const { onSubmit } = useSubmitMatricula({ setError, id });
   const initialValues = initialValuesMatricula();
   const validationSchema = validationMatricula();
-  const formikRef = useRef();
+  const formikMatriculaRef = useRef();
 
   // Efecto para limpiar formulario de matricula
   useEffect(() => {
-    if (!open) {
-      const handleReset = formikRef.current.handleReset;
+    if (!stateModal) {
+      const handleReset = formikMatriculaRef.current.handleReset;
       setTimeout(() => {
         handleReset();
       }, 100);
     }
-  }, [open]);
+
+    if (!newMatricula) {
+      // console.log(dataMatricula);
+      formikMatriculaRef.current.setValues({
+        ...initialValues,
+        n_matricula: dataMatricula.numero_matricula,
+        fecha_matricula: dataMatricula.fecha_matricula,
+        grado: dataMatricula.grado,
+        rut_estudiante: dataMatricula.rut_estudiante,
+        dv_rut_estudiante: dataMatricula.dv_rut_estudiante,
+        nombres_estudiante: dataMatricula.nombres_estudiante,
+        rut_titular: dataMatricula.rut_titular || "",
+        dv_rut_titular: dataMatricula.dv_rut_titular || "",
+        // nombres_titular,
+        rut_suplente: dataMatricula.rut_suplente || "",
+        dv_rut_suplente: dataMatricula.dv_rut_suplente || "",
+        // nombres_suplente,
+      });
+
+      console.log(formikMatriculaRef.current.values.n_matricula);
+    }
+  }, [stateModal]);
 
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={onSubmit}
       validationSchema={validationSchema}
-      innerRef={formikRef}
+      innerRef={formikMatriculaRef}
     >
       {({
         values,
@@ -74,11 +96,12 @@ const FormMatricula = ({
                   name="n_matricula"
                   id="n_matricula"
                   autoComplete="off"
-                  disabled={notEditMatricula}
+                  disabled={newMatricula}
                   value={values.n_matricula}
                   onChange={(val) => handleChange(numberFormat(val))}
                   onBlur={handleBlur}
-                  className={`border outline-none rounded-md p-2 text-center w-full bg-gray-200`}
+                  className={`border outline-none rounded-md p-2 text-center w-full
+                    ${newMatricula ? "bg-gray-200" : "bg-transparent"}`}
                 />
                 <ErrorMessageInput
                   touched={touched}
@@ -262,7 +285,7 @@ const FormMatricula = ({
             <span className="w-full bg-gray-300 p-[1px] mt-2"></span>
           </main>
 
-          <FooterForm onClose={onClose} isSubmitting={isSubmitting} />
+          <FooterForm onCloseModal={onCloseModal} isSubmitting={isSubmitting} />
           <ErrorHandler error={error} />
         </form>
       )}

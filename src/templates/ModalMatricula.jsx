@@ -4,24 +4,41 @@ import FormMatricula from "./forms/FormMatricula";
 import FormStudent from "./forms/FormStudent";
 import FormRepresentative from "./forms/FormRepresentative";
 
-const ModalMatricula = ({ open, onClose, notEditMatricula = false }) => {
-  const [rut, setRut] = useState("");
-  const [modal, setModal] = useState({
+const ModalMatricula = ({
+  stateModal,
+  onCloseModal,
+  newMatricula,
+  dataMatricula,
+}) => {
+  const [modalMatricula, setModalMatricula] = useState({
+    rut: "",
     formMatricula: true,
     formStudent: false,
-    formRerpesentative: false,
+    formRepresentative: false,
     editSubForm: false,
   });
 
-  const setFormMatricula = () => {
-    setModal((prev) => ({
-      ...prev,
-      formMatricula: true,
-      formStudent: false,
-      formRerpesentative: false,
-      editSubForm: false,
-    }));
+  const updateModalMatricula = (newState) => {
+    setModalMatricula((prev) => ({ ...prev, ...newState }));
   };
+
+  // const [rut, setRut] = useState("");
+  // const [modal, setModal] = useState({
+  //   formMatricula: true,
+  //   formStudent: false,
+  //   formRerpesentative: false,
+  //   editSubForm: false,
+  // });
+
+  // const setFormMatricula = () => {
+  //   setModal((prev) => ({
+  //     ...prev,
+  //     formMatricula: true,
+  //     formStudent: false,
+  //     formRerpesentative: false,
+  //     editSubForm: false,
+  //   }));
+  // };
 
   const setFormStudent = () => {
     setModal((prev) => ({
@@ -48,53 +65,60 @@ const ModalMatricula = ({ open, onClose, notEditMatricula = false }) => {
 
   // Para controlar que cada vez que se habra el formulario, el estado este correcto
   useEffect(() => {
-    if (open) {
-      setFormMatricula();
+    if (stateModal) {
+      updateModalMatricula({
+        formMatricula: true,
+        formStudent: false,
+        formRepresentative: false,
+        editSubForm: false,
+      });
     }
-  }, [open]);
+  }, [stateModal]);
 
   return (
     <Modal
       title={
-        (modal.formMatricula && "REGISTRO MATRÍCULA") ||
-        (modal.formStudent && "REGISTRO ESTUDIANTE") ||
-        (modal.formRerpesentative && "REGISTRO APODERADO(A)")
+        (modalMatricula.formMatricula && "REGISTRO MATRÍCULA") ||
+        (modalMatricula.formStudent && "REGISTRO ESTUDIANTE") ||
+        (modalMatricula.formRepresentative && "REGISTRO APODERADO(A)")
       }
-      open={open}
-      onClose={onClose}
+      stateModal={stateModal}
+      onCloseModal={onCloseModal}
     >
       <section
-        className={`${
-          modal.formMatricula ? "block" : "hidden"
-        } relative h-full`}
+        className={`relative h-full 
+          ${modalMatricula.formMatricula ? "block" : "hidden"}`}
       >
         <FormMatricula
-          open={open}
-          onClose={onClose}
-          formMatricula={modal.formMatricula}
-          setFormMatricula={setFormMatricula}
-          setFormStudent={setFormStudent}
-          setFormRepresentative={setFormRepresentative}
-          setRut={setRut}
-          notEditMatricula={modal.notEditMatricula}
-          editSubForm={modal.editSubForm}
+          stateModal={stateModal}
+          onCloseModal={onCloseModal}
+          newMatricula={newMatricula}
+          dataMatricula={dataMatricula}
+          // formMatricula={modal.formMatricula}
+          // setFormMatricula={setFormMatricula}
+          // setFormStudent={setFormStudent}
+          // setFormRepresentative={setFormRepresentative}
+          // setRut={setRut}
+          // setEditSubForm={setEditSubForm}
+          // // modalNewMatricula={modalNewMatricula}
+          // newMatricula={newMatricula}
         />
       </section>
 
-      <section className={`${modal.formStudent ? "block" : "hidden"} h-full`}>
+      {/* <section className={`${modal.formStudent ? "block" : "hidden"} h-full`}>
         <FormStudent
           setFormMatricula={setFormMatricula}
           rut={rut}
-          setEditSubForm={setEditSubForm}
+          editSubForm={modal.editSubForm}
           stateModalStudent={modal.formStudent}
         />
-      </section>
+      </section> */}
 
-      <section
+      {/* <section
         className={`${modal.formRerpesentative ? "block" : "hidden"} h-full`}
       >
         <FormRepresentative setFormMatricula={setFormMatricula} rut={rut} />
-      </section>
+      </section> */}
     </Modal>
   );
 };

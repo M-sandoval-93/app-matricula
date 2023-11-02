@@ -16,23 +16,46 @@ import ModalMatricula from "../../templates/ModalMatricula";
 import ErrorHandler from "../ErrorHandler";
 
 const TableMatricula = () => {
+  // hook personalizados para trabajar con el contexto de matricula
   const { matricula, getDataMatricula, periodo } = useMatricula();
-  const [filter, setFilter] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-  const onClose = () => setOpen(false);
-  const [error, setError] = useState(null);
+
+  // estado para lsa variables del modulo de matricula
+  const [stateMatricula, setStateMatricula] = useState({
+    filter: "",
+    loading: false,
+    stateModal: false,
+    newMatricula: true,
+    dataMatricula: {},
+    error: null,
+  });
+
+  // actualizador del estado de las variables del modulo de matricula
+  const updateStateMatricula = (newState) => {
+    setStateMatricula((prev) => ({ ...prev, ...newState }));
+  };
+
+  const onCloseModal = () => {
+    updateStateMatricula({
+      stateModal: false,
+      newMatricula: true,
+      dataMatricula: {},
+    });
+  };
 
   useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
-      apiGet({ route: "matricula/getAll", param: periodo })
-        .then((response) => {
-          getDataMatricula(response.data);
-        })
-        .catch((error) => setError(error))
-        .finally(() => setLoading(false));
-    }, 200);
+    updateStateMatricula({ loading: true });
+
+    apiGet({ route: "matricula/getAll", param: periodo })
+      .then((response) => {
+        getDataMatricula(response.data);
+        updateStateMatricula({ loading: false });
+      })
+      .catch((error) => {
+        updateStateMatricula({
+          error: error,
+          loading: false,
+        });
+      });
   }, [periodo]);
 
   return (
@@ -44,12 +67,14 @@ const TableMatricula = () => {
           fixedHeaderScrollHeight="540px"
           subHeader
           subHeaderComponent={HeaderTableMatricula({
-            filter,
-            setFilter,
-            setOpen,
+            filter: stateMatricula.filter,
+            updateStateMatricula,
           })}
-          columns={columnsMatricula}
-          data={providerFilter({ data: matricula, filter })}
+          columns={columnsMatricula({ updateStateMatricula })}
+          data={providerFilter({
+            data: matricula,
+            filter: stateMatricula.filter,
+          })}
           highlightOnHover
           responsive
           persistTableHead
@@ -59,12 +84,18 @@ const TableMatricula = () => {
           expandableRows
           expandOnRowDoubleClicked
           expandableRowsComponent={SubTableMatricula}
-          progressPending={loading}
+          progressPending={stateMatricula.loading}
         />
       </section>
 
-      <ModalMatricula open={open} onClose={onClose} />
-      <ErrorHandler error={error} />
+      <ModalMatricula
+        stateModal={stateMatricula.stateModal}
+        onCloseModal={onCloseModal}
+        newMatricula={stateMatricula.newMatricula}
+        dataMatricula={stateMatricula.dataMatricula}
+      />
+
+      <ErrorHandler error={stateMatricula.error} />
     </main>
   );
 };
