@@ -12,12 +12,13 @@ const useSubmitMatricula = ({ setError, id }) => {
   ) => {
     setSubmitting(true);
     const dataSet = {
+      id_matricula: id.idMatricula,
       id_estudiante: id.idEstudiante,
       id_titular: id.idTitular,
       id_suplente: id.idSuplente,
       grado: parseInt(values.grado.trim()),
       fecha_matricula: values.fecha_matricula,
-      anio_lectivo: periodo, // asignación manual, asignar a una variable global en configuracion
+      anio_lectivo: periodo,
     };
 
     const URL = "/matricula/setMatricula";

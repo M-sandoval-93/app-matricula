@@ -10,6 +10,7 @@ import useSubmitMatricula from "../../hooks/useSubmitMatricula";
 import ErrorMessageInput from "../formComponents/ErrorMessageInput";
 import validationMatricula from "../../validation/validationMatricula";
 import { initialValuesMatricula } from "../../utils/initialValues";
+import apiGet from "../../api/apiGet";
 
 const FormMatricula = ({
   stateModal,
@@ -26,13 +27,15 @@ const FormMatricula = ({
     idEstudiante: "",
     idTitular: "",
     idSuplente: "",
+    idMatricula: idMatricula,
   });
+
   const { onSubmit } = useSubmitMatricula({ setError, id });
   const initialValues = initialValuesMatricula();
   const validationSchema = validationMatricula();
   const formikMatriculaRef = useRef();
 
-  // Efecto para limpiar formulario de matricula
+  // Efecto para limpiar formulario de matricula y asignar valores
   useEffect(() => {
     if (!stateModal) {
       const handleReset = formikMatriculaRef.current.handleReset;
@@ -42,25 +45,43 @@ const FormMatricula = ({
     }
 
     if (!newMatricula) {
-      console.log(idMatricula);
-      // console.log(dataMatricula);
-      // formikMatriculaRef.current.setValues({
-      //   ...initialValues,
-      //   n_matricula: dataMatricula.numero_matricula,
-      //   fecha_matricula: dataMatricula.fecha_matricula,
-      //   grado: dataMatricula.grado,
-      //   rut_estudiante: dataMatricula.rut_estudiante,
-      //   dv_rut_estudiante: dataMatricula.dv_rut_estudiante,
-      //   nombres_estudiante: dataMatricula.nombres_estudiante,
-      //   rut_titular: dataMatricula.rut_titular || "",
-      //   dv_rut_titular: dataMatricula.dv_rut_titular || "",
-      //   nombres_titular: dataMatricula.nombres_titular || "Asignar apoderado(a) titular !",
-      //   rut_suplente: dataMatricula.rut_suplente || "",
-      //   dv_rut_suplente: dataMatricula.dv_rut_suplente || "",
-        // nombres_suplente,
-      // });
+      // consumo de api para matricula según id
+      apiGet({ route: "matricula/getMatricula", param: idMatricula })
+        .then((response) => {
+          const data = response?.data;
+          formikMatriculaRef.current.setValues({
+            ...initialValues,
+            n_matricula: data.numero_matricula,
+            fecha_matricula: data.fecha_matricula,
+            grado: data.grado,
+            rut_estudiante: data.rut_estudiante,
+            dv_rut_estudiante: data.dv_rut_estudiante,
+            nombres_estudiante: data.nombres_estudiante,
+            rut_titular: data.rut_titular ? data.rut_titular : "",
+            dv_rut_titular: data.dv_rut_titular ? data.dv_rut_titular : "",
+            nombres_titular: data.nombres_titular
+              ? data.nombres_titular
+              : "Asignar apoderado(a) titular !",
+            rut_suplente: data.rut_suplente ? data.rut_suplente : "",
+            dv_rut_suplente: data.dv_rut_suplente ? data.dv_rut_suplente : "",
+            nombres_suplente: data.nombres_suplente
+              ? data.nombres_suplente
+              : "Asignar apoderado(a) suplente !",
+          });
 
-      // console.log(formikMatriculaRef.current.values.n_matricula);
+          // asignacion de los id´s
+          setId((prev) => ({
+            ...prev,
+            idEstudiante: data.idEstudiante,
+            idTitular: data.id_apoderado_titular
+              ? data.id_apoderado_titular
+              : "",
+            idSuplente: data.id_apoderado_suplente
+              ? data.id_apoderado_suplente
+              : "",
+          }));
+        })
+        .catch((error) => setError(error));
     }
   }, [stateModal]);
 
