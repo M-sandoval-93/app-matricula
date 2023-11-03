@@ -1,7 +1,8 @@
 import Swal from "sweetalert2";
 import apiGet from "../api/apiGet";
-import axios from "../api/axios";
+// import axios from "../api/axios";
 import useMatricula from "./useMatricula";
+import apiPost from "../api/apiPost";
 
 const useSubmitMatricula = ({ setError, id }) => {
   const { getDataMatricula, getCountMatricula } = useMatricula();
@@ -21,45 +22,29 @@ const useSubmitMatricula = ({ setError, id }) => {
       anio_lectivo: periodo,
     };
 
-    const URL = "/matricula/setMatricula";
-    const token = sessionStorage.getItem("authToken") ?? null;
-
+    
     try {
-      const response = await axios.post(URL, dataSet, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.status === 200) {
-        // actualización de los datos de matrícula
-        apiGet({ route: "matricula/getAll", param: periodo })
-          .then((response) => {
-            getDataMatricula(response.data);
-          })
-          .catch((error) => {
-            setError(error);
-            // setErrors({ values.rut_estudiante: "error" });
-          });
-
-        // actualización de las cantidades de altas y bajas
-        apiGet({ route: "matricula/getCount", param: periodo })
-          .then((response) => {
-            getCountMatricula(response.data);
-          })
-          .catch((error) => setError(error));
-
-        const nMatricula = response?.data?.numero_matricual;
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: `Número de matrícua asignado: ${nMatricula}`,
-        }).then(() => {
-          // onClose();
-          resetForm();
-        });
+      if (dataSet.id_matricula !== "") {
+        console.log("editar matricula"); // trabajando primero en la api de update matricula
+        return;
       }
+      const response = await apiPost({route: "matricula/setMatricula", object: dataSet});
+      const numeroMatricula = await response?.data?.numero_matricual
+
+      apiGet({route: "matricula/getAll", param: periodo})
+        .then((responseGet) => getDataMatricula(responseGet?.data));
+
+      apiGet({ route: "matricula/getCount", param: periodo })
+        .then((responseCount) => getCountMatricula(responseCount.data)),
+
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: `Número de matrícua asignado: ${numeroMatricula}`,
+      }).then(() => {
+        resetForm();
+      });
+        
     } catch (error) {
       setError(error);
     } finally {

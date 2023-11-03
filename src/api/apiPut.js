@@ -1,11 +1,11 @@
 import axios from "./axios";
 
-const apiPost = async ({ route, object }) => {
-  const DATA_URL = route;
+const apiPut = async ({ route, object }) => {
+//   const DATA_URL = param ? `/${route}/${param}` : `/${route}`;
+const DATA_URL = route;
   const token = sessionStorage.getItem("authToken") ?? null;
 
-  // trabajar en peticion post
-  const response = await axios.post(
+  const response = await axios.put(
     DATA_URL, object, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -16,4 +16,4 @@ const apiPost = async ({ route, object }) => {
   return response;
 };
 
-export default apiPost;
+export default apiPut;

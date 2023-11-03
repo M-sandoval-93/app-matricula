@@ -3,6 +3,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import useMatricula from "../../hooks/useMatricula";
 
+// funcion para convertir fecha texto a fecha date
 // const formatDate = (date) => {
 //   const part = date.split(" / ");
 //   return `${part[2]}-${part[1]}-${part[0]}`;
@@ -79,28 +80,6 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
                 stateModal: true,
                 newMatricula: false,
                 idMatricula: row.id
-                // dataMatricula: {
-                //   id_matricula: row.id,
-                //   numero_matricula: row.matricula,
-                //   fecha_matricula: formatDate(row.fecha_matricula),
-                //   grado: row.curso,
-                //   rut_estudiante: row.rut.slice(0, row.rut.length - 2),
-                //   dv_rut_estudiante: row.rut.slice(-1),
-                //   nombres_estudiante: row.nombres,
-                //   rut_titular: row.rut_titular
-                //     ? row.rut_titular.slice(0, row.rut_titular.length - 2)
-                //     : null,
-                //   dv_rut_titular: row.rut_titular
-                //     ? row.rut_titular.slice(-1)
-                //     : null,
-                //   nombres_titular: row.nombres_titular,
-                //   rut_suplente: row.rut_suplente
-                //     ? row.rut_suplente.slice(0, row.rut_suplente.length - 2)
-                //     : null,
-                //   dv_rut_suplente: row.rut_suplente
-                //     ? row.rut_suplente.slice(-1)
-                //     : null,
-                // },
               });
             }}
             disabled={bloqueo_periodo_actual}

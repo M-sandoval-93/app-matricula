@@ -27,7 +27,7 @@ const FormMatricula = ({
     idEstudiante: "",
     idTitular: "",
     idSuplente: "",
-    idMatricula: idMatricula,
+    idMatricula: "",
   });
 
   const { onSubmit } = useSubmitMatricula({ setError, id });
@@ -53,7 +53,7 @@ const FormMatricula = ({
             ...initialValues,
             n_matricula: data.numero_matricula,
             fecha_matricula: data.fecha_matricula,
-            grado: data.grado,
+            grado: data.grado.toString(),
             rut_estudiante: data.rut_estudiante,
             dv_rut_estudiante: data.dv_rut_estudiante,
             nombres_estudiante: data.nombres_estudiante,
@@ -79,6 +79,7 @@ const FormMatricula = ({
             idSuplente: data.id_apoderado_suplente
               ? data.id_apoderado_suplente
               : "",
+            idMatricula: idMatricula,
           }));
         })
         .catch((error) => setError(error));
