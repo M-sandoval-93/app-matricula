@@ -2,6 +2,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import EditIcon from "@mui/icons-material/Edit";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import useMatricula from "../../hooks/useMatricula";
+import apiGetDocument from "../../api/apiGetDocument";
 
 // funcion para convertir fecha texto a fecha date
 // const formatDate = (date) => {
@@ -9,8 +10,66 @@ import useMatricula from "../../hooks/useMatricula";
 //   return `${part[2]}-${part[1]}-${part[0]}`;
 // };
 
+// definir que parametro paso para descargar los sertificados
+// definir si paso el periodo junto con el numero de matricula
+// definir bien la consulta sql en la api, para obtener los datos del certificado
+
+// pasar el periodo para saber el año y/o periodo de descarga del documento
+
+const certificadoAlumnoRegular = ({ rut, updateStateMatricula }) => {
+  apiGetDocument({ route: "report/getCertificadoAlumnoRegular" })
+    .then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `cert_AlumnoRegular_${rut}.docx`);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    })
+    .catch((error) => updateStateMatricula({ error: error }));
+};
+
+const certificadoMatricula = ({ rut, updateStateMatricula }) => {
+  apiGetDocument({ route: "report/getCertificadoMatricula" })
+    .then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `cert_Matricula_${rut}.docx`);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    })
+    .catch((error) => updateStateMatricula({ error: error }));
+};
+
+const exportCertificado = ({
+  bloqueo_periodo_actual,
+  proceso_matricula,
+  rut,
+  updateStateMatricula,
+  periodo,
+}) => {
+  // if (bloqueo_periodo_actual) {
+  //   certificadoAlumnoRegular({ rut, updateStateMatricula });
+  //   return;
+  // }
+
+  // certificadoMatricula({ rut, updateStateMatricula });
+
+  if (bloqueo_periodo_actual || !proceso_matricula) {
+    // console.log(`certificado alumno regular periodo: ${periodo}`);
+    certificadoAlumnoRegular({ rut, updateStateMatricula });
+    return;
+  }
+
+  // console.log(`certificado matricula periodo: ${periodo}`);
+  certificadoMatricula({ rut, updateStateMatricula });
+};
+
 export const columnsMatricula = ({ updateStateMatricula }) => {
-  const { bloqueo_periodo_actual } = useMatricula();
+  const { bloqueo_periodo_actual, proceso_matricula, periodo } = useMatricula();
 
   return [
     {
@@ -41,8 +100,8 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
       width: "280px",
     },
     {
-      name: "Curso",
-      selector: (row) => row.curso,
+      name: "Grado",
+      selector: (row) => row.grado,
       width: "80px",
       center: true,
     },
@@ -69,6 +128,15 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
           <button
             className="rounded-full p-1 transition-all duration-300 text-blue-500 
             hover:bg-blue-500 hover:text-white shadow-sm"
+            onClick={() =>
+              exportCertificado({
+                bloqueo_periodo_actual,
+                proceso_matricula,
+                rut: row.rut.slice(0, row.rut.length - 2),
+                updateStateMatricula,
+                periodo,
+              })
+            }
           >
             <DownloadIcon sx={{ fontSize: 26 }} />
           </button>
@@ -79,7 +147,7 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
               updateStateMatricula({
                 stateModal: true,
                 newMatricula: false,
-                idMatricula: row.id
+                idMatricula: row.id,
               });
             }}
             disabled={bloqueo_periodo_actual}

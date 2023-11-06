@@ -27,14 +27,6 @@ const RutName = ({
   const getRut = () => {
     setRut(values[rut]);
     showForm();
-    // if (
-    //   values[name] === "Sin registro de estudiante !" ||
-    //   values[name] === "Sin registro de apoderado(a) !"
-    // ) {
-    //   console.log("Nuevo registro");
-    // } else {
-    //   console.log("Editar registro");
-    // }
   };
 
   return (

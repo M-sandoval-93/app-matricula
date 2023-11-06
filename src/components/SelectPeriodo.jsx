@@ -5,7 +5,13 @@ import useMatricula from "../hooks/useMatricula";
 
 const SelectPeriodo = () => {
   const { getPeriodo, periodo, proceso_matricula } = useMatricula();
-  const [currentYear, setCurrentYear] = useState(periodo); // pasar a variable de sesion
+  const [currentYear, setCurrentYear] = useState(periodo);
+
+  useEffect(() => {
+    if (!proceso_matricula) {
+      getPeriodo(getCurrentYear());
+    }
+  }, []);
 
   return (
     <section

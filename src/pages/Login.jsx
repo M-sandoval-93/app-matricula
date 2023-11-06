@@ -7,8 +7,8 @@ import FormLogin from "../components/FormLogin";
 
 const Login = () => {
   return (
-    <div className="relative bg-gradient-to-tr from-cyan-200 to-blue-300 w-screen min-h-screen p-10 flex items-center justify-center overflow-y-auto">
-      <div className="relative bg-white w-full h-full rounded-xl flex shadow-xl max-w-6xl min-h-[42rem] max-h-[45rem] p-4 lg:p-8 gap-2 lg:gap-4 opacity-95">
+    <div className="relative bg-gradient-to-tr from-cyan-200 to-blue-300 w-screen min-h-screen flex items-center justify-center overflow-y-auto">
+      <div className="relative bg-white w-full h-full rounded-xl flex shadow-xl max-w-6xl min-h-[40rem] max-h-[45rem] m-10 p-4 gap-2 lg:gap-4 opacity-95">
         <div className="relative w-full md:w-1/2 lg:w-3/5 sm:px-12">
           <div className="w-full flex justify-center items-center">
             <img

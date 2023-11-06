@@ -30,7 +30,7 @@ const FormMatricula = ({
     idMatricula: "",
   });
 
-  const { onSubmit } = useSubmitMatricula({ setError, id });
+  const { onSubmit } = useSubmitMatricula({ setError, id, onCloseModal });
   const initialValues = initialValuesMatricula();
   const validationSchema = validationMatricula();
   const formikMatriculaRef = useRef();
@@ -72,7 +72,7 @@ const FormMatricula = ({
           // asignacion de los id´s
           setId((prev) => ({
             ...prev,
-            idEstudiante: data.idEstudiante,
+            idEstudiante: data.id_estudiante,
             idTitular: data.id_apoderado_titular
               ? data.id_apoderado_titular
               : "",
@@ -119,12 +119,11 @@ const FormMatricula = ({
                   name="n_matricula"
                   id="n_matricula"
                   autoComplete="off"
-                  disabled={newMatricula}
+                  disabled
                   value={values.n_matricula}
                   onChange={(val) => handleChange(numberFormat(val))}
                   onBlur={handleBlur}
-                  className={`border outline-none rounded-md p-2 text-center w-full
-                    ${newMatricula ? "bg-gray-200" : "bg-transparent"}`}
+                  className={`border outline-none rounded-md p-2 text-center w-full bg-gray-200`}
                 />
                 <ErrorMessageInput
                   touched={touched}
@@ -144,8 +143,10 @@ const FormMatricula = ({
                   value={values.grado}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  disabled={!newMatricula}
                   className={`relative border outline-none rounded-md p-2 text-start w-full
-                  xs:min-w-[8rem] xs:max-w-[8rem] bg-transparent appearance-none hover:cursor-pointer
+                  xs:min-w-[8rem] xs:max-w-[8rem] appearance-none hover:cursor-pointer
+                  ${!newMatricula ? "bg-gray-200" : "bg-transparent"}
                   ${touched.grado && errors.grado && "border-red-500"}
                   ${touched.grado && !errors.grado && "border-green-500"}`}
                 >

@@ -81,6 +81,7 @@ export const getNameStudent = ({
         .catch((error) => setError(error));
   } else {
     setFieldValue(inputDv, "");
+    setId((prev) => ({ ...prev, [property]: "" }));
     if (inputNombre) setFieldValue(inputNombre, "");
   }
 
