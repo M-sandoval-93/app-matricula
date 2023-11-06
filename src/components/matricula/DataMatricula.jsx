@@ -10,14 +10,10 @@ import apiGetDocument from "../../api/apiGetDocument";
 //   return `${part[2]}-${part[1]}-${part[0]}`;
 // };
 
-// definir que parametro paso para descargar los sertificados
-// definir si paso el periodo junto con el numero de matricula
-// definir bien la consulta sql en la api, para obtener los datos del certificado
 
-// pasar el periodo para saber el año y/o periodo de descarga del documento
 
-const certificadoAlumnoRegular = ({ rut, updateStateMatricula }) => {
-  apiGetDocument({ route: "report/getCertificadoAlumnoRegular" })
+const certificadoAlumnoRegular = ({ rut, updateStateMatricula, periodo }) => {
+  apiGetDocument({ route: "report/getCertificadoAlumnoRegular", param: `${rut}/${periodo}` })
     .then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
@@ -30,8 +26,9 @@ const certificadoAlumnoRegular = ({ rut, updateStateMatricula }) => {
     .catch((error) => updateStateMatricula({ error: error }));
 };
 
-const certificadoMatricula = ({ rut, updateStateMatricula }) => {
-  apiGetDocument({ route: "report/getCertificadoMatricula" })
+
+const certificadoMatricula = ({ rut, updateStateMatricula, periodo }) => {
+  apiGetDocument({ route: "report/getCertificadoMatricula", param: `${rut}/${periodo}` })
     .then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
@@ -44,6 +41,7 @@ const certificadoMatricula = ({ rut, updateStateMatricula }) => {
     .catch((error) => updateStateMatricula({ error: error }));
 };
 
+
 const exportCertificado = ({
   bloqueo_periodo_actual,
   proceso_matricula,
@@ -51,22 +49,15 @@ const exportCertificado = ({
   updateStateMatricula,
   periodo,
 }) => {
-  // if (bloqueo_periodo_actual) {
-  //   certificadoAlumnoRegular({ rut, updateStateMatricula });
-  //   return;
-  // }
-
-  // certificadoMatricula({ rut, updateStateMatricula });
 
   if (bloqueo_periodo_actual || !proceso_matricula) {
-    // console.log(`certificado alumno regular periodo: ${periodo}`);
-    certificadoAlumnoRegular({ rut, updateStateMatricula });
+    certificadoAlumnoRegular({ rut, updateStateMatricula, periodo });
     return;
   }
 
-  // console.log(`certificado matricula periodo: ${periodo}`);
-  certificadoMatricula({ rut, updateStateMatricula });
+  certificadoMatricula({ rut, updateStateMatricula, periodo });
 };
+
 
 export const columnsMatricula = ({ updateStateMatricula }) => {
   const { bloqueo_periodo_actual, proceso_matricula, periodo } = useMatricula();
