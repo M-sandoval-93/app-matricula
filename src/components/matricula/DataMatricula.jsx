@@ -141,13 +141,7 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
                 idMatricula: row.id,
               });
             }}
-            disabled={bloqueo_periodo_actual}
-            className={`rounded-full p-1 transition-all duration-300 shadow-sm hover:text-white
-            ${
-              bloqueo_periodo_actual
-                ? "text-gray-500 hover:bg-gray-700"
-                : "text-green-500 hover:bg-green-500"
-            }`}
+            className={`rounded-full p-1 transition-all duration-300 shadow-sm hover:text-white text-green-500 hover:bg-green-500`}
           >
             <EditIcon sx={{ fontSize: 26 }} />
           </button>
@@ -155,10 +149,10 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
           {/* boton para suspender una matricula */}
           <button
             onClick={() => console.log("suspender matricula")}
-            disabled={bloqueo_periodo_actual}
+            disabled={!bloqueo_periodo_actual && proceso_matricula}
             className={`rounded-full p-1 transition-all duration-300 shadow-sm hover:text-white
             ${
-              bloqueo_periodo_actual
+              !bloqueo_periodo_actual && proceso_matricula
                 ? "text-gray-500 hover:bg-gray-700"
                 : "text-red-500 hover:bg-red-500"
             }`}

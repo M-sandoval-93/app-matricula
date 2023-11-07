@@ -1,7 +1,7 @@
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 import { Formik } from "formik";
-import { getNameStudent, numberFormat } from "../../utils/funciones";
+import { numberFormat } from "../../utils/funciones";
 import { useEffect, useRef, useState } from "react";
 import ErrorHandler from "../../components/ErrorHandler";
 import RutName from "../formComponents/RutName";
@@ -11,6 +11,7 @@ import ErrorMessageInput from "../formComponents/ErrorMessageInput";
 import validationMatricula from "../../validation/validationMatricula";
 import { initialValuesMatricula } from "../../utils/initialValues";
 import apiGet from "../../api/apiGet";
+// import useMatricula from "../../hooks/useMatricula";
 
 const FormMatricula = ({
   stateModal,
@@ -221,7 +222,7 @@ const FormMatricula = ({
               handleBlur={handleBlur}
               setFieldValue={setFieldValue}
               setId={setId}
-              route={"student/getName"}
+              route={"student/getNameStudent"}
               property={"idEstudiante"}
               type={"estudiante"}
               showForm={setFormStudent}

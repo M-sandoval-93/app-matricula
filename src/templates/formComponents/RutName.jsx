@@ -1,6 +1,6 @@
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
-import { getNameStudent, stringFormat } from "../../utils/funciones";
+import { getName, stringFormat } from "../../utils/funciones";
 import useMatricula from "../../hooks/useMatricula";
 
 const RutName = ({
@@ -23,7 +23,7 @@ const RutName = ({
   showForm,
   setRut,
 }) => {
-  const { proceso_matricula } = useMatricula();
+  const { proceso_matricula, periodo } = useMatricula();
   const getRut = () => {
     setRut(values[rut]);
     showForm();
@@ -44,7 +44,7 @@ const RutName = ({
             value={values[rut]}
             onChange={(val) =>
               handleChange(
-                getNameStudent({
+                getName({
                   val: val,
                   setFieldValue: setFieldValue,
                   inputDv: dvRut,
@@ -53,6 +53,7 @@ const RutName = ({
                   route: route,
                   setId: setId,
                   property: property,
+                  periodo: periodo,
                 })
               )
             }

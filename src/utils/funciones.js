@@ -54,23 +54,25 @@ export const validateRut = (rut, dv) => {
 
 // funcion para manejar el rut del estudiante
 // function tomanage the student`s rut
-export const getNameStudent = ({
+export const getName = ({
   val,
   setFieldValue,
   inputDv,
   inputNombre,
-  setError,
+  setError, // ver si lo elimino de la funcion ??
   route,
   setId,
   property,
+  periodo,
 }) => {
   const data = val.target.value;
+  const param = route === "student/getNameStudent" ? `${data}/${periodo}` : `${data}`;
 
   if (data.length >= 7 && data.length <= 9) {
     setFieldValue(inputDv, calculateCheckDigit(data));
 
     if (inputNombre)
-      getStudent(data, route)
+      getStudent(param, route)
         .then(({ data }) => {
           const id = data?.id ? data?.id : null;
           const name = data?.message ? data?.message : data?.nombres;
@@ -78,7 +80,11 @@ export const getNameStudent = ({
           setFieldValue(inputNombre, name);
           setId((prev) => ({ ...prev, [property]: id }));
         })
-        .catch((error) => setError(error));
+        // .catch((error) => setError(error));
+        .catch((error) => setFieldValue(
+          inputNombre, error?.response 
+            ? error?.response?.data?.message 
+            : error?.message));
   } else {
     setFieldValue(inputDv, "");
     setId((prev) => ({ ...prev, [property]: "" }));
@@ -90,8 +96,8 @@ export const getNameStudent = ({
 
 // function para obtener el nombre del estudiante
 // function to get student name
-export const getStudent = async (rut, route) => {
-  const response = await apiGet({ route: route, param: rut });
+export const getStudent = async (param, route) => {
+  const response = await apiGet({ route: route, param: param });
   const data = response?.data;
   return { data };
 };
