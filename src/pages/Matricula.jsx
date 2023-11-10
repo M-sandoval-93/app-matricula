@@ -4,7 +4,6 @@ import HeaderMatricula from "../components/matricula/HeaderMatricula";
 import ErrorHandler from "../components/ErrorHandler";
 import { MatriculaProvider } from "../context/MatriculaProvider";
 import SelectPeriodo from "../components/SelectPeriodo";
-import { useEffect } from "react";
 
 const Matricula = () => {
   const { response, error } = useLoaderData();
@@ -27,3 +26,4 @@ const Matricula = () => {
 };
 
 export default Matricula;
+

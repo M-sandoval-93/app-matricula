@@ -6,7 +6,7 @@ export const initialValuesMatricula = () => {
     fecha_matricula: getCurrentDate(),
     rut_estudiante: "",
     dv_rut_estudiante: "",
-    nombres_estudiante: "",
+    nombres_estudiante: "Asignar estudiante !",
     grado: "",
     rut_titular: "",
     dv_rut_titular: "",

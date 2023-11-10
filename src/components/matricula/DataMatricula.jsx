@@ -3,6 +3,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import useMatricula from "../../hooks/useMatricula";
 import apiGetDocument from "../../api/apiGetDocument";
+import { FaFileDownload } from "react-icons/fa";
+import { MdEditSquare } from "react-icons/md";
+import { ImExit } from "react-icons/im";
 
 // funcion para convertir fecha texto a fecha date
 // const formatDate = (date) => {
@@ -118,7 +121,7 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
           {/* boton para descargar certificado */}
           <button
             className="rounded-full p-1 transition-all duration-300 text-blue-500 
-            hover:bg-blue-500 hover:text-white shadow-sm"
+            hover:bg-blue-500 hover:text-white shadow-sm w-9 h-9 flex items-center justify-center"
             onClick={() =>
               exportCertificado({
                 bloqueo_periodo_actual,
@@ -129,7 +132,7 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
               })
             }
           >
-            <DownloadIcon sx={{ fontSize: 26 }} />
+            <FaFileDownload size={24} />
           </button>
 
           {/* boton para editar una matricula */}
@@ -141,9 +144,10 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
                 idMatricula: row.id,
               });
             }}
-            className={`rounded-full p-1 transition-all duration-300 shadow-sm hover:text-white text-green-500 hover:bg-green-500`}
+            className={`rounded-full p-1 transition-all duration-300 shadow-sm hover:text-white text-green-500 
+              hover:bg-green-500 w-9 h-9 flex items-center justify-center`}
           >
-            <EditIcon sx={{ fontSize: 26 }} />
+            <MdEditSquare size={24} />
           </button>
 
           {/* boton para suspender una matricula */}
@@ -151,13 +155,14 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
             onClick={() => console.log("suspender matricula")}
             disabled={!bloqueo_periodo_actual && proceso_matricula}
             className={`rounded-full p-1 transition-all duration-300 shadow-sm hover:text-white
-            ${
-              !bloqueo_periodo_actual && proceso_matricula
-                ? "text-gray-500 hover:bg-gray-700"
-                : "text-red-500 hover:bg-red-500"
-            }`}
+              w-9 h-9 flex items-center justify-center
+              ${
+                !bloqueo_periodo_actual && proceso_matricula
+                  ? "text-gray-500 hover:bg-gray-700"
+                  : "text-red-500 hover:bg-red-500"
+              }`}
           >
-            <ExitToAppIcon sx={{ fontSize: 26 }} />
+            <ImExit size={24} />
           </button>
         </div>
       ),

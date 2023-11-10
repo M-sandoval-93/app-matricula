@@ -26,7 +26,11 @@ const validationMatricula = () => {
       .trim()
       .notOneOf(
         ["Sin registro de estudiante !"],
-        "El rut no se encuentra ingresado"
+        "El rut no se encuentra ingresado", 
+      )
+      .notOneOf(
+        ["El rut no esta en lista SAE !"],
+        "El estudiante no puede ser matriculado"
       ),
 
     grado: Yup.string()

@@ -4,24 +4,24 @@ import { getName, stringFormat } from "../../utils/funciones";
 import useMatricula from "../../hooks/useMatricula";
 
 const RutName = ({
-  labelRut,
-  labelName,
-  rut,
-  dvRut,
-  name,
-  values,
-  handleChange,
-  touched,
-  errors,
-  setError,
-  handleBlur,
-  setFieldValue,
-  setId,
-  route,
-  property,
-  type,
-  showForm,
-  setRut,
+  labelRut,       // label del input rut
+  labelName,      // label del input name
+  rut,            // id del input rut
+  dvRut,          // id del input dv_rut
+  name,           // id del input nombre
+  values,         // initial values de formik
+  handleChange,   // evento change de formik
+  touched,        // evento touch de formik
+  errors,         // Errors de validacion con Yup
+  setError,       // setear los errores de los input
+  handleBlur,     // evento blur de formik
+  setFieldValue,  // setear el valor de los input con formik
+  setId,          // Setear los id de los estudiantes y/o apoderados
+  route,          // ruta donde hacer la peticion de la api
+  property,       // id a setear en la llamada a la api
+  type,           // indica el tipo de dato que se trabajara; estudiante, titular, suplente
+  showForm,       // para lanzar el modal de estudiante
+  setRut,         // para setear el rut del estudiante en el modal estudiante
 }) => {
   const { proceso_matricula, periodo } = useMatricula();
   const getRut = () => {
@@ -32,7 +32,7 @@ const RutName = ({
   return (
     <section className="relative flex flex-col md:flex-row gap-4 items-center">
       <article className="relative flex flex-col gap-y-2 w-full md:w-64">
-        <label className="text-blue-600 font-semibold" htmlFor="rut_estudiante">
+        <label className="text-blue-600 font-semibold" htmlFor={`${rut}`}>
           {labelRut}
         </label>
         <div className="flex items-center gap-2">

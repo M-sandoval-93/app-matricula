@@ -1,8 +1,9 @@
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
-import SimCardDownloadIcon from '@mui/icons-material/SimCardDownload';
-// import { getCurrentYear } from "../../utils/funciones";
+import { BsFileEarmarkExcelFill } from "react-icons/bs";
+import { FaUserPlus } from "react-icons/fa";
+
+
 import useMatricula from "../../hooks/useMatricula";
 
 const HeaderTableMatricula = ({ filter, updateStateMatricula }) => {
@@ -28,13 +29,13 @@ const HeaderTableMatricula = ({ filter, updateStateMatricula }) => {
         disabled={bloqueo_periodo_actual}
         onClick={showModalMatricula}
       >
-        <OpenInNewIcon sx={{ fontSize: 30 }} />
+        <FaUserPlus size={30} />
       </button>
 
       <div className="flex gap-3">
         <button className="px-2 py-1 border rounded-md hover:shadow-md hover:scale-105
           text-green-700 border-green-700 hover:shadow-green-900 transition-all duration-200">
-          <SimCardDownloadIcon sx={{ fontSize: 30 }} />
+          <BsFileEarmarkExcelFill size={30} />
         </button>
 
         <div className="relative flex items-center justify-end gap-2">
