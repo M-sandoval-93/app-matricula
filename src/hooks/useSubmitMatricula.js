@@ -7,38 +7,37 @@ import apiPut from "../api/apiPut";
 const useSubmitMatricula = ({ setError, id, onCloseModal }) => {
   const { getDataMatricula, getCountMatricula } = useMatricula();
   const { periodo } = useMatricula();
+  const {idEstudiante, idTitular, idSuplente, idMatricula} = id;
   
   const onSubmit = async (
     values,
-    { setSubmitting, setErrors, errors, resetForm } // ver como usar setErrors y errors
+    { setSubmitting, setErrors, errors, resetForm } // ver como usar setErrors y errors y si uso resetForm
   ) => {
     setSubmitting(true);
     const dataSet = {
-      id_matricula: id.idMatricula,
-      id_estudiante: id.idEstudiante,
-      id_titular: id.idTitular,
-      id_suplente: id.idSuplente,
-      grado: parseInt(values.grado.trim()),
+      id_matricula: idMatricula,
+      id_estudiante: idEstudiante,
+      id_titular: idTitular,
+      id_suplente: idSuplente,
+      grado: parseInt(values.grado.trim(), 10),
       fecha_matricula: values.fecha_matricula,
       anio_lectivo: periodo,
     };
 
     try {
       // condicion para la edicion de una matrícula
-      if (dataSet.id_matricula !== "") {
-        apiPut({ route: "matricula/updateMatricula", object: dataSet }).then(
+      if (idMatricula !== "") {
+        await apiPut({ route: "matricula/updateMatricula", object: dataSet }).then(
           (res) => {
             Swal.fire({
               icon: "success",
               title: "Success",
-              text: "Matricula actualizada !",
+              text: `Matricula actualizada !`,
             }).then(() => {
               onCloseModal();
-              resetForm();
             });
           }
         );
-
         return;
       }
 
@@ -62,11 +61,11 @@ const useSubmitMatricula = ({ setError, id, onCloseModal }) => {
           icon: "success",
           title: "Success",
           text: `Número de matrícua asignado: ${numeroMatricula}`,
-        }).then(() => {
-          resetForm();
         });
+
     } catch (error) {
       setError(error);
+
     } finally {
       setSubmitting(false);
     }

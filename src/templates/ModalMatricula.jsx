@@ -4,12 +4,10 @@ import FormMatricula from "./forms/FormMatricula";
 import FormStudent from "./forms/FormStudent";
 import FormRepresentative from "./forms/FormRepresentative";
 
-const ModalMatricula = ({
-  stateModal, // Estado de apertura
-  onCloseModal, // metodo de cierre y seteo de estados
-  newMatricula, // control de new / edit matricula
-  idMatricula, // id de matricula a editar
-}) => {
+const ModalMatricula = ({ stateMatricula, onCloseModal }) => {
+  const {stateModal, newMatricula, idMatricula} = stateMatricula; // estados para modulo matricula
+
+  // estados para trabajar con el modal matricula
   const [modalMatricula, setModalMatricula] = useState({
     rut: "", // rut para nuevo estudiante/apoderado
     formMatricula: true, // estado del formulario de matricula
@@ -68,6 +66,7 @@ const ModalMatricula = ({
   useEffect(() => {
     if (stateModal) {
       updateModalMatricula({
+        rut: "",
         formMatricula: true,
         formStudent: false,
         formRepresentative: false,
@@ -92,28 +91,26 @@ const ModalMatricula = ({
       >
         <FormMatricula
           stateModal={stateModal}
-          onCloseModal={onCloseModal}
           newMatricula={newMatricula}
           idMatricula={idMatricula}
-          // formMatricula={modal.formMatricula}
-          // setFormMatricula={setFormMatricula}
-          // setFormStudent={setFormStudent}
-          // setFormRepresentative={setFormRepresentative}
-          // setRut={setRut}
-          // setEditSubForm={setEditSubForm}
-          // // modalNewMatricula={modalNewMatricula}
-          // newMatricula={newMatricula}
+          onCloseModal={onCloseModal}
+          updateModalMatricula={updateModalMatricula}
+          stateModalMatricula={modalMatricula.formMatricula}
         />
       </section>
 
-      {/* <section className={`${modal.formStudent ? "block" : "hidden"} h-full`}>
+      <section className={`${modalMatricula.formStudent ? "block" : "hidden"} h-full`}>
         <FormStudent
-          setFormMatricula={setFormMatricula}
-          rut={rut}
-          editSubForm={modal.editSubForm}
-          stateModalStudent={modal.formStudent}
+          updateModalMatricula={updateModalMatricula}
+          rut={modalMatricula.rut}
+          editSubForm={modalMatricula.editSubForm}
+          stateModalStudent={modalMatricula.formStudent}
+          // setFormMatricula={setFormMatricula}
+          // rut={rut}
+          // editSubForm={modal.editSubForm}
+          // stateModalStudent={modal.formStudent}
         />
-      </section> */}
+      </section>
 
       {/* <section
         className={`${modal.formRerpesentative ? "block" : "hidden"} h-full`}

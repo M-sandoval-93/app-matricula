@@ -12,8 +12,7 @@ import useSubmitStudent from "../../hooks/useSubmitStudent";
 import ErrorMessageInput from "../formComponents/ErrorMessageInput";
 
 const FormStudent = ({
-  setFormMatricula,
-  open,
+  updateModalMatricula,
   rut,
   editSubForm,
   stateModalStudent,
@@ -22,7 +21,8 @@ const FormStudent = ({
   const formikStudentRef = useRef();
   const initialValues = initialValuesStudent();
   const validationSchema = validationStudent();
-  const { onSubmit } = useSubmitStudent();
+  const { onSubmit } = useSubmitStudent({setError});
+
 
   // pasar los valores de la consulta del estudiante hacia la api
   // para condicion para cuando tengo que editarlo desde matricula
@@ -93,7 +93,8 @@ const FormStudent = ({
                     id="dv_rut_estudiante"
                     autoComplete="off"
                     disabled
-                    value={values.dv_rut_estudiante}
+                    // value={values.dv_rut_estudiante}
+                    value={calculateCheckDigit(values.rut_estudiante)}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     className={`border outline-none rounded-md p-2 text-center w-16 xs:w-12 bg-gray-200`}
@@ -260,7 +261,16 @@ const FormStudent = ({
             </section>
           </main>
 
-          <FooterForm onClose={setFormMatricula} isSubmitting={isSubmitting} />
+          <FooterForm 
+            isSubmitting={isSubmitting} 
+            onCloseModal={ () => {
+              updateModalMatricula({
+                rut: "",
+                formMatricula: true,
+                formStudent: false,
+              });
+            }} 
+          />
         </form>
       )}
     </Formik>

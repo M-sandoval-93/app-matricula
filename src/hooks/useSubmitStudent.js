@@ -1,28 +1,39 @@
-// import Swal from "sweetalert2";
+import Swal from "sweetalert2";
+import axios from "../api/axios";
 // import apiGet from "../api/apiGet";
-// import axios from "../api/axios";
 // import useMatricula from "./useMatricula";
 
-const useSubmitStudent = () => {
+const useSubmitStudent = ({setError}) => {
 //   const { getDataMatricula, getCountMatricula } = useMatricula();
 //   const { periodo } = useMatricula();
   const onSubmit = async (
     values,
     { setSubmitting, setErrors, errors, resetForm } // ver como usar setErrors y errors
   ) => {
-    console.log(values);
-    // setSubmitting(true);
-    // const dataSet = {
-    //   id_estudiante: id.idEstudiante,
-    //   id_titular: id.idTitular,
-    //   id_suplente: id.idSuplente,
-    //   grado: parseInt(values.grado.trim()),
-    //   fecha_matricula: values.fecha_matricula,
-    //   anio_lectivo: periodo, // asignación manual, asignar a una variable global en configuracion
-    // };
+    // console.log(values);
+    setSubmitting(true);
+    const student = {
+      id: values?.id_estudiante,
+      rut: values?.rut_estudiante,
+      dv_rut: values?.dv_rut_estudiante,
+      paterno: values?.apellido_paterno.trim(),
+      materno: values?.apellido_materno.trim(),
+      nombres: values.nombres_estudiante.trim(),
+      nombre_social: values?.nombre_social.trim(),
+      fecha_nacimiento: values.fecha_nacimiento,
+      sexo: values?.sexo,
+    }
 
-    // const URL = "/matricula/setMatricula";
-    // const token = sessionStorage.getItem("authToken") ?? null;
+    try {
+
+    } catch (error) {
+      setError(error);
+
+    } finally {
+      setSubmitting(false);
+    }
+
+
 
     // try {
     //   const response = await axios.post(URL, dataSet, {

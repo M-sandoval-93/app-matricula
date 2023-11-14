@@ -1,7 +1,5 @@
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
-import { MdAdd } from "react-icons/md";
-import { RiEdit2Fill } from "react-icons/ri";
 import { getName, stringFormat } from "../../utils/funciones";
 import useMatricula from "../../hooks/useMatricula";
 import ErrorMessageInput from "./ErrorMessageInput";
@@ -25,7 +23,8 @@ const RutName = ({
   type, // indica el tipo de dato que se trabajara; estudiante, titular, suplente
   updateModalMatricula, // actualizar estados del modal matricula
 }) => {
-  const { periodo } = useMatricula();
+  const { proceso_matricula, periodo } = useMatricula();
+
 
   // funcion para obtener el rut para un nuevo ingreso o edicion de estudiante/apoderado
   const getRut = () => {
@@ -35,14 +34,18 @@ const RutName = ({
       updateModalMatricula({
         formMatricula: false,
         formStudent: true,
+        formRepresentative: false,
+        editSubForm: false, // ver como agregar la opcion de new o edit
       });
-
     } else {
       updateModalMatricula({
         formMatricula: false,
+        formStudent: false,
         formRepresentative: true,
+        editSubForm: false, // ver como agregar la opcion de new o edit
       });
     }
+
   };
 
   return (
@@ -106,30 +109,34 @@ const RutName = ({
             <button
               type="button"
               onClick={getRut}
-              className={`flex items-center justify-center p-1 rounded-full text-white
+              className={`flex items-center justify-center p-1 rounded-full text-white 
                   transition-[opacity,background-color] duration-300
-                  ${ 
+                  ${
                     values[name] === "" ||
-                    values[name] === "Asignar estudiante !" ||
                     values[name] === "Asignar estudiante !" ||
                     values[name] === "Asignar apoderado(a) titular !" ||
                     values[name] === "Asignar apoderado(a) suplente !" ||
                     values[name] === "El rut no esta en lista SAE !" ||
-                    values[name] === `Sin registro de ${type}`
-                    ? "opacity-0 invisible"
-                    : "opacity-100 visible"
+                    (values[name] === `Sin registro de ${type} !` && proceso_matricula)
+                      ? "opacity-0 invisible"
+                      : "opacity-100 visible"
                   }
-
                   ${
-                    values[name] === `Sin registro de ${type} !`
-                    ? "bg-green-500"
-                    : "bg-blue-500"
+                    values[name] === `Sin registro de ${type} !` &&
+                    !proceso_matricula
+                      ? "bg-green-500"
+                      : "bg-blue-500"
                   }`}
             >
               {
-                values[name] === `Sin registro de ${type} !`
-                ? (<MdAdd size={22} />)
-                : (<RiEdit2Fill size={22} />)
+                values[name] === `Sin registro de ${type} !` && !proceso_matricula 
+                ? ( <AddIcon sx={{ fontSize: 22 }} />) 
+                : ( <EditIcon sx={{ fontSize: 22 }} />)
+              }
+
+              {
+                values[name] === `Sin registro de ${type} !` && type !== "estudiante" && <AddIcon sx={{ fontSize: 22 }} />
+                
               }
             </button>
           </div>

@@ -129,7 +129,9 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
               })
             }
           >
-            <FaFileDownload size={26} />
+            <span className="flex justify-center items-center">
+              <FaFileDownload size={26} />
+            </span>
           </button>
 
           {/* boton para editar una matricula */}
@@ -144,7 +146,9 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
             className={`rounded-full p-1 transition-all duration-300 shadow-sm hover:text-white text-green-500 
               hover:bg-green-500 w-10 h-10 flex items-center justify-center`}
           >
-            <MdEditSquare size={26} />
+            <span className="flex justify-center items-center">
+              <MdEditSquare size={26} />
+            </span>
           </button>
 
           {/* boton para suspender una matricula */}
@@ -159,7 +163,9 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
                   : "text-red-500 hover:bg-red-500"
               }`}
           >
-            <ImExit size={26} />
+            <span className="flex justify-center items-center">
+              <ImExit size={26} />
+            </span>
           </button>
         </div>
       ),

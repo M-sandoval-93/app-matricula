@@ -21,12 +21,12 @@ const TableMatricula = () => {
 
   // estado para lsa variables del modulo de matricula
   const [stateMatricula, setStateMatricula] = useState({
-    filter: "",
-    loading: false,
-    stateModal: false,
-    newMatricula: true,
-    idMatricula: "",
-    error: null,
+    filter: "", // datos para el filtro de la tabla
+    loading: false, // estado de la carga de datos
+    stateModal: false,  // estado del modal de matricula
+    newMatricula: true, // estado para el ingreso de una matricula agregar/editar
+    idMatricula: "", // id para modificar una matricula
+    error: null, // estado para el control de errores
   });
 
   // actualizador del estado de las variables del modulo de matricula
@@ -93,12 +93,11 @@ const TableMatricula = () => {
 
       {/* Modal multiuso para matricula */}
       <ModalMatricula
-        stateModal={stateMatricula.stateModal} // Estado del modal
+        stateMatricula={stateMatricula} // estado del modulo de matricula
         onCloseModal={onCloseModal} // metodo para setear modal al cerrar
-        newMatricula={stateMatricula.newMatricula} // Estado para controlar new/edit
-        idMatricula={stateMatricula.idMatricula} // estado para el id a editar
       />
 
+      {/* componente para manejar los errores */}
       <ErrorHandler error={stateMatricula.error} />
     </main>
   );

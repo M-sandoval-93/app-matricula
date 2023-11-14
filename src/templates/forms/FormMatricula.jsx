@@ -15,15 +15,15 @@ import apiGet from "../../api/apiGet";
 
 const FormMatricula = ({
   stateModal,
-  onCloseModal,
   newMatricula,
   idMatricula,
-
-  setFormStudent,
-  setFormRepresentative,
-  setRut,
+  onCloseModal,
+  updateModalMatricula,
+  stateModalMatricula,
 }) => {
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null); // estado para e manejo de errores
+
+  // estado para el manejo de los id
   const [id, setId] = useState({
     idEstudiante: "",
     idTitular: "",
@@ -31,13 +31,14 @@ const FormMatricula = ({
     idMatricula: "",
   });
 
-  const { onSubmit } = useSubmitMatricula({ setError, id, onCloseModal });
-  const initialValues = initialValuesMatricula();
-  const validationSchema = validationMatricula();
-  const formikMatriculaRef = useRef();
+  const { onSubmit } = useSubmitMatricula({ setError, id, onCloseModal }); //obtencion del evento submit del formulario
+  const initialValues = initialValuesMatricula(); // obtencion de los valores iniciales del formulario
+  const validationSchema = validationMatricula(); // obtencion de las validaciones del formulario
+  const formikMatriculaRef = useRef(); // referencia del formulario
 
   // Efecto para limpiar formulario de matricula y asignar valores
   useEffect(() => {
+    // setear formularios y sus campos
     if (!stateModal) {
       const handleReset = formikMatriculaRef.current.handleReset;
       setTimeout(() => {
@@ -45,8 +46,8 @@ const FormMatricula = ({
       }, 100);
     }
 
+    // consumo de api para matricula según id
     if (!newMatricula) {
-      // consumo de api para matricula según id
       apiGet({ route: "matricula/getMatricula", param: idMatricula })
         .then((response) => {
           const data = response?.data;
@@ -85,7 +86,8 @@ const FormMatricula = ({
         })
         .catch((error) => setError(error));
     }
-  }, [stateModal]);
+
+  }, [stateModal, stateModalMatricula]);
 
   return (
     <Formik
@@ -225,18 +227,7 @@ const FormMatricula = ({
               route={"student/getNameStudent"}
               property={"idEstudiante"}
               type={"estudiante"}
-              showForm={setFormStudent}
-              setRut={setRut}
-            />
-            <ErrorMessageInput
-              touched={touched}
-              errors={errors}
-              value={"rut_estudiante"}
-            />
-            <ErrorMessageInput
-              touched={touched}
-              errors={errors}
-              value={"nombres_estudiante"}
+              updateModalMatricula={updateModalMatricula}
             />
 
             {/* linea divisoria */}
@@ -260,18 +251,7 @@ const FormMatricula = ({
               route={"representative/getName"}
               property={"idTitular"}
               type={"apoderado(a)"}
-              showForm={setFormRepresentative}
-              setRut={setRut}
-            />
-            <ErrorMessageInput
-              touched={touched}
-              errors={errors}
-              value={"rut_titular"}
-            />
-            <ErrorMessageInput
-              touched={touched}
-              errors={errors}
-              value={"nombres_titular"}
+              updateModalMatricula={updateModalMatricula}
             />
 
             {/* apoderado suplente */}
@@ -292,18 +272,7 @@ const FormMatricula = ({
               route={"representative/getName"}
               property={"idSuplente"}
               type={"apoderado(a)"}
-              showForm={setFormRepresentative}
-              setRut={setRut}
-            />
-            <ErrorMessageInput
-              touched={touched}
-              errors={errors}
-              value={"rut_suplente"}
-            />
-            <ErrorMessageInput
-              touched={touched}
-              errors={errors}
-              value={"nombres_suplente"}
+              updateModalMatricula={updateModalMatricula}
             />
 
             {/* linea divisoria */}
