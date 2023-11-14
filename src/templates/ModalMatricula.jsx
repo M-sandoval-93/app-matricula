@@ -5,19 +5,20 @@ import FormStudent from "./forms/FormStudent";
 import FormRepresentative from "./forms/FormRepresentative";
 
 const ModalMatricula = ({
-  stateModal,
-  onCloseModal,
-  newMatricula,
-  idMatricula,
+  stateModal, // Estado de apertura
+  onCloseModal, // metodo de cierre y seteo de estados
+  newMatricula, // control de new / edit matricula
+  idMatricula, // id de matricula a editar
 }) => {
   const [modalMatricula, setModalMatricula] = useState({
-    rut: "",
-    formMatricula: true,
-    formStudent: false,
-    formRepresentative: false,
-    editSubForm: false,
+    rut: "", // rut para nuevo estudiante/apoderado
+    formMatricula: true, // estado del formulario de matricula
+    formStudent: false, // estado del formulario de estudiante
+    formRepresentative: false, // estado del formulario de apoderado
+    editSubForm: false, // estado para controlar new/edit de los formularios estudiante/apoderado
   });
 
+  // actualizador de estados
   const updateModalMatricula = (newState) => {
     setModalMatricula((prev) => ({ ...prev, ...newState }));
   };

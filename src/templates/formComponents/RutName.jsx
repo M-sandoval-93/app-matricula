@@ -4,24 +4,24 @@ import { getName, stringFormat } from "../../utils/funciones";
 import useMatricula from "../../hooks/useMatricula";
 
 const RutName = ({
-  labelRut,       // label del input rut
-  labelName,      // label del input name
-  rut,            // id del input rut
-  dvRut,          // id del input dv_rut
-  name,           // id del input nombre
-  values,         // initial values de formik
-  handleChange,   // evento change de formik
-  touched,        // evento touch de formik
-  errors,         // Errors de validacion con Yup
-  setError,       // setear los errores de los input
-  handleBlur,     // evento blur de formik
-  setFieldValue,  // setear el valor de los input con formik
-  setId,          // Setear los id de los estudiantes y/o apoderados
-  route,          // ruta donde hacer la peticion de la api
-  property,       // id a setear en la llamada a la api
-  type,           // indica el tipo de dato que se trabajara; estudiante, titular, suplente
-  showForm,       // para lanzar el modal de estudiante
-  setRut,         // para setear el rut del estudiante en el modal estudiante
+  labelRut, // label del input rut
+  labelName, // label del input name
+  rut, // id del input rut
+  dvRut, // id del input dv_rut
+  name, // id del input nombre
+  values, // initial values de formik
+  handleChange, // evento change de formik
+  touched, // evento touch de formik
+  errors, // Errors de validacion con Yup
+  setError, // setear los errores de los input
+  handleBlur, // evento blur de formik
+  setFieldValue, // setear el valor de los input con formik
+  setId, // Setear los id de los estudiantes y/o apoderados
+  route, // ruta donde hacer la peticion de la api
+  property, // id a setear en la llamada a la api
+  type, // indica el tipo de dato que se trabajara; estudiante, titular, suplente
+  showForm, // para lanzar el modal de estudiante
+  setRut, // para setear el rut del estudiante en el modal estudiante
 }) => {
   const { proceso_matricula, periodo } = useMatricula();
   const getRut = () => {
@@ -93,8 +93,10 @@ const RutName = ({
                       transition-[opacity,background-color] duration-300
                       ${
                         values[name] === "" ||
+                        values[name] === "Asignar estudiante !" ||
                         values[name] === "Asignar apoderado(a) titular !" ||
                         values[name] === "Asignar apoderado(a) suplente !" ||
+                        values[name] === "El rut no esta en lista SAE !" ||
                         (values[name] === `Sin registro de ${type} !` &&
                           proceso_matricula)
                           ? "opacity-0 invisible"

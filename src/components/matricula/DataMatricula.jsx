@@ -1,6 +1,3 @@
-import DownloadIcon from "@mui/icons-material/Download";
-import EditIcon from "@mui/icons-material/Edit";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import useMatricula from "../../hooks/useMatricula";
 import apiGetDocument from "../../api/apiGetDocument";
 import { FaFileDownload } from "react-icons/fa";
@@ -13,10 +10,11 @@ import { ImExit } from "react-icons/im";
 //   return `${part[2]}-${part[1]}-${part[0]}`;
 // };
 
-
-
 const certificadoAlumnoRegular = ({ rut, updateStateMatricula, periodo }) => {
-  apiGetDocument({ route: "report/getCertificadoAlumnoRegular", param: `${rut}/${periodo}` })
+  apiGetDocument({
+    route: "report/getCertificadoAlumnoRegular",
+    param: `${rut}/${periodo}`,
+  })
     .then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
@@ -29,9 +27,11 @@ const certificadoAlumnoRegular = ({ rut, updateStateMatricula, periodo }) => {
     .catch((error) => updateStateMatricula({ error: error }));
 };
 
-
 const certificadoMatricula = ({ rut, updateStateMatricula, periodo }) => {
-  apiGetDocument({ route: "report/getCertificadoMatricula", param: `${rut}/${periodo}` })
+  apiGetDocument({
+    route: "report/getCertificadoMatricula",
+    param: `${rut}/${periodo}`,
+  })
     .then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
@@ -44,7 +44,6 @@ const certificadoMatricula = ({ rut, updateStateMatricula, periodo }) => {
     .catch((error) => updateStateMatricula({ error: error }));
 };
 
-
 const exportCertificado = ({
   bloqueo_periodo_actual,
   proceso_matricula,
@@ -52,7 +51,6 @@ const exportCertificado = ({
   updateStateMatricula,
   periodo,
 }) => {
-
   if (bloqueo_periodo_actual || !proceso_matricula) {
     certificadoAlumnoRegular({ rut, updateStateMatricula, periodo });
     return;
@@ -60,7 +58,6 @@ const exportCertificado = ({
 
   certificadoMatricula({ rut, updateStateMatricula, periodo });
 };
-
 
 export const columnsMatricula = ({ updateStateMatricula }) => {
   const { bloqueo_periodo_actual, proceso_matricula, periodo } = useMatricula();
@@ -121,7 +118,7 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
           {/* boton para descargar certificado */}
           <button
             className="rounded-full p-1 transition-all duration-300 text-blue-500 
-            hover:bg-blue-500 hover:text-white shadow-sm w-9 h-9 flex items-center justify-center"
+            hover:bg-blue-500 hover:text-white shadow-sm w-10 h-10 flex items-center justify-center"
             onClick={() =>
               exportCertificado({
                 bloqueo_periodo_actual,
@@ -132,37 +129,37 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
               })
             }
           >
-            <FaFileDownload size={24} />
+            <FaFileDownload size={26} />
           </button>
 
           {/* boton para editar una matricula */}
           <button
             onClick={() => {
               updateStateMatricula({
-                stateModal: true,
-                newMatricula: false,
-                idMatricula: row.id,
+                stateModal: true, // Cambio de estado para lanzar el modal
+                newMatricula: false, // Cambio de estado para modo edicion
+                idMatricula: row.id, // asignación del id de la matrícula
               });
             }}
             className={`rounded-full p-1 transition-all duration-300 shadow-sm hover:text-white text-green-500 
-              hover:bg-green-500 w-9 h-9 flex items-center justify-center`}
+              hover:bg-green-500 w-10 h-10 flex items-center justify-center`}
           >
-            <MdEditSquare size={24} />
+            <MdEditSquare size={26} />
           </button>
 
           {/* boton para suspender una matricula */}
           <button
-            onClick={() => console.log("suspender matricula")}
+            onClick={() => alert("Mantenimiento")}
             disabled={!bloqueo_periodo_actual && proceso_matricula}
-            className={`rounded-full p-1 transition-all duration-300 shadow-sm hover:text-white
-              w-9 h-9 flex items-center justify-center
+            className={`rounded-full p- transition-all duration-300 shadow-sm hover:text-white
+              w-10 h-10 flex items-center justify-center
               ${
                 !bloqueo_periodo_actual && proceso_matricula
                   ? "text-gray-500 hover:bg-gray-700"
                   : "text-red-500 hover:bg-red-500"
               }`}
           >
-            <ImExit size={24} />
+            <ImExit size={26} />
           </button>
         </div>
       ),

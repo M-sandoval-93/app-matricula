@@ -3,18 +3,10 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { BsFileEarmarkExcelFill } from "react-icons/bs";
 import { FaUserPlus } from "react-icons/fa";
 
-
 import useMatricula from "../../hooks/useMatricula";
 
 const HeaderTableMatricula = ({ filter, updateStateMatricula }) => {
   const { bloqueo_periodo_actual } = useMatricula();
-  const showModalMatricula = () => {
-    updateStateMatricula({
-      stateModal: true,
-      idMatricula: "",
-      // ver si utilizo esta funcion, o paso el update directamente al click
-    });
-  };
 
   return (
     <div className="relative w-full flex flex-wrap gap-3 items-center justify-center sm:justify-between my-2">
@@ -27,14 +19,17 @@ const HeaderTableMatricula = ({ filter, updateStateMatricula }) => {
             : "opacity-100 scale-100"
         }`}
         disabled={bloqueo_periodo_actual}
-        onClick={showModalMatricula}
+        onClick={() => updateStateMatricula({ stateModal: true })}
       >
         <FaUserPlus size={30} />
       </button>
 
       <div className="flex gap-3">
-        <button className="px-2 py-1 border rounded-md hover:shadow-md hover:scale-105
-          text-green-700 border-green-700 hover:shadow-green-900 transition-all duration-200">
+        <button
+          onClick={() => alert("En mantenimiento")}
+          className="px-2 py-1 border rounded-md hover:shadow-md hover:scale-105
+          text-green-700 border-green-700 hover:shadow-green-900 transition-all duration-200"
+        >
           <BsFileEarmarkExcelFill size={30} />
         </button>
 
@@ -62,7 +57,6 @@ const HeaderTableMatricula = ({ filter, updateStateMatricula }) => {
           </span>
         </div>
       </div>
-
     </div>
   );
 };

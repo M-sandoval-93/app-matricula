@@ -34,6 +34,7 @@ const TableMatricula = () => {
     setStateMatricula((prev) => ({ ...prev, ...newState }));
   };
 
+  // función para setear estados al cerrar el modal
   const onCloseModal = () => {
     updateStateMatricula({
       stateModal: false,
@@ -42,6 +43,8 @@ const TableMatricula = () => {
     });
   };
 
+  // efecto inicial, para consultar la data de la tabla
+  // a la escucha del cambio de periodo seleccionado
   useEffect(() => {
     updateStateMatricula({ loading: true });
 
@@ -88,11 +91,12 @@ const TableMatricula = () => {
         />
       </section>
 
+      {/* Modal multiuso para matricula */}
       <ModalMatricula
-        stateModal={stateMatricula.stateModal}
-        onCloseModal={onCloseModal}
-        newMatricula={stateMatricula.newMatricula}
-        idMatricula={stateMatricula.idMatricula}
+        stateModal={stateMatricula.stateModal} // Estado del modal
+        onCloseModal={onCloseModal} // metodo para setear modal al cerrar
+        newMatricula={stateMatricula.newMatricula} // Estado para controlar new/edit
+        idMatricula={stateMatricula.idMatricula} // estado para el id a editar
       />
 
       <ErrorHandler error={stateMatricula.error} />
