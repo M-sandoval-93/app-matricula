@@ -31,4 +31,15 @@ export const initialValuesStudent = () => {
   };
 };
 
-export const initialValuesRepresentative = () => {};
+export const initialValuesRepresentative = () => {
+  return {
+    id_apoderado: "",
+    rut_apoderado: "",
+    dv_rut_apoderado: "",
+    nombres_apoderado: "",
+    apellido_paterno: "",
+    apellido_materno: "",
+    telefono: "",
+    direccion: "",
+  }
+};

@@ -1,12 +1,45 @@
-const FormRepresentative = ({ setFormMatricula, open, getRut }) => {
+import { Formik } from "formik";
+import { useEffect, useRef, useState } from "react";
+import { initialValuesRepresentative } from "../../utils/initialValues";
+import useSubmitRepresentative from "../../hooks/useSubmitRepresentative";
+
+const FormRepresentative = ({ 
+  updateModalMatricula, 
+  rut, 
+  editSubForm, 
+  stateModalRepresentative 
+}) => {
+  const [error, setError] = useState(null);
+  const formikRepresentativeRef = useRef();
+  const initialValues = initialValuesRepresentative();
+  const {onSubmit} = useSubmitRepresentative({setError, updateModalMatricula});
+
+  useEffect(() => {
+
+  }, [rut, stateModalRepresentative]);
+  
   return (
-    <form className={``}>
-      <h1>Formulario para trabajar con apoderados</h1>
-      <h3>{getRut}</h3>
-      <button type="button" onClick={setFormMatricula}>
-        Volver
-      </button>
-    </form>
+    <Formik
+      initialValues={initialValues}
+      onSubmit={onSubmit}
+      // validation cheme
+      innerRef={formikRepresentativeRef}
+    >
+      {({
+        values,
+        handleSubmit,
+        handleChange,
+        errors,
+        touched,
+        handleBlur,
+        isSubmitting, 
+        setFieldValue,
+      }) => (
+        <form onSubmit={handleSubmit} className={`relative  flex-col h-full`}>
+
+        </form>
+      )}
+    </Formik>
   );
 };
 
