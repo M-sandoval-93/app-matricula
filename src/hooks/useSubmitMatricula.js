@@ -5,10 +5,9 @@ import apiPost from "../api/apiPost";
 import apiPut from "../api/apiPut";
 
 const useSubmitMatricula = ({ setError, id, onCloseModal }) => {
-  const { getDataMatricula, getCountMatricula } = useMatricula();
-  const { periodo } = useMatricula();
-  const {idEstudiante, idTitular, idSuplente, idMatricula} = id;
-  
+  const { getDataMatricula, getCountMatricula, periodo } = useMatricula();
+  const { idEstudiante, idTitular, idSuplente, idMatricula } = id;
+
   const onSubmit = async (
     values,
     { setSubmitting, setErrors, errors, resetForm } // ver como usar setErrors y errors y si uso resetForm
@@ -27,17 +26,18 @@ const useSubmitMatricula = ({ setError, id, onCloseModal }) => {
     try {
       // condicion para la edicion de una matrícula
       if (idMatricula !== "") {
-        await apiPut({ route: "matricula/updateMatricula", object: dataSet }).then(
-          (res) => {
-            Swal.fire({
-              icon: "success",
-              title: "Success",
-              text: `Matricula actualizada !`,
-            }).then(() => {
-              onCloseModal();
-            });
-          }
-        );
+        await apiPut({
+          route: "matricula/updateMatricula",
+          object: dataSet,
+        }).then((res) => {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: `Datos de matrícula actualizada !`,
+          }).then(() => {
+            onCloseModal();
+          });
+        });
         return;
       }
 
@@ -48,25 +48,28 @@ const useSubmitMatricula = ({ setError, id, onCloseModal }) => {
       });
       const numeroMatricula = await responseSet?.data?.numero_matricual;
 
-      // actualización de la tabla de matricula
-      apiGet({ route: "matricula/getAll", param: periodo }).then(
-        (responseGet) => getDataMatricula(responseGet?.data)
-      );
+      // // actualización de la tabla de matricula
+      // apiGet({ route: "matricula/getAll", param: periodo }).then(
+      //   (responseGet) => getDataMatricula(responseGet?.data)
+      // );
 
       // actualizacion de la cantidad de altas y bajas
       apiGet({ route: "matricula/getCount", param: periodo }).then(
         (responseCount) => getCountMatricula(responseCount.data)
-      ),
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: `Número de matrícua asignado: ${numeroMatricula}`,
-        });
+      );
 
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: `Número de matrícua asignado: ${numeroMatricula}`,
+      });
     } catch (error) {
       setError(error);
-
     } finally {
+      // actualización de la tabla de matricula
+      apiGet({ route: "matricula/getAll", param: periodo }).then(
+        (responseGet) => getDataMatricula(responseGet?.data)
+      );
       setSubmitting(false);
     }
   };

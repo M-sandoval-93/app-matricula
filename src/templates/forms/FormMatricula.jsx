@@ -38,7 +38,7 @@ const FormMatricula = ({
 
   // Efecto para limpiar formulario de matricula y asignar valores
   useEffect(() => {
-    // setear formularios y sus campos
+    // setear formulario y sus campos
     if (!stateModal) {
       const handleReset = formikMatriculaRef.current.handleReset;
       setTimeout(() => {
@@ -86,7 +86,6 @@ const FormMatricula = ({
         })
         .catch((error) => setError(error));
     }
-
   }, [stateModal, stateModalMatricula]);
 
   return (

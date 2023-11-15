@@ -127,7 +127,7 @@ const FormLogin = () => {
             />
             <label
               htmlFor="password"
-              className={`absolute transition-all duration-300 ease-in-out text-gray-400 bg-white peer-focus:left-5 peer-focus:-top-3 peer-focus:text-sm
+              className={`absolute px-1 flex gap-1 transition-all duration-300 ease-in-out text-gray-400 bg-white peer-focus:left-5 peer-focus:-top-3 peer-focus:text-sm
               ${
                 values.password === ""
                   ? "left-4 top-[.8rem]"

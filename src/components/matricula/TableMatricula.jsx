@@ -23,7 +23,7 @@ const TableMatricula = () => {
   const [stateMatricula, setStateMatricula] = useState({
     filter: "", // datos para el filtro de la tabla
     loading: false, // estado de la carga de datos
-    stateModal: false,  // estado del modal de matricula
+    stateModal: false, // estado del modal de matricula
     newMatricula: true, // estado para el ingreso de una matricula agregar/editar
     idMatricula: "", // id para modificar una matricula
     error: null, // estado para el control de errores

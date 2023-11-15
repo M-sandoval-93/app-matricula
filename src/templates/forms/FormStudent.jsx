@@ -21,12 +21,19 @@ const FormStudent = ({
   const formikStudentRef = useRef();
   const initialValues = initialValuesStudent();
   const validationSchema = validationStudent();
-  const { onSubmit } = useSubmitStudent({setError});
-
+  const { onSubmit } = useSubmitStudent({ setError, updateModalMatricula });
 
   // pasar los valores de la consulta del estudiante hacia la api
   // para condicion para cuando tengo que editarlo desde matricula
   useEffect(() => {
+    // setear formulario y sus campos
+    if (!stateModalStudent) {
+      const handleResetFormStudent = formikStudentRef.current.handleReset;
+      setTimeout(() => {
+        handleResetFormStudent();
+      }, 100);
+    }
+
     if (rut) {
       getStudent(rut, "student/getStudent").then((response) => {
         formikStudentRef.current.setValues({
@@ -261,15 +268,15 @@ const FormStudent = ({
             </section>
           </main>
 
-          <FooterForm 
-            isSubmitting={isSubmitting} 
-            onCloseModal={ () => {
+          <FooterForm
+            isSubmitting={isSubmitting}
+            onCloseModal={() => {
               updateModalMatricula({
                 rut: "",
                 formMatricula: true,
                 formStudent: false,
               });
-            }} 
+            }}
           />
         </form>
       )}

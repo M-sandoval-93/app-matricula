@@ -1,11 +1,10 @@
 import Swal from "sweetalert2";
-import axios from "../api/axios";
-// import apiGet from "../api/apiGet";
-// import useMatricula from "./useMatricula";
+import apiPut from "../api/apiPut";
+import apiGet from "../api/apiGet";
+import useMatricula from "./useMatricula";
 
-const useSubmitStudent = ({setError}) => {
-//   const { getDataMatricula, getCountMatricula } = useMatricula();
-//   const { periodo } = useMatricula();
+const useSubmitStudent = ({ setError, updateModalMatricula }) => {
+  const { getDataMatricula, periodo } = useMatricula();
   const onSubmit = async (
     values,
     { setSubmitting, setErrors, errors, resetForm } // ver como usar setErrors y errors
@@ -22,18 +21,44 @@ const useSubmitStudent = ({setError}) => {
       nombre_social: values?.nombre_social.trim(),
       fecha_nacimiento: values.fecha_nacimiento,
       sexo: values?.sexo,
-    }
+    };
 
     try {
+      // condición para la edición de los datos del estudiante
+      if (values?.id_estudiante !== "") {
+        await apiPut({ route: "student/update", object: student }).then(
+          (res) => {
+            Swal.fire({
+              icon: "success",
+              title: "Success",
+              text: `Datos de estudiante actualizados !`,
+            }).then(() =>
+              updateModalMatricula({
+                rut: "",
+                formMatricula: true,
+                formStudent: false,
+              })
+            );
+          }
+        );
+        return;
+      }
 
+      console.log("nuevo estudiante");
+      // ingresar nuevo estudiante
+
+      // actualizar tabla de estudiantes
+
+      // actualizar cantidad de estudiantes
     } catch (error) {
       setError(error);
-
     } finally {
+      // actualización de la tabla de matricula
+      apiGet({ route: "matricula/getAll", param: periodo }).then(
+        (responseGet) => getDataMatricula(responseGet?.data)
+      );
       setSubmitting(false);
     }
-
-
 
     // try {
     //   const response = await axios.post(URL, dataSet, {
