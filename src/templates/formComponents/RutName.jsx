@@ -1,5 +1,3 @@
-import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
 import { MdAdd } from "react-icons/md";
 import { RiEdit2Fill } from "react-icons/ri";
 import { getName, stringFormat } from "../../utils/funciones";
@@ -29,14 +27,13 @@ const RutName = ({
 
   // funcion para obtener el rut para un nuevo ingreso o edicion de estudiante/apoderado
   const getRut = () => {
-    updateModalMatricula({rut: values[rut]});
+    updateModalMatricula({ rut: values[rut] });
     // activar los otros formularios dentro del modal
-    if (type === "estudiante"){
+    if (type === "estudiante") {
       updateModalMatricula({
         formMatricula: false,
         formStudent: true,
       });
-
     } else {
       updateModalMatricula({
         formMatricula: false,
@@ -108,7 +105,7 @@ const RutName = ({
               onClick={getRut}
               className={`flex items-center justify-center p-1 rounded-full text-white
                   transition-[opacity,background-color] duration-300
-                  ${ 
+                  ${
                     values[name] === "" ||
                     values[name] === "Asignar estudiante !" ||
                     values[name] === "Asignar estudiante !" ||
@@ -116,21 +113,21 @@ const RutName = ({
                     values[name] === "Asignar apoderado(a) suplente !" ||
                     values[name] === "El rut no esta en lista SAE !" ||
                     values[name] === `Sin registro de ${type}`
-                    ? "opacity-0 invisible"
-                    : "opacity-100 visible"
+                      ? "opacity-0 invisible"
+                      : "opacity-100 visible"
                   }
 
                   ${
                     values[name] === `Sin registro de ${type} !`
-                    ? "bg-green-500"
-                    : "bg-blue-500"
+                      ? "bg-green-500"
+                      : "bg-blue-500"
                   }`}
             >
-              {
-                values[name] === `Sin registro de ${type} !`
-                ? (<MdAdd size={22} />)
-                : (<RiEdit2Fill size={22} />)
-              }
+              {values[name] === `Sin registro de ${type} !` ? (
+                <MdAdd size={22} />
+              ) : (
+                <RiEdit2Fill size={22} />
+              )}
             </button>
           </div>
         </article>

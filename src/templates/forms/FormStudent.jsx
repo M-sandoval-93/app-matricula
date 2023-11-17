@@ -10,6 +10,7 @@ import FooterForm from "../formComponents/FooterForm";
 import validationStudent from "../../validation/validationStudent";
 import useSubmitStudent from "../../hooks/useSubmitStudent";
 import ErrorMessageInput from "../formComponents/ErrorMessageInput";
+import ErrorHandler from "../../components/ErrorHandler";
 
 const FormStudent = ({
   updateModalMatricula,
@@ -34,22 +35,22 @@ const FormStudent = ({
       }, 100);
     }
 
-    if (rut) {
-      getStudent(rut, "student/getStudent").then((response) => {
-        formikStudentRef.current.setValues({
-          ...initialValues,
-          id_estudiante: response?.data?.id,
-          rut_estudiante: rut,
-          dv_rut_estudiante: calculateCheckDigit(rut),
-          nombres_estudiante: response?.data?.nombres,
-          apellido_paterno: response?.data?.paterno,
-          apellido_materno: response?.data?.materno,
-          nombre_social: response?.data?.nombre_social ?? "",
-          sexo: response?.data?.sexo,
-          fecha_nacimiento: response?.data?.fecha_nacimiento,
-        });
-      });
-    }
+    // if (rut) {
+    //   getStudent(rut, "student/getStudent").then((response) => {
+    //     formikStudentRef.current.setValues({
+    //       ...initialValues,
+    //       id_estudiante: response?.data?.id,
+    //       rut_estudiante: rut,
+    //       dv_rut_estudiante: calculateCheckDigit(rut),
+    //       nombres_estudiante: response?.data?.nombres,
+    //       apellido_paterno: response?.data?.paterno,
+    //       apellido_materno: response?.data?.materno,
+    //       nombre_social: response?.data?.nombre_social ?? "",
+    //       sexo: response?.data?.sexo,
+    //       fecha_nacimiento: response?.data?.fecha_nacimiento,
+    //     });
+    //   });
+    // }
   }, [rut, stateModalStudent]);
 
   return (
@@ -270,14 +271,15 @@ const FormStudent = ({
 
           <FooterForm
             isSubmitting={isSubmitting}
-            onCloseModal={() => {
+            onCloseModal={() =>
               updateModalMatricula({
                 rut: "",
                 formMatricula: true,
                 formStudent: false,
-              });
-            }}
+              })
+            }
           />
+          <ErrorHandler error={error} />
         </form>
       )}
     </Formik>

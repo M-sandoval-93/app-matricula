@@ -5,7 +5,7 @@ import FormStudent from "./forms/FormStudent";
 import FormRepresentative from "./forms/FormRepresentative";
 
 const ModalMatricula = ({ stateMatricula, onCloseModal }) => {
-  const {stateModal, newMatricula, idMatricula} = stateMatricula; // estados para modulo matricula
+  const { stateModal, newMatricula, idMatricula } = stateMatricula; // estados para modulo matricula
 
   // estados para trabajar con el modal matricula
   const [modalMatricula, setModalMatricula] = useState({
@@ -99,24 +99,29 @@ const ModalMatricula = ({ stateMatricula, onCloseModal }) => {
         />
       </section>
 
-      <section className={`${modalMatricula.formStudent ? "block" : "hidden"} h-full`}>
+      <section
+        className={`${modalMatricula.formStudent ? "block" : "hidden"} h-full`}
+      >
         <FormStudent
           updateModalMatricula={updateModalMatricula}
           rut={modalMatricula.rut}
           editSubForm={modalMatricula.editSubForm}
           stateModalStudent={modalMatricula.formStudent}
-          // setFormMatricula={setFormMatricula}
-          // rut={rut}
-          // editSubForm={modal.editSubForm}
-          // stateModalStudent={modal.formStudent}
         />
       </section>
 
-      {/* <section
-        className={`${modal.formRerpesentative ? "block" : "hidden"} h-full`}
+      <section
+        className={`${
+          modalMatricula.formRepresentative ? "block" : "hidden"
+        } h-full`}
       >
-        <FormRepresentative setFormMatricula={setFormMatricula} rut={rut} />
-      </section> */}
+        <FormRepresentative
+          updateModalMatricula={updateModalMatricula}
+          rut={modalMatricula.rut}
+          editSubForm={modalMatricula.editSubForm}
+          stateModalRepresentative={modalMatricula.formRepresentative}
+        />
+      </section>
     </Modal>
   );
 };
