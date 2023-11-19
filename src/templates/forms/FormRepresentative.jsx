@@ -3,8 +3,15 @@ import { useEffect, useRef, useState } from "react";
 import { initialValuesRepresentative } from "../../utils/initialValues";
 import useSubmitRepresentative from "../../hooks/useSubmitRepresentative";
 import FooterForm from "../formComponents/FooterForm";
-import { calculateCheckDigit } from "../../utils/funciones";
+import {
+  calculateCheckDigit,
+  getPerson,
+  numberFormat,
+  stringFormat,
+} from "../../utils/funciones";
 import ErrorMessageInput from "../formComponents/ErrorMessageInput";
+import ErrorHandler from "../../components/ErrorHandler";
+import validationRepresentative from "../../validation/validationRepresentative";
 
 const FormRepresentative = ({
   updateModalMatricula,
@@ -14,19 +21,56 @@ const FormRepresentative = ({
 }) => {
   const [error, setError] = useState(null);
   const formikRepresentativeRef = useRef();
-  const initialValues = initialValuesRepresentative();
+  const initialValues = initialValuesRepresentative({ rut });
+  const validationSchema = validationRepresentative();
   const { onSubmit } = useSubmitRepresentative({
     setError,
     updateModalMatricula,
   });
 
-  useEffect(() => {}, [rut, stateModalRepresentative]);
+  useEffect(() => {
+    if (!stateModalRepresentative) {
+      const handleResetFormRepresentative =
+        formikRepresentativeRef.current.handleReset;
+      setTimeout(() => {
+        handleResetFormRepresentative();
+      }, 100);
+    }
+
+    if (rut && !editSubForm) {
+      getPerson(rut, "representative/getRepresentative")
+        .then((response) => {
+          // para edición de datos, se cargan los datos
+          formikRepresentativeRef.current.setValues({
+            ...initialValues,
+            id_apoderado: response?.data?.id,
+            rut_apoderado: rut,
+            dv_rut_apoderado: calculateCheckDigit(rut),
+            nombres_apoderado: response?.data?.nombres,
+            apellido_paterno: response?.data?.paterno,
+            apellido_materno: response?.data?.materno,
+            telefono: response?.data?.telefono ? response?.data?.telefono : "",
+            direccion: response?.data?.direccion
+              ? response?.data?.direccion
+              : "",
+          });
+        })
+        .catch((error) => setError(error));
+    } else {
+      // para nuevos ingresos, solo se pasa el rut
+      formikRepresentativeRef.current.setValues({
+        ...initialValues,
+        rut_apoderado: rut,
+        dv_rut_apoderado: calculateCheckDigit(rut),
+      });
+    }
+  }, [stateModalRepresentative]);
 
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={onSubmit}
-      // validation cheme
+      validationSchema={validationSchema}
       innerRef={formikRepresentativeRef}
     >
       {({
@@ -57,7 +101,13 @@ const FormRepresentative = ({
                     autoComplete="off"
                     disabled={editSubForm}
                     value={values.rut_apoderado}
-                    onChange={handleChange}
+                    onChange={(val) => {
+                      handleChange(numberFormat(val));
+                      setFieldValue(
+                        "dv_rut_apoderado",
+                        calculateCheckDigit(val.target.value)
+                      );
+                    }}
                     onBlur={handleBlur}
                     className={`border outline-none rounded-md p-2 text-center w-full xs:w-36`}
                   />
@@ -70,7 +120,8 @@ const FormRepresentative = ({
                     id="dv_rut_apoderado"
                     autoComplete="off"
                     disabled
-                    value={calculateCheckDigit(values.rut_apoderado)}
+                    // value={calculateCheckDigit(values.rut_apoderado)}
+                    value={values.dv_rut_apoderado}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     className={`border outline-none rounded-md p-2 text-center w-16 xs:w-12 bg-gray-200`}
@@ -161,8 +212,66 @@ const FormRepresentative = ({
               </article>
             </section>
 
-            <section className="relative flex flex-col md:flex-row w-full gap-4">
-              datos personales
+            <section className="relative flex flex-col md:flex-row gap-4">
+              <article className="relative flex flex-col gap-y-2 w-full md:w-64">
+                <label
+                  className="text-blue-600 font-semibold"
+                  htmlFor="telefono"
+                >
+                  Teléfono apoderado
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    autoComplete="off"
+                    disabled
+                    value={"+ 569"}
+                    className={`border outline-none rounded-md p-2 text-center w-full xs:w-20 bg-gray-200`}
+                  />
+
+                  <span className="textlg font-bold"> - </span>
+
+                  <input
+                    type="text"
+                    name="telefono"
+                    id="telefono"
+                    autoComplete="off"
+                    value={values.telefono}
+                    onChange={(val) => handleChange(numberFormat(val))}
+                    onBlur={handleBlur}
+                    className={`border outline-none rounded-md p-2 text-center w-16 xs:w-36`}
+                  />
+                </div>
+                <ErrorMessageInput
+                  touched={touched}
+                  errors={errors}
+                  value={"telefono"}
+                />
+              </article>
+
+              <article className="relative flex flex-col gap-y-2 w-full md:grow">
+                <label
+                  className="text-blue-600 font-semibold"
+                  htmlFor="direccion"
+                >
+                  Dirección apoderado
+                </label>
+                <input
+                  type="text"
+                  name="direccion"
+                  id="direccion"
+                  autoComplete="off"
+                  value={values.direccion}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  className={`border outline-none rounded-md p-2 w-full`}
+                />
+                <ErrorMessageInput
+                  touched={touched}
+                  errors={errors}
+                  value={"direccion"}
+                />
+              </article>
             </section>
           </main>
 
@@ -176,6 +285,7 @@ const FormRepresentative = ({
               })
             }
           />
+          <ErrorHandler error={error} />
         </form>
       )}
     </Formik>

@@ -21,47 +21,6 @@ const ModalMatricula = ({ stateMatricula, onCloseModal }) => {
     setModalMatricula((prev) => ({ ...prev, ...newState }));
   };
 
-  // const [rut, setRut] = useState("");
-  // const [modal, setModal] = useState({
-  //   formMatricula: true,
-  //   formStudent: false,
-  //   formRerpesentative: false,
-  //   editSubForm: false,
-  // });
-
-  // const setFormMatricula = () => {
-  //   setModal((prev) => ({
-  //     ...prev,
-  //     formMatricula: true,
-  //     formStudent: false,
-  //     formRerpesentative: false,
-  //     editSubForm: false,
-  //   }));
-  // };
-
-  // const setFormStudent = () => {
-  //   setModal((prev) => ({
-  //     ...prev,
-  //     formMatricula: false,
-  //     formStudent: true,
-  //   }));
-  // };
-
-  // const setFormRepresentative = () => {
-  //   setModal((prev) => ({
-  //     ...prev,
-  //     formMatricula: false,
-  //     formRerpesentative: true,
-  //   }));
-  // };
-
-  // const setEditSubForm = () => {
-  //   setModal((prev) => ({
-  //     ...prev,
-  //     editSubForm: true,
-  //   }));
-  // };
-
   // Para controlar que cada vez que se habra el formulario, el estado este correcto
   useEffect(() => {
     if (stateModal) {
@@ -85,6 +44,7 @@ const ModalMatricula = ({ stateMatricula, onCloseModal }) => {
       stateModal={stateModal}
       onCloseModal={onCloseModal}
     >
+      {/* formulario matricula */}
       <section
         className={`relative h-full 
           ${modalMatricula.formMatricula ? "block" : "hidden"}`}
@@ -99,6 +59,7 @@ const ModalMatricula = ({ stateMatricula, onCloseModal }) => {
         />
       </section>
 
+      {/* formulario estudiante */}
       <section
         className={`${modalMatricula.formStudent ? "block" : "hidden"} h-full`}
       >
@@ -110,6 +71,7 @@ const ModalMatricula = ({ stateMatricula, onCloseModal }) => {
         />
       </section>
 
+      {/* formulario apoderado */}
       <section
         className={`${
           modalMatricula.formRepresentative ? "block" : "hidden"

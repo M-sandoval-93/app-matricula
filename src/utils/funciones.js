@@ -16,18 +16,18 @@ export const stringFormat = (val) => {
 
 // funcion para remover espacios en blanco
 // function to remove whitespace
-export const removeSpaces = ({ values }) => {
-  const newValues = {};
-  Object.keys(values).map((key) => {
-    if (typeof values[key] === "string") {
-      newValues[key] = values[key].trim();
-    } else {
-      newValues[key] = values[key];
-    }
-  });
+// export const removeSpaces = ({ values }) => {
+//   const newValues = {};
+//   Object.keys(values).map((key) => {
+//     if (typeof values[key] === "string") {
+//       newValues[key] = values[key].trim();
+//     } else {
+//       newValues[key] = values[key];
+//     }
+//   });
 
-  return newValues;
-};
+//   return newValues;
+// };
 
 // funcion para calcular el digito verificador del rut
 // function to calculate the verification digit of the rut
@@ -52,51 +52,51 @@ export const validateRut = (rut, dv) => {
   return calculateCheckDigit(rut) == dv;
 };
 
-// funcion para manejar el rut del estudiante
-// function tomanage the student`s rut
+// funcion para obtener el nombre de una persona, por medio del rut
 export const getName = ({
   val,
   setFieldValue,
   inputDv,
   inputNombre,
-  setError, // ver si lo elimino de la funcion ??
-  route,
   setId,
   property,
   periodo,
 }) => {
-  const data = val.target.value;
-  const param = route === "student/getNameStudent" ? `${data}/${periodo}` : `${data}`;
+  const rut = val.target.value;
+  const route =
+    property === "idEstudiante"
+      ? "student/getNameStudent"
+      : "representative/getNameRepresentative";
 
-  if (data.length >= 7 && data.length <= 9) {
-    setFieldValue(inputDv, calculateCheckDigit(data));
+  const param = property === "idEstudiante" ? `${rut}/${periodo}` : `${rut}`;
 
-    if (inputNombre)
-      getStudent(param, route)
-        .then(({ data }) => {
-          const id = data?.id ? data?.id : null;
-          const name = data?.message ? data?.message : data?.nombres;
+  if (rut.length >= 7 && rut.length <= 9) {
+    setFieldValue(inputDv, calculateCheckDigit(rut));
 
-          setFieldValue(inputNombre, name);
-          setId((prev) => ({ ...prev, [property]: id }));
-        })
-        // .catch((error) => setError(error));
-        .catch((error) => setFieldValue(
-          inputNombre, error?.response 
-            ? error?.response?.data?.message 
-            : error?.message));
+    getPerson(param, route)
+      .then(({ data }) => {
+        const id = data?.id ? data?.id : null;
+        const name = data?.message ? data?.message : data?.nombres;
+        setFieldValue(inputNombre, name);
+        setId((prev) => ({ ...prev, [property]: id }));
+      })
+      .catch((error) => {
+        setFieldValue(
+          inputNombre,
+          error?.response ? error?.response?.data?.message : error?.message
+        );
+      });
   } else {
     setFieldValue(inputDv, "");
     setId((prev) => ({ ...prev, [property]: "" }));
-    if (inputNombre) setFieldValue(inputNombre, "");
+    setFieldValue(inputNombre, "");
   }
 
   return numberFormat(val);
 };
 
-// function para obtener el nombre del estudiante
-// function to get student name
-export const getStudent = async (param, route) => {
+// funcion para obtener los datos de una persona
+export const getPerson = async (param, route) => {
   const response = await apiGet({ route: route, param: param });
   const data = response?.data;
   return { data };

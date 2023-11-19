@@ -11,7 +11,6 @@ import ErrorMessageInput from "../formComponents/ErrorMessageInput";
 import validationMatricula from "../../validation/validationMatricula";
 import { initialValuesMatricula } from "../../utils/initialValues";
 import apiGet from "../../api/apiGet";
-// import useMatricula from "../../hooks/useMatricula";
 
 const FormMatricula = ({
   stateModal,
@@ -223,7 +222,6 @@ const FormMatricula = ({
               handleBlur={handleBlur}
               setFieldValue={setFieldValue}
               setId={setId}
-              route={"student/getNameStudent"}
               property={"idEstudiante"}
               type={"estudiante"}
               updateModalMatricula={updateModalMatricula}
@@ -247,7 +245,6 @@ const FormMatricula = ({
               handleBlur={handleBlur}
               setFieldValue={setFieldValue}
               setId={setId}
-              route={"representative/getName"}
               property={"idTitular"}
               type={"apoderado(a)"}
               updateModalMatricula={updateModalMatricula}
@@ -268,7 +265,6 @@ const FormMatricula = ({
               handleBlur={handleBlur}
               setFieldValue={setFieldValue}
               setId={setId}
-              route={"representative/getName"}
               property={"idSuplente"}
               type={"apoderado(a)"}
               updateModalMatricula={updateModalMatricula}

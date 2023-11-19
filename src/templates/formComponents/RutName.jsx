@@ -14,11 +14,10 @@ const RutName = ({
   handleChange, // evento change de formik
   touched, // evento touch de formik
   errors, // Errors de validacion con Yup
-  setError, // setear los errores de los input
   handleBlur, // evento blur de formik
   setFieldValue, // setear el valor de los input con formik
   setId, // Setear los id de los estudiantes y/o apoderados
-  route, // ruta donde hacer la peticion de la api
+  // route, // ruta donde hacer la peticion de la api
   property, // id a setear en la llamada a la api
   type, // indica el tipo de dato que se trabajara; estudiante, titular, suplente
   updateModalMatricula, // actualizar estados del modal matricula
@@ -27,14 +26,25 @@ const RutName = ({
 
   // funcion para obtener el rut para un nuevo ingreso o edicion de estudiante/apoderado
   const getRut = () => {
+    // Asignar rut al contexto rut del modal matricula
     updateModalMatricula({ rut: values[rut] });
-    // activar los otros formularios dentro del modal
+
+    // condición para identificar new or edit
+    if (values[name] === `Sin registro de ${type} !`) {
+      updateModalMatricula({ editSubForm: true });
+    } else {
+      updateModalMatricula({ editSubForm: false });
+    }
+
+    // condición para alternar entre los formularios del modal
     if (type === "estudiante") {
+      // mostrar formulario de estudiante
       updateModalMatricula({
         formMatricula: false,
         formStudent: true,
       });
     } else {
+      // mostrar formulario de apoderado
       updateModalMatricula({
         formMatricula: false,
         formRepresentative: true,
@@ -64,8 +74,6 @@ const RutName = ({
                     setFieldValue: setFieldValue,
                     inputDv: dvRut,
                     inputNombre: name,
-                    setError: setError,
-                    route: route,
                     setId: setId,
                     property: property,
                     periodo: periodo,

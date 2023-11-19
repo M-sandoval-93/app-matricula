@@ -3,8 +3,9 @@ import { initialValuesStudent } from "../../utils/initialValues";
 import { Formik } from "formik";
 import {
   calculateCheckDigit,
-  getStudent,
+  getPerson,
   stringFormat,
+  numberFormat,
 } from "../../utils/funciones";
 import FooterForm from "../formComponents/FooterForm";
 import validationStudent from "../../validation/validationStudent";
@@ -24,8 +25,6 @@ const FormStudent = ({
   const validationSchema = validationStudent();
   const { onSubmit } = useSubmitStudent({ setError, updateModalMatricula });
 
-  // pasar los valores de la consulta del estudiante hacia la api
-  // para condicion para cuando tengo que editarlo desde matricula
   useEffect(() => {
     // setear formulario y sus campos
     if (!stateModalStudent) {
@@ -35,23 +34,32 @@ const FormStudent = ({
       }, 100);
     }
 
-    // if (rut) {
-    //   getStudent(rut, "student/getStudent").then((response) => {
-    //     formikStudentRef.current.setValues({
-    //       ...initialValues,
-    //       id_estudiante: response?.data?.id,
-    //       rut_estudiante: rut,
-    //       dv_rut_estudiante: calculateCheckDigit(rut),
-    //       nombres_estudiante: response?.data?.nombres,
-    //       apellido_paterno: response?.data?.paterno,
-    //       apellido_materno: response?.data?.materno,
-    //       nombre_social: response?.data?.nombre_social ?? "",
-    //       sexo: response?.data?.sexo,
-    //       fecha_nacimiento: response?.data?.fecha_nacimiento,
-    //     });
-    //   });
-    // }
-  }, [rut, stateModalStudent]);
+    // asignacion de valores en edicion de estudiante
+    if (rut && !editSubForm) {
+      getPerson(rut, "student/getStudent")
+        .then((response) => {
+          formikStudentRef.current.setValues({
+            ...initialValues,
+            id_estudiante: response?.data?.id,
+            rut_estudiante: rut,
+            dv_rut_estudiante: calculateCheckDigit(rut),
+            nombres_estudiante: response?.data?.nombres,
+            apellido_paterno: response?.data?.paterno,
+            apellido_materno: response?.data?.materno,
+            nombre_social: response?.data?.nombre_social ?? "",
+            sexo: response?.data?.sexo,
+            fecha_nacimiento: response?.data?.fecha_nacimiento,
+          });
+        })
+        .catch((error) => setError(error));
+    } else {
+      formikStudentRef.current.setValues({
+        ...initialValues,
+        rut_estudiante: rut,
+        dv_rut_estudiante: calculateCheckDigit(rut),
+      });
+    }
+  }, [stateModalStudent]);
 
   return (
     <Formik
@@ -72,6 +80,7 @@ const FormStudent = ({
       }) => (
         <form onSubmit={handleSubmit} className={`relative flex-col h-full`}>
           <main className="relative flex flex-col flex-grow overflow-hidden overflow-y-auto p-2 gap-y-4 h-[26.5rem]">
+            {/* rut del estudiante */}
             <section className="relative flex w-full">
               <article className="relative flex flex-col gap-y-2 w-full ">
                 <label
@@ -88,9 +97,17 @@ const FormStudent = ({
                     autoComplete="off"
                     disabled={editSubForm}
                     value={values.rut_estudiante}
-                    onChange={handleChange}
+                    onChange={(val) => {
+                      handleChange(numberFormat(val));
+                      setFieldValue(
+                        "dv_rut_estudiante",
+                        calculateCheckDigit(val.target.value)
+                      );
+                    }}
                     onBlur={handleBlur}
-                    className={`border outline-none rounded-md p-2 text-center w-full xs:w-36`}
+                    className={`border outline-none rounded-md p-2 text-center w-full xs:w-36 ${
+                      editSubForm && "bg-gray-200"
+                    }`}
                   />
 
                   <span className="textlg font-bold"> - </span>
@@ -101,8 +118,7 @@ const FormStudent = ({
                     id="dv_rut_estudiante"
                     autoComplete="off"
                     disabled
-                    // value={values.dv_rut_estudiante}
-                    value={calculateCheckDigit(values.rut_estudiante)}
+                    value={values.dv_rut_estudiante}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     className={`border outline-none rounded-md p-2 text-center w-16 xs:w-12 bg-gray-200`}
@@ -228,7 +244,7 @@ const FormStudent = ({
                   value={values.sexo}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  className={`border outline-none rounded-md p-2 w-full`}
+                  className={`border outline-none rounded-md p-2 w-full bg-transparent`}
                 >
                   <option value="" disabled>
                     ------

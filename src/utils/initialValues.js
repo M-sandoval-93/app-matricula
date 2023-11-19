@@ -41,5 +41,5 @@ export const initialValuesRepresentative = () => {
     apellido_materno: "",
     telefono: "",
     direccion: "",
-  }
+  };
 };
