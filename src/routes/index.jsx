@@ -16,7 +16,7 @@ import apiGet from "../api/apiGet";
 
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/matricula/",
     element: <LayoutPublic />,
     errorElement: <NotFound />,
     children: [
@@ -27,25 +27,25 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/app",
+    path: "/matricula/app",
     element: <LayoutPrivate />,
     errorElement: <NotFound />,
     children: [
       {
-        path: "/app/home",
+        path: "/matricula/app/home",
         element: <Home />,
       },
       {
-        path: "/app/estudiante",
+        path: "/matricula/app/estudiante",
         element: <Student />,
         loader: loaderStudent,
       },
       {
-        path: "/app/altasbajas",
+        path: "/matricula/app/altasbajas",
         element: <AltasBajas />,
       },
       {
-        path: "/app/matricula",
+        path: "/matricula/app/matricula",
         element: (
           <PrivateRutes privilege={"1"}>
             <Matricula />
@@ -65,7 +65,7 @@ export const router = createBrowserRouter([
         },
       },
       {
-        path: "/app/setting",
+        path: "/matricula/app/setting",
         element: (
           <PrivateRutes privilege={"1"}>
             <Setting />

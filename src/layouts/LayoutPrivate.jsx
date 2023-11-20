@@ -10,7 +10,7 @@ const LayoutPrivate = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!auth) return navigate("/");
+    if (!auth) return navigate("/matricula/");
   }, [auth]);
 
   return (

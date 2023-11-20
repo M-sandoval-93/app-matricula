@@ -7,7 +7,7 @@ const LayoutPublic = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (auth) return navigate("/app/home");
+    if (auth) return navigate("/matricula/app/home");
   }, [auth]);
 
   return (

@@ -30,7 +30,7 @@ const Aside = () => {
         <SidebarItem
           icon={<HomeRoundedIcon sx={{ fontSize: 30 }} />}
           text={"Home"}
-          to="/app/home"
+          to="/matricula/app/home"
           active={activeItem === 0}
           onClick={() => handlerActiveItem(0)}
         />
@@ -46,7 +46,7 @@ const Aside = () => {
         <SidebarItem
           icon={<AssignmentIndIcon sx={{ fontSize: 30 }} />}
           text={"Altas/Bajas"}
-          to="/app/altasbajas"
+          to="/matricula/app/altasbajas"
           active={activeItem === 1}
           onClick={() => handlerActiveItem(1)}
         />
@@ -54,7 +54,7 @@ const Aside = () => {
         <SidebarItem
           icon={<SchoolIcon sx={{ fontSize: 30 }} />}
           text={"Matrícula"}
-          to="/app/matricula"
+          to="/matricula/app/matricula"
           active={activeItem === 2}
           onClick={() => handlerActiveItem(2)}
         />
@@ -63,7 +63,7 @@ const Aside = () => {
           <SidebarItem
             icon={<SettingsIcon sx={{ fontSize: 30 }} />}
             text={"Setting"}
-            to="/app/setting"
+            to="/matricula/app/setting"
             active={activeItem === 3}
             onClick={() => handlerActiveItem(3)}
           />
@@ -72,7 +72,7 @@ const Aside = () => {
         <SidebarItem
           icon={<LogoutIcon sx={{ fontSize: 30 }} />}
           text={"Logout"}
-          to="/"
+          to="/matricula/"
           onClick={() => logout()}
           isLast={true}
         />
