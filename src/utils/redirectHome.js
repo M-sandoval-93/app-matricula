@@ -4,7 +4,7 @@ const redirectHome = () => {
   const navigate = useNavigate();
 
   const redirect = () => {
-    navigate("/app/home");
+    navigate("/matricula/app/home");
   };
 
   return redirect;

@@ -45,8 +45,8 @@ const Aside = () => {
 
         <SidebarItem
           icon={<AssignmentIndIcon sx={{ fontSize: 30 }} />}
-          text={"Altas/Bajas"}
-          to="/matricula/app/altasbajas"
+          text={"Cursos"}
+          to="/matricula/app/cursos"
           active={activeItem === 1}
           onClick={() => handlerActiveItem(1)}
         />
