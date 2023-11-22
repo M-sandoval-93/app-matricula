@@ -144,10 +144,8 @@ const FormMatricula = ({
                   value={values.grado}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  disabled={!newMatricula}
                   className={`relative border outline-none rounded-md p-2 text-start w-full
-                  xs:min-w-[8rem] xs:max-w-[8rem] appearance-none hover:cursor-pointer
-                  ${!newMatricula ? "bg-gray-200" : "bg-transparent"}
+                  xs:min-w-[8rem] xs:max-w-[8rem] appearance-none hover:cursor-pointer bg-transparent
                   ${touched.grado && errors.grado && "border-red-500"}
                   ${touched.grado && !errors.grado && "border-green-500"}`}
                 >

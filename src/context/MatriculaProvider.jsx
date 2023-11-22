@@ -18,9 +18,9 @@ export const MatriculaProvider = ({ children, response }) => {
     parseInt(data.periodo) === parseInt(year) && data.proceso_matricula;
 
   // mejorar la actualizacion de los elementos mediante funcion de actualizacion usando objetos como parametros
-  const updateDataMatricula = useCallback((newData) => {
-    setData((prevData) => ({ ...prevData, ...newData }));
-  }, []);
+  // const updateDataMatricula = useCallback((newData) => {
+  //   setData((prevData) => ({ ...prevData, ...newData }));
+  // }, []);
 
   const getDataMatricula = useCallback((matricula) => {
     setData((prevData) => ({ ...prevData, matricula: matricula }));
