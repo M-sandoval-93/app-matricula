@@ -209,6 +209,7 @@ const FormMatricula = ({
             <RutName
               labelRut={"Rut estudiante"}
               labelName={"Nombres estudiantes"}
+              grade={"grado"}
               rut={"rut_estudiante"}
               dvRut={"dv_rut_estudiante"}
               name={"nombres_estudiante"}

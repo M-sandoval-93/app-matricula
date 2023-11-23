@@ -7,6 +7,7 @@ import ErrorMessageInput from "./ErrorMessageInput";
 const RutName = ({
   labelRut, // label del input rut
   labelName, // label del input name
+  grade, // id del input de grado
   rut, // id del input rut
   dvRut, // id del input dv_rut
   name, // id del input nombre
@@ -72,6 +73,7 @@ const RutName = ({
                   getName({
                     val: val,
                     setFieldValue: setFieldValue,
+                    inputGrade: grade,
                     inputDv: dvRut,
                     inputNombre: name,
                     setId: setId,

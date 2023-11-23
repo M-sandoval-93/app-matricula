@@ -56,6 +56,7 @@ export const validateRut = (rut, dv) => {
 export const getName = ({
   val,
   setFieldValue,
+  inputGrade,
   inputDv,
   inputNombre,
   setId,
@@ -77,7 +78,9 @@ export const getName = ({
       .then(({ data }) => {
         const id = data?.id ? data?.id : null;
         const name = data?.message ? data?.message : data?.nombres;
+        const grade = data?.grado ? data?.grado : null;
         setFieldValue(inputNombre, name);
+        grade && setFieldValue(inputGrade, grade);
         setId((prev) => ({ ...prev, [property]: id }));
       })
       .catch((error) => {
