@@ -19,7 +19,7 @@ const useSubmitMatricula = ({ setError, id, onCloseModal }) => {
       id_titular: idTitular,
       id_suplente: idSuplente,
       n_matricula: values.n_matricula,
-      grado: parseInt(values.grado.trim(), 10),
+      grado: parseInt(values.grado, 10),
       fecha_matricula: values.fecha_matricula,
       anio_lectivo: periodo,
     };
