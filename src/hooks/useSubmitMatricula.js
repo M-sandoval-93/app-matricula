@@ -31,10 +31,14 @@ const useSubmitMatricula = ({ setError, id, onCloseModal }) => {
           route: "matricula/updateMatricula",
           object: dataSet,
         }).then((res) => {
+          console.log(res?.data === dataSet?.n_matricula);
           Swal.fire({
             icon: "success",
             title: "Success",
-            text: `Datos de matrícula actualizada !`,
+            text: res?.data === dataSet?.n_matricula 
+                      ? "Datos de matrícula actualizada !" 
+                      : `Numero de matrícula actualizado: ${res?.data}`
+                    ,
           }).then(() => {
             onCloseModal();
           });
