@@ -55,7 +55,7 @@ const ModalMatricula = ({ stateMatricula, onCloseModal }) => {
           idMatricula={idMatricula}
           onCloseModal={onCloseModal}
           updateModalMatricula={updateModalMatricula}
-          stateModalMatricula={modalMatricula.formMatricula}
+          stateFormMatricula={modalMatricula.formMatricula}
         />
       </section>
 
@@ -67,7 +67,7 @@ const ModalMatricula = ({ stateMatricula, onCloseModal }) => {
           updateModalMatricula={updateModalMatricula}
           rut={modalMatricula.rut}
           editSubForm={modalMatricula.editSubForm}
-          stateModalStudent={modalMatricula.formStudent}
+          stateFormStudent={modalMatricula.formStudent}
         />
       </section>
 
@@ -81,7 +81,7 @@ const ModalMatricula = ({ stateMatricula, onCloseModal }) => {
           updateModalMatricula={updateModalMatricula}
           rut={modalMatricula.rut}
           editSubForm={modalMatricula.editSubForm}
-          stateModalRepresentative={modalMatricula.formRepresentative}
+          stateFormRepresentative={modalMatricula.formRepresentative}
         />
       </section>
     </Modal>

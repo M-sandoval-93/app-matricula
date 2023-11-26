@@ -17,7 +17,7 @@ const FormStudent = ({
   updateModalMatricula,
   rut,
   editSubForm,
-  stateModalStudent,
+  stateFormStudent,
 }) => {
   const [error, setError] = useState(null);
   const formikStudentRef = useRef();
@@ -27,7 +27,7 @@ const FormStudent = ({
 
   useEffect(() => {
     // setear formulario y sus campos
-    if (!stateModalStudent) {
+    if (!stateFormStudent) {
       const handleResetFormStudent = formikStudentRef.current.handleReset;
       setTimeout(() => {
         handleResetFormStudent();
@@ -59,7 +59,7 @@ const FormStudent = ({
         dv_rut_estudiante: calculateCheckDigit(rut),
       });
     }
-  }, [stateModalStudent]);
+  }, [stateFormStudent]);
 
   return (
     <Formik

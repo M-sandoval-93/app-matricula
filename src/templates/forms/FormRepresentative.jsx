@@ -17,7 +17,7 @@ const FormRepresentative = ({
   updateModalMatricula,
   rut,
   editSubForm,
-  stateModalRepresentative,
+  stateFormRepresentative,
 }) => {
   const [error, setError] = useState(null);
   const formikRepresentativeRef = useRef();
@@ -29,7 +29,7 @@ const FormRepresentative = ({
   });
 
   useEffect(() => {
-    if (!stateModalRepresentative) {
+    if (!stateFormRepresentative) {
       const handleResetFormRepresentative =
         formikRepresentativeRef.current.handleReset;
       setTimeout(() => {
@@ -64,7 +64,7 @@ const FormRepresentative = ({
         dv_rut_apoderado: calculateCheckDigit(rut),
       });
     }
-  }, [stateModalRepresentative]);
+  }, [stateFormRepresentative]);
 
   return (
     <Formik

@@ -18,9 +18,9 @@ const FormMatricula = ({
   idMatricula,
   onCloseModal,
   updateModalMatricula,
-  stateModalMatricula,
+  stateFormMatricula,
 }) => {
-  const [error, setError] = useState(null); // estado para e manejo de errores
+  const [error, setError] = useState(null); // estado para el manejo de errores
 
   // estado para el manejo de los id
   const [id, setId] = useState({
@@ -74,9 +74,7 @@ const FormMatricula = ({
           setId((prev) => ({
             ...prev,
             idEstudiante: data.id_estudiante,
-            idTitular: data.id_apoderado_titular
-              ? data.id_apoderado_titular
-              : "",
+            idTitular: data.id_apoderado_titular,
             idSuplente: data.id_apoderado_suplente
               ? data.id_apoderado_suplente
               : "",
@@ -85,7 +83,7 @@ const FormMatricula = ({
         })
         .catch((error) => setError(error));
     }
-  }, [stateModal, stateModalMatricula]);
+  }, [stateModal, stateFormMatricula]);
 
   return (
     <Formik

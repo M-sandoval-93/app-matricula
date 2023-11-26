@@ -1,20 +1,20 @@
 const SubTableMatricula = ({ data }) => {
   return (
-    <div className="flex flex-col gap-4 px-16 text-sm">
-      <span>Otros datos del estudiante:</span>
-      <table>
-        <thead>
+    <div className="flex flex-col gap-2 px-16 text-sm">
+      <span className="text-lg font-bold block">Datos estudiantes</span>
+      <table className=" border border-gray-300">
+        <thead className="bg-gray-200 flex justify-start">
           <tr>
-            <th>Fecha Nacimiento</th>
-            <th>Fecha Ingreso</th>
-            <th>Sexo</th>
+            <th className="py-1 px-2 border-b">Fecha Nacimiento</th>
+            <th className="py-1 px-2 border-b">Fecha Ingreso</th>
+            <th className="py-1 px-2 border-b">Sexo</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="flex justify-start">
           <tr>
-            <td>{data.fecha_nacimiento}</td>
-            <td>{data.fecha_alta}</td>
-            <td>{data.sexo}</td>
+            <td className="py-1 px-2 border-b">{data.fecha_nacimiento}</td>
+            <td className="py-1 px-2 border-b">{data.fecha_alta}</td>
+            <td className="py-1 px-2 border-b">{data.sexo}</td>
           </tr>
         </tbody>
       </table>
