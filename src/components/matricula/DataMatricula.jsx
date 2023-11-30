@@ -78,21 +78,27 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
     {
       name: "Ap. paterno",
       selector: (row) => row.paterno,
-      width: "140px",
+      width: "130px",
     },
     {
       name: "Ap. materno",
       selector: (row) => row.materno,
-      width: "140px",
+      width: "130px",
     },
     {
       name: "Nombres",
       selector: (row) => row.nombres,
-      width: "280px",
+      width: "220px",
     },
     {
       name: "Grado",
       selector: (row) => row.grado,
+      width: "80px",
+      center: true,
+    },
+    {
+      name: "Curso",
+      selector: (row) => row.curso,
       width: "80px",
       center: true,
     },
@@ -117,7 +123,8 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
         <div className="flex gap-4">
           {/* boton para descargar certificado */}
           <button
-            className="rounded-full p-1 transition-all duration-300 text-blue-500 
+            title="Descargar certificado"
+            className="rounded-full p-1 transition-all duration-300 text-blue-500
             hover:bg-blue-500 hover:text-white shadow-sm w-10 h-10 flex items-center justify-center"
             onClick={() =>
               exportCertificado({
@@ -136,9 +143,10 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
 
           {/* boton para editar una matricula */}
           <button
+            title="Editar matrícula"
             onClick={() => {
               updateStateMatricula({
-                stateModal: true, // Cambio de estado para lanzar el modal
+                stateModalMatricula: true, // Cambio de estado para lanzar el modal
                 newMatricula: false, // Cambio de estado para modo edicion
                 idMatricula: row.id, // asignación del id de la matrícula
               });
@@ -153,9 +161,10 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
 
           {/* boton para suspender una matricula */}
           <button
+            title="Baja de matrícula"
             onClick={() => alert("Mantenimiento")}
             disabled={!bloqueo_periodo_actual && proceso_matricula}
-            className={`rounded-full p- transition-all duration-300 shadow-sm hover:text-white
+            className={`rounded-full p-1 transition-all duration-300 shadow-sm hover:text-white
               w-10 h-10 flex items-center justify-center
               ${
                 !bloqueo_periodo_actual && proceso_matricula

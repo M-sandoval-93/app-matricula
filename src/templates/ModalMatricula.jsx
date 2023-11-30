@@ -5,7 +5,7 @@ import FormStudent from "./forms/FormStudent";
 import FormRepresentative from "./forms/FormRepresentative";
 
 const ModalMatricula = ({ stateMatricula, onCloseModal }) => {
-  const { stateModal, newMatricula, idMatricula } = stateMatricula; // estados para modulo matricula
+  const { stateModalMatricula, newMatricula, idMatricula } = stateMatricula; // estados para modulo matricula
 
   // estados para trabajar con el modal matricula
   const [modalMatricula, setModalMatricula] = useState({
@@ -23,7 +23,7 @@ const ModalMatricula = ({ stateMatricula, onCloseModal }) => {
 
   // Para controlar que cada vez que se habra el formulario, el estado este correcto
   useEffect(() => {
-    if (stateModal) {
+    if (stateModalMatricula) {
       updateModalMatricula({
         rut: "",
         formMatricula: true,
@@ -32,7 +32,7 @@ const ModalMatricula = ({ stateMatricula, onCloseModal }) => {
         editSubForm: false,
       });
     }
-  }, [stateModal]);
+  }, [stateModalMatricula]);
 
   return (
     <Modal
@@ -41,16 +41,20 @@ const ModalMatricula = ({ stateMatricula, onCloseModal }) => {
         (modalMatricula.formStudent && "REGISTRO ESTUDIANTE") ||
         (modalMatricula.formRepresentative && "REGISTRO APODERADO(A)")
       }
-      stateModal={stateModal}
+      stateModal={stateModalMatricula}
       onCloseModal={onCloseModal}
+      color={"blue"}
+      width={"70%"}
+      height={"70%"}
+      minHeight={"37rem"}
     >
       {/* formulario matricula */}
       <section
-        className={`relative h-full 
+        className={`relative h-full w-full
           ${modalMatricula.formMatricula ? "block" : "hidden"}`}
       >
         <FormMatricula
-          stateModal={stateModal}
+          stateModal={stateModalMatricula}
           newMatricula={newMatricula}
           idMatricula={idMatricula}
           onCloseModal={onCloseModal}

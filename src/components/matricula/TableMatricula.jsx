@@ -14,6 +14,7 @@ import apiGet from "../../api/apiGet";
 
 import ModalMatricula from "../../templates/ModalMatricula";
 import ErrorHandler from "../ErrorHandler";
+import ModalMatriculaReport from "../../templates/ModalMatriculaReport";
 
 const TableMatricula = () => {
   // hook personalizados para trabajar con el contexto de matricula
@@ -23,7 +24,8 @@ const TableMatricula = () => {
   const [stateMatricula, setStateMatricula] = useState({
     filter: "", // datos para el filtro de la tabla
     loading: false, // estado de la carga de datos
-    stateModal: false, // estado del modal de matricula
+    stateModalMatricula: false, // estado del modal de matricula
+    stateModalReport: false, // estado del modal de reportes
     newMatricula: true, // estado para el ingreso de una matricula agregar/editar
     idMatricula: "", // id para modificar una matricula
     error: null, // estado para el control de errores
@@ -34,10 +36,11 @@ const TableMatricula = () => {
     setStateMatricula((prev) => ({ ...prev, ...newState }));
   };
 
-  // función para setear estados al cerrar el modal
+  // función para setear estados al cerrar el modal de matricula
   const onCloseModal = () => {
     updateStateMatricula({
-      stateModal: false,
+      stateModalMatricula: false,
+      stateModalReport: false,
       newMatricula: true,
       idMatricula: "",
     });
@@ -95,6 +98,12 @@ const TableMatricula = () => {
       <ModalMatricula
         stateMatricula={stateMatricula} // estado del modulo de matricula
         onCloseModal={onCloseModal} // metodo para setear modal al cerrar
+      />
+
+      {/* Modal para descargar registro de matricula */}
+      <ModalMatriculaReport
+        stateMatricula={stateMatricula}
+        onCloseModal={onCloseModal}
       />
 
       {/* componente para manejar los errores */}

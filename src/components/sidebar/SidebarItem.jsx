@@ -32,7 +32,7 @@ const SidebarItem = ({ to, icon, text, active, alert, onClick, isLast }) => {
       </span>
 
       <div
-        className={`absolute rounded-md px-2 py-2 ml-12
+        className={`absolute rounded-md p-2 ml-12
          bg-cyan-100 text-blue-500 text-sm md:group-hover:visible
           transition-all duration-300 opacity-20 invisible group-hover:opacity-100
           ${isLast ? "top-3" : "top-6"}

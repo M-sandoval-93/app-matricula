@@ -103,7 +103,7 @@ const FormMatricula = ({
         setFieldValue,
       }) => (
         <form onSubmit={handleSubmit} className={`relative flex-col h-full`}>
-          <main className="relative flex flex-col flex-grow overflow-hidden overflow-y-auto p-2 gap-y-4 h-[26.5rem]">
+          <main className="relative flex flex-col flex-grow overflow-hidden overflow-y-auto p-2 gap-y-4">
             <section className="relative flex flex-col xs:flex-row gap-2 w-full flex-wrap">
               {/* numero matricula */}
               <article className="relative flex flex-col gap-y-2 xs:w-32">

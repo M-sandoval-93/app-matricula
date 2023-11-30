@@ -11,7 +11,7 @@ const HeaderTableMatricula = ({ filter, updateStateMatricula }) => {
   return (
     <div className="relative w-full flex flex-wrap gap-3 items-center justify-center sm:justify-between my-2">
       <button
-        className={`px-2 py-1 border rounded-md hover:shadow-md hover:scale-105
+        className={`px-2 py-1 border rounded-md hover:shadow-md hover:scale-105 group
         text-blue-500 border-blue-500 hover:shadow-blue-600 transition-all duration-200
         ${
           bloqueo_periodo_actual
@@ -19,18 +19,36 @@ const HeaderTableMatricula = ({ filter, updateStateMatricula }) => {
             : "opacity-100 scale-100"
         }`}
         disabled={bloqueo_periodo_actual}
-        onClick={() => updateStateMatricula({ stateModal: true })}
+        onClick={() => updateStateMatricula({ stateModalMatricula: true })}
       >
         <FaUserPlus size={30} />
+        <div
+          className={`invisible opacity-0 absolute p-2 ml-12 -top-[.8rem]
+            bg-cyan-100 text-blue-500 text-sm transition-all duration-300
+            group-hover:visible group-hover:opacity-100 whitespace-nowrap
+            rounded-md
+          `}
+        >
+          Nuevo registro
+        </div>
       </button>
 
       <div className="flex gap-3">
         <button
-          onClick={() => alert("En mantenimiento")}
-          className="px-2 py-1 border rounded-md hover:shadow-md hover:scale-105
+          onClick={() => updateStateMatricula({ stateModalReport: true })}
+          className="px-2 py-1 border rounded-md hover:shadow-md hover:scale-105 group
           text-green-700 border-green-700 hover:shadow-green-900 transition-all duration-200"
         >
           <BsFileEarmarkExcelFill size={30} />
+          <div
+            className={`invisible opacity-0 absolute p-2 -ml-36 -top-[.8rem]
+            bg-cyan-100 text-blue-500 text-sm transition-all duration-300
+            group-hover:visible group-hover:opacity-100 whitespace-nowrap
+            rounded-md
+          `}
+          >
+            Descargar datos
+          </div>
         </button>
 
         <div className="relative flex items-center justify-end gap-2">

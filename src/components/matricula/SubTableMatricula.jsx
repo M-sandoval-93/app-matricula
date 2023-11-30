@@ -1,50 +1,77 @@
 const SubTableMatricula = ({ data }) => {
   return (
-    <div className="flex flex-col gap-2 px-16 text-sm">
-      <span className="text-lg font-bold block">Datos estudiantes</span>
-      <table className=" border border-gray-300">
-        <thead className="bg-gray-200 flex justify-start">
-          <tr>
-            <th className="py-1 px-2 border-b">Fecha Nacimiento</th>
-            <th className="py-1 px-2 border-b">Fecha Ingreso</th>
-            <th className="py-1 px-2 border-b">Sexo</th>
-          </tr>
-        </thead>
-        <tbody className="flex justify-start">
-          <tr>
-            <td className="py-1 px-2 border-b">{data.fecha_nacimiento}</td>
-            <td className="py-1 px-2 border-b">{data.fecha_alta}</td>
-            <td className="py-1 px-2 border-b">{data.sexo}</td>
-          </tr>
-        </tbody>
-      </table>
-      <span>FECHA RETIRO: {data.fecha_baja ?? "SIN FECHA DE RETIRO"}</span>
+    <div className="flex flex-col gap-2 px-16 text-sm mb-6">
+      <span className="text-[1rem] font-bold block -mb-2 mt-2 ml-2">
+        Datos estudiante:
+      </span>
+      <div className="border rounded-md border-gray-300 overflow-hidden">
+        <table className=" w-full">
+          <thead className="bg-gray-200 text-left">
+            <tr>
+              <th className="py-1 px-2">Fecha Nacimiento</th>
+              <th className="py-1 px-2">Sexo</th>
+              <th className="py-1 px-2">Fecha Alta</th>
+              <th className="py-1 px-2">Fecha Baja</th>
+            </tr>
+          </thead>
 
-      <span>Datos apoderados</span>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Rut</th>
-            <th>Nombres</th>
-            <th>Teléfono</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Apoderado(a) Titular</td>
-            <td>{data.rut_titular ?? "SIN REGISTRO"}</td>
-            <td>{data.apoderado_titular ?? "SIN REGISTRO"}</td>
-            <td>{data.telefono_titular ?? "SIN REGISTRO"}</td>
-          </tr>
-          <tr>
-            <td>Apoderado(a) Suplente</td>
-            <td>{data.rut_suplente ?? "SIN REGISTRO"}</td>
-            <td>{data.apoderado_suplente ?? "SIN REGISTRO"}</td>
-            <td>{data.telefono_suplente ?? "SIN REGISTRO"}</td>
-          </tr>
-        </tbody>
-      </table>
+          <tbody className="text-left">
+            <tr>
+              <td className="py-1 px-2">
+                {data.fecha_nacimiento ?? "SIN REGISTRO"}
+              </td>
+              <td className="py-1 px-2">{data.sexo ?? "SIN REGISTRO"}</td>
+              <td className="py-1 px-2">{data.fecha_alta ?? "SIN REGISTRO"}</td>
+              <td className="py-1 px-2 text-red-400">
+                {data.fecha_baja ?? "SIN REGISTRO"}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <span className="text-[1rem] font-bold flex -mb-2 mt-4 ml-2">
+        Datos apoderados:
+      </span>
+      <div className="border rounded-md border-gray-300 overflow-hidden">
+        <table className="w-full">
+          <thead className="bg-gray-200 text-left">
+            <tr>
+              <th className="py-1 px-2">Tipo apoderado (a)</th>
+              <th className="py-1 px-2">Rut</th>
+              <th className="py-1 px-2">Nombres</th>
+              <th className="py-1 px-2">Teléfono</th>
+            </tr>
+          </thead>
+
+          <tbody className="text-left">
+            <tr className="border border-gray-300">
+              <td className="py-1 px-2">Titular</td>
+              <td className="py-1 px-2">
+                {data.rut_titular ?? "SIN REGISTRO"}
+              </td>
+              <td className="py-1 px-2">
+                {data.apoderado_titular ?? "SIN REGISTRO"}
+              </td>
+              <td className="py-1 px-2">
+                {data.telefono_titular ?? "SIN REGISTRO"}
+              </td>
+            </tr>
+            <tr>
+              <td className="py-1 px-2">Suplente</td>
+              <td className="py-1 px-2">
+                {data.rut_suplente ?? "SIN REGISTRO"}
+              </td>
+              <td className="py-1 px-2">
+                {data.apoderado_suplente ?? "SIN REGISTRO"}
+              </td>
+              <td className="py-1 px-2">
+                {data.telefono_suplente ?? "SIN REGISTRO"}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

@@ -4,7 +4,16 @@ import { useEffect, useState } from "react";
 import ErrorHandler from "../components/ErrorHandler";
 import apiGet from "../api/apiGet";
 
-const Modal = ({ children, stateModal, onCloseModal, title }) => {
+const Modal = ({
+  children, // contenido del modal
+  stateModal, // estado del modal
+  onCloseModal, // función para cerrar y setear el modal
+  title, // titulo del modal
+  width, // ancho del modal
+  height, // largo del modal
+  minHeight, // largo maximo del modal
+  color, // color barra superior del modal
+}) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -20,10 +29,13 @@ const Modal = ({ children, stateModal, onCloseModal, title }) => {
     >
       <div
         className={`bg-white rounded-xl shadow transition-all duration-300
-            w-[70%] h-[70%] max-h-[37rem] min-h-[37rem] min-w-[20rem] max-w-[50rem] relative flex flex-col
+            relative flex flex-col w-[${width}] h-[${height}]
+            min-h-[${minHeight}] max-h-[37rem] min-w-[20rem] max-w-[50rem]             
             ${stateModal ? "scale-100 opacity-100" : "scale-125 opacity-0"}`}
       >
-        <header className="relative w-full bg-blue-500 rounded-xl flex items-center justify-between p-4 scale-[102%]">
+        <header
+          className={`relative w-full bg-${color}-500 rounded-xl flex items-center justify-between p-4 scale-[102%] gap-4`}
+        >
           <span className="text-white text-base md:text-lg font-semibold transition-all duration-300">
             {title}
           </span>
