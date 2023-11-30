@@ -44,9 +44,6 @@ const ModalMatricula = ({ stateMatricula, onCloseModal }) => {
       stateModal={stateModalMatricula}
       onCloseModal={onCloseModal}
       color={"blue"}
-      width={"70%"}
-      height={"70%"}
-      minHeight={"37rem"}
     >
       {/* formulario matricula */}
       <section

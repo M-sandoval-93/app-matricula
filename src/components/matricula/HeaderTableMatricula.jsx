@@ -41,7 +41,7 @@ const HeaderTableMatricula = ({ filter, updateStateMatricula }) => {
         >
           <BsFileEarmarkExcelFill size={30} />
           <div
-            className={`invisible opacity-0 absolute p-2 -ml-36 -top-[.8rem]
+            className={`invisible opacity-0 absolute p-2 -ml-[8.5rem] -top-[.8rem]
             bg-cyan-100 text-blue-500 text-sm transition-all duration-300
             group-hover:visible group-hover:opacity-100 whitespace-nowrap
             rounded-md

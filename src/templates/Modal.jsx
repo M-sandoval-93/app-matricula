@@ -9,10 +9,8 @@ const Modal = ({
   stateModal, // estado del modal
   onCloseModal, // función para cerrar y setear el modal
   title, // titulo del modal
-  width, // ancho del modal
-  height, // largo del modal
-  minHeight, // largo maximo del modal
   color, // color barra superior del modal
+  report = false, // para manejar tamaño del modal reportes
 }) => {
   const [error, setError] = useState(null);
 
@@ -29,8 +27,9 @@ const Modal = ({
     >
       <div
         className={`bg-white rounded-xl shadow transition-all duration-300
-            relative flex flex-col w-[${width}] h-[${height}]
-            min-h-[${minHeight}] max-h-[37rem] min-w-[20rem] max-w-[50rem]             
+            relative flex flex-col 
+            ${report ? "w-[40%] max-w-[30rem]" : "w-[80%] min-h-[37.5rem] max-w-[50rem]  " }
+            max-h-[37.5rem] min-w-[20rem]        
             ${stateModal ? "scale-100 opacity-100" : "scale-125 opacity-0"}`}
       >
         <header

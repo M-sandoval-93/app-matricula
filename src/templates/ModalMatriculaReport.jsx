@@ -18,31 +18,29 @@ const ModalMatriculaReport = ({ stateMatricula, onCloseModal }) => {
       title={"DESCARGAR REGISTROS MATRICULA"}
       stateModal={stateModalReport}
       onCloseModal={onCloseModal}
-      width={"50%"}
-      height={"50%"}
       color={"green"}
+      report={true}
     >
       <section className="relative flex flex-col gap-4 mb-4">
         {/* ver como mejorar este erticle, dejar como select, como checbox  o como radiobutton */}
-        <article className="relative flex flex-col w-full gap-2">
+        <article className="relative flex flex-col w-full justify-center items-center">
           <div className="relative flex gap-2">
             <input
               type="checkbox"
               name="checkFullPeriod"
               id="checkFullPeriod"
             />
-            <label htmlFor="checkFullPeriod">Periodo actual completo</label>
-          </div>
-
-          <div className="relative  flex gap-2">
-            <input
-              type="checkbox"
-              name="checkPartialPeriod"
-              id="checkPartialPeriod"
-            />
-            <label htmlFor="checkPartialPeriod">Periodo actual parcial</label>
+            <label 
+              htmlFor="checkFullPeriod" 
+              className="text-lg text-blue-600 font-semibold"
+            >
+              Periodo actual completo
+            </label>
           </div>
         </article>
+
+        {/* linea divisoria */}
+        <span className="w-full bg-gray-300 p-[1px]"></span>
 
         <article className="flex justify-center items-center gap-6">
           <div className="relative flex flex-col gap-y-2 xs:w-40">

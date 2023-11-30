@@ -20,7 +20,7 @@ const TableMatricula = () => {
   // hook personalizados para trabajar con el contexto de matricula
   const { matricula, getDataMatricula, periodo } = useMatricula();
 
-  // estado para lsa variables del modulo de matricula
+  // estado para las variables del modulo de matricula
   const [stateMatricula, setStateMatricula] = useState({
     filter: "", // datos para el filtro de la tabla
     loading: false, // estado de la carga de datos

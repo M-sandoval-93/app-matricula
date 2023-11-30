@@ -30,10 +30,10 @@ const FormMatricula = ({
     idMatricula: "",
   });
 
-  const { onSubmit } = useSubmitMatricula({ setError, id, onCloseModal }); //obtencion del evento submit del formulario
+  const formikMatriculaRef = useRef(); // referencia del formulario
+  const { onSubmit } = useSubmitMatricula({ setError, id, onCloseModal, formikMatriculaRef }); //obtencion del evento submit del formulario
   const initialValues = initialValuesMatricula(); // obtencion de los valores iniciales del formulario
   const validationSchema = validationMatricula(); // obtencion de las validaciones del formulario
-  const formikMatriculaRef = useRef(); // referencia del formulario
 
   // Efecto para limpiar formulario de matricula y asignar valores
   useEffect(() => {

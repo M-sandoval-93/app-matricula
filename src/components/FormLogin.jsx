@@ -29,7 +29,7 @@ const FormLogin = () => {
       .email("E-mail no válido !")
       .required("E-mail requerido !"),
     password: Yup.string()
-      .min(6, "La contraseña debe contener al menos 6 caracteres")
+      .min(5, "La contraseña debe contener al menos 6 caracteres")
       .max(12, "La contraseña no puede tener mas de 12 caracteres")
       .required("Password requerida !")
       .matches(

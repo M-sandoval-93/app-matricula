@@ -79,22 +79,26 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
       name: "Ap. paterno",
       selector: (row) => row.paterno,
       width: "130px",
+      sortable: true,
     },
     {
       name: "Ap. materno",
       selector: (row) => row.materno,
       width: "130px",
+      sortable: true,
     },
     {
       name: "Nombres",
       selector: (row) => row.nombres,
       width: "220px",
+      sortable: true,
     },
     {
       name: "Grado",
       selector: (row) => row.grado,
-      width: "80px",
+      width: "90px",
       center: true,
+      sortable: true,
     },
     {
       name: "Curso",
@@ -106,14 +110,16 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
       name: "Estado",
       cell: (row) => (
         <span
-          className={`p-2 border hover:shadow-md rounded-md
-          ${row.estado === "ACTIVO(A)" && "border-blue-500  text-blue-500"}`}
+          className={`p-2 border hover:shadow-md rounded-md hover:scale-110 
+            transition-all duration-300 w-full flex justify-center items-center
+            ${row.estado === "ACTIVO" && "border-blue-500  text-blue-500"}`}
         >
           {row.estado}
         </span>
       ),
       width: "140px",
       center: true,
+      sortable: true,
     },
     {
       name: "Acciones",
