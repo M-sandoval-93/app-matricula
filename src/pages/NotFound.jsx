@@ -14,7 +14,10 @@ const NotFound = () => {
       <h1>404</h1>
       <p>Page not found</p>
       <p>{error.statusText || error.message}</p>
-      <Link to={stateAuth ? "/app/home" : "/"} onClick={restarSidevarItem}>
+      <Link
+        to={stateAuth ? "matricula/app/home" : "/matricula"}
+        onClick={restarSidevarItem}
+      >
         Volver
       </Link>
     </div>

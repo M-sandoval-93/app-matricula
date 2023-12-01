@@ -3,7 +3,15 @@ import { getCurrentYear } from "../utils/funciones";
 import { useEffect, useState } from "react";
 import useMatricula from "../hooks/useMatricula";
 
-const SelectPeriodo = () => {
+const SelectPeriodo = ({ modulo }) => {
+  // if (modulo === "maticula") {
+  //   const { getPeriodo, periodo, proceso_matricula } = useMatricula();
+  // }
+
+  // if (modulo ===  "curso") {
+  //   const { getPeriodo, periodo, proceso_matricula } = useMatricula();
+  // }
+
   const { getPeriodo, periodo, proceso_matricula } = useMatricula();
   const [currentYear, setCurrentYear] = useState(periodo);
 

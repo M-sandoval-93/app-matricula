@@ -2,7 +2,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import { BsFileEarmarkExcelFill } from "react-icons/bs";
 import { FaUserPlus } from "react-icons/fa";
-
 import useMatricula from "../../hooks/useMatricula";
 
 const HeaderTableMatricula = ({ filter, updateStateMatricula }) => {

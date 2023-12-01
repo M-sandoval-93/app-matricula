@@ -43,6 +43,18 @@ export const router = createBrowserRouter([
       {
         path: "/matricula/app/cursos",
         element: <Cursos />,
+        loader: async () => {
+          try {
+            await apiGet({ route: "validateSession" });
+            const proceso_matricula = await apiGet({
+              route: "matricula/getPeriodoMatricula",
+            });
+            const response = await proceso_matricula?.data?.state;
+            return { response };
+          } catch (error) {
+            return { error };
+          }
+        },
       },
       {
         path: "/matricula/app/matricula",

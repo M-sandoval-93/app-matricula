@@ -1,8 +1,10 @@
 import { createContext, useCallback, useMemo, useState } from "react";
+import { getCurrentYear } from "../utils/funciones";
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
+  const year = getCurrentYear();
   const [auth, setAuth] = useState(() => ({
     auth: sessionStorage.getItem("auth") ?? false,
     authPrivilege: sessionStorage.getItem("authPrivilege") ?? null,

@@ -15,7 +15,7 @@ const Matricula = () => {
       ) : (
         <section className="relative w-auto flex flex-col gap-2 mb-3 overflow-hidden overflow-x-auto">
           <MatriculaProvider response={response}>
-            <SelectPeriodo />
+            <SelectPeriodo modulo={"matricula"} />
             <HeaderMatricula />
             <TableMatricula />
           </MatriculaProvider>
@@ -26,4 +26,3 @@ const Matricula = () => {
 };
 
 export default Matricula;
-

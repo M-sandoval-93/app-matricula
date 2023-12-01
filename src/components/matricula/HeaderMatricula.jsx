@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import useMatricula from "../../hooks/useMatricula";
 import apiGet from "../../api/apiGet";
@@ -8,19 +8,29 @@ import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
 import HeaderTitle from "../HeaderTitle";
 
 const HeaderMatricula = () => {
-  const { altas, bajas, getCountMatricula, periodo } = useMatricula();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const { altas, bajas, updateDataMatricula, periodo } = useMatricula();
+  const [headerMatricula, setHeaderMatricula] = useState({
+    loading: false,
+    error: null,
+  });
+
+  const updateHeaderMatricula = useCallback((newData) => {
+    setHeaderMatricula((prevData) => ({ ...prevData, ...newData }));
+  }, []);
 
   useEffect(() => {
-    setLoading(true);
+    updateHeaderMatricula({ loading: true });
     setTimeout(() => {
       apiGet({ route: "matricula/getCount", param: periodo })
         .then((response) => {
-          getCountMatricula(response.data);
+          // getCountMatricula(response.data);
+          updateDataMatricula({
+            altas: response?.data?.altas,
+            bajas: response?.data?.bajas,
+          });
         })
-        .catch((error) => setError(true))
-        .finally(() => setLoading(false));
+        .catch((error) => updateHeaderMatricula({ error: error }))
+        .finally(() => updateHeaderMatricula({ loading: false }));
     }, 200);
   }, [periodo]);
 
@@ -36,7 +46,9 @@ const HeaderMatricula = () => {
           <GroupAddIcon sx={{ fontSize: 40 }} />
           <div className="relative flex flex-col items-center justify-center">
             <p>Altas</p>
-            {loading || error ? "loading .." : altas}
+            {headerMatricula?.loading || headerMatricula?.error
+              ? "loading .."
+              : altas}
           </div>
         </article>
 
@@ -49,7 +61,9 @@ const HeaderMatricula = () => {
           <GroupRemoveIcon sx={{ fontSize: 40 }} />
           <div className="relative flex flex-col items-center justify-center">
             <p>Bajas</p>
-            {loading || error ? "loading .." : bajas}
+            {headerMatricula?.loading || headerMatricula?.error
+              ? "loading .."
+              : bajas}
           </div>
         </article>
       </section>

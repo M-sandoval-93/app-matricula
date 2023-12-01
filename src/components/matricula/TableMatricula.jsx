@@ -18,7 +18,7 @@ import ModalMatriculaReport from "../../templates/ModalMatriculaReport";
 
 const TableMatricula = () => {
   // hook personalizados para trabajar con el contexto de matricula
-  const { matricula, getDataMatricula, periodo } = useMatricula();
+  const { matricula, updateDataMatricula, periodo } = useMatricula();
 
   // estado para las variables del modulo de matricula
   const [stateMatricula, setStateMatricula] = useState({
@@ -53,7 +53,8 @@ const TableMatricula = () => {
 
     apiGet({ route: "matricula/getAll", param: periodo })
       .then((response) => {
-        getDataMatricula(response.data);
+        // getDataMatricula(response.data);
+        updateDataMatricula({ matricula: response?.data });
         updateStateMatricula({ loading: false });
       })
       .catch((error) => {
