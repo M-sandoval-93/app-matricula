@@ -9,11 +9,10 @@ import Home from "../pages/Home";
 import Matricula from "../pages/Matricula";
 import Setting from "../pages/Setting";
 import NotFound from "../pages/NotFound";
-import Student, { loaderStudent } from "../pages/Student";
+// import Student, { loaderStudent } from "../pages/Student";
 
 import apiGet from "../api/apiGet";
 import Cursos from "../pages/Cursos";
-import useAuth from "../hooks/useAuth";
 
 export const router = createBrowserRouter([
   {
@@ -36,11 +35,11 @@ export const router = createBrowserRouter([
         path: "/matricula/app/home",
         element: <Home />,
       },
-      {
-        path: "/matricula/app/estudiante",
-        element: <Student />,
-        loader: loaderStudent,
-      },
+      // {
+      //   path: "/matricula/app/estudiante",
+      //   element: <Student />,
+      //   loader: loaderStudent,
+      // },
       {
         path: "/matricula/app/cursos",
         element: <Cursos />,

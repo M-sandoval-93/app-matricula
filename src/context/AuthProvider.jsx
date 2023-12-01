@@ -7,13 +7,13 @@ export const AuthProvider = ({ children }) => {
   const year = getCurrentYear(); // obtención del año actual
 
   const [auth, setAuth] = useState(() => ({
-    auth: sessionStorage.getItem("auth") || false,
-    authPrivilege: sessionStorage.getItem("authPrivilege") || null,
-    authToken: sessionStorage.getItem("authToken") || null,
-    authEmail: sessionStorage.getItem("authEmail") || null,
-    authUserName: sessionStorage.getItem("authUserName") || null,
-    authPeriodo: localStorage.getItem("authPeriodo") || year,
-    authProcesoMatricula: localStorage.getItem("authProcesoMatricula") || false,
+    auth: sessionStorage.getItem("auth") ?? false,
+    authPrivilege: sessionStorage.getItem("authPrivilege") ?? null,
+    authToken: sessionStorage.getItem("authToken") ?? null,
+    authEmail: sessionStorage.getItem("authEmail") ?? null,
+    authUserName: sessionStorage.getItem("authUserName") ?? null,
+    authPeriodo: localStorage.getItem("authPeriodo") ?? year,
+    authProcesoMatricula: localStorage.getItem("authProcesoMatricula") ?? false,
   }));
 
   // función para actualizar estados del provider auth
@@ -26,6 +26,12 @@ export const AuthProvider = ({ children }) => {
     updateAuthProvider({authPeriodo: periodo});
     localStorage.setItem("authPeriodo", periodo);
   }, []);
+
+  // asignar el nuevo estado del proceso de matricula
+  const setProcesoMatricula = useCallback((procesoMatricula) => {
+    updateAuthProvider({authProcesoMatricula: procesoMatricula});
+    localStorage.setItem("authProcesoMatricula", procesoMatricula);
+  }, [])
 
   const bloqueoPeriodoActual =
     parseInt(auth.authPeriodo) === parseInt(year) && auth.authProcesoMatricula;
@@ -69,6 +75,7 @@ export const AuthProvider = ({ children }) => {
     () => ({
       updateAuthProvider,
       setPeriodo,
+      setProcesoMatricula,
       bloqueoPeriodoActual,
       login,
       logout,
@@ -77,6 +84,7 @@ export const AuthProvider = ({ children }) => {
     [
       updateAuthProvider,
       setPeriodo,
+      setProcesoMatricula,
       bloqueoPeriodoActual,
       login, 
       logout, 

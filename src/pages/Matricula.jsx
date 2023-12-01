@@ -9,10 +9,11 @@ import useAuth from "../hooks/useAuth";
 
 const Matricula = () => {
   const { response, error } = useLoaderData();
-  const {updateAuthProvider} = useAuth();
+  const {setProcesoMatricula} = useAuth();
 
   useEffect(() => {
-    updateAuthProvider({authProcesoMatricula: response});
+    // updateAuthProvider({authProcesoMatricula: response});
+    setProcesoMatricula(response);
   }, []);
 
   return (
