@@ -14,7 +14,7 @@ const ErrorHandler = ({ error }) => {
       Swal.fire({
         icon: "warning",
         title: "Excepción detectada",
-        text: errorText,
+        text: errorText ?? error,
         // showConfirmButton: false,
         // timer: 1500,
       }).then(() => {

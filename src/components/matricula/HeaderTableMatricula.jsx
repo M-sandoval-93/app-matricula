@@ -2,10 +2,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import { BsFileEarmarkExcelFill } from "react-icons/bs";
 import { FaUserPlus } from "react-icons/fa";
-import useMatricula from "../../hooks/useMatricula";
+import useAuth from "../../hooks/useAuth";
 
 const HeaderTableMatricula = ({ filter, updateStateMatricula }) => {
-  const { bloqueo_periodo_actual } = useMatricula();
+  // const { bloqueo_periodo_actual } = useMatricula();
+  const {bloqueoPeriodoActual} = useAuth();
 
   return (
     <div className="relative w-full flex flex-wrap gap-3 items-center justify-center sm:justify-between my-2">
@@ -13,11 +14,11 @@ const HeaderTableMatricula = ({ filter, updateStateMatricula }) => {
         className={`px-2 py-1 border rounded-md hover:shadow-md hover:scale-105 group
         text-blue-500 border-blue-500 hover:shadow-blue-600 transition-all duration-200
         ${
-          bloqueo_periodo_actual
+          bloqueoPeriodoActual
             ? "opacity-0 scale-125"
             : "opacity-100 scale-100"
         }`}
-        disabled={bloqueo_periodo_actual}
+        disabled={bloqueoPeriodoActual}
         onClick={() => updateStateMatricula({ stateModalMatricula: true })}
       >
         <FaUserPlus size={30} />

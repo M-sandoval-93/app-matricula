@@ -13,6 +13,7 @@ import Student, { loaderStudent } from "../pages/Student";
 
 import apiGet from "../api/apiGet";
 import Cursos from "../pages/Cursos";
+import useAuth from "../hooks/useAuth";
 
 export const router = createBrowserRouter([
   {
@@ -46,13 +47,13 @@ export const router = createBrowserRouter([
         loader: async () => {
           try {
             await apiGet({ route: "validateSession" });
-            const proceso_matricula = await apiGet({
-              route: "matricula/getPeriodoMatricula",
-            });
-            const response = await proceso_matricula?.data?.state;
+            const getProcesoMatricula = await apiGet({route: "matricula/getPeriodoMatricula"});
+            const response = await getProcesoMatricula?.data?.state;
             return { response };
+
           } catch (error) {
             return { error };
+
           }
         },
       },
@@ -66,13 +67,13 @@ export const router = createBrowserRouter([
         loader: async () => {
           try {
             await apiGet({ route: "validateSession" });
-            const proceso_matricula = await apiGet({
-              route: "matricula/getPeriodoMatricula",
-            });
-            const response = await proceso_matricula?.data?.state;
+            const getProcesoMatricula = await apiGet({route: "matricula/getPeriodoMatricula"});
+            const response = await getProcesoMatricula?.data?.state;
             return { response };
+
           } catch (error) {
             return { error };
+
           }
         },
       },

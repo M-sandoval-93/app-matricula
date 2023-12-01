@@ -1,8 +1,9 @@
-import useMatricula from "../../hooks/useMatricula";
+
 import apiGetDocument from "../../api/apiGetDocument";
 import { FaFileDownload } from "react-icons/fa";
 import { MdEditSquare } from "react-icons/md";
 import { ImExit } from "react-icons/im";
+import useAuth from "../../hooks/useAuth";
 
 // funcion para convertir fecha texto a fecha date
 // const formatDate = (date) => {
@@ -10,10 +11,10 @@ import { ImExit } from "react-icons/im";
 //   return `${part[2]}-${part[1]}-${part[0]}`;
 // };
 
-const certificadoAlumnoRegular = ({ rut, updateStateMatricula, periodo }) => {
+const certificadoAlumnoRegular = ({ rut, updateStateMatricula, authPeriodo }) => {
   apiGetDocument({
     route: "report/getCertificadoAlumnoRegular",
-    param: `${rut}/${periodo}`,
+    param: `${rut}/${authPeriodo}`,
   })
     .then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -24,13 +25,14 @@ const certificadoAlumnoRegular = ({ rut, updateStateMatricula, periodo }) => {
       link.remove();
       window.URL.revokeObjectURL(url);
     })
-    .catch((error) => updateStateMatricula({ error: error }));
+    .catch((error) => updateStateMatricula({ error: "Matricula sin curso asignado!" })
+    );
 };
 
-const certificadoMatricula = ({ rut, updateStateMatricula, periodo }) => {
+const certificadoMatricula = ({ rut, updateStateMatricula, authPeriodo }) => {
   apiGetDocument({
     route: "report/getCertificadoMatricula",
-    param: `${rut}/${periodo}`,
+    param: `${rut}/${authPeriodo}`,
   })
     .then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -45,22 +47,23 @@ const certificadoMatricula = ({ rut, updateStateMatricula, periodo }) => {
 };
 
 const exportCertificado = ({
-  bloqueo_periodo_actual,
-  proceso_matricula,
+  bloqueoPeriodoActual,
+  authProcesoMatricula,
   rut,
   updateStateMatricula,
-  periodo,
+  authPeriodo,
 }) => {
-  if (bloqueo_periodo_actual || !proceso_matricula) {
-    certificadoAlumnoRegular({ rut, updateStateMatricula, periodo });
+  if (bloqueoPeriodoActual || !authProcesoMatricula) {
+    certificadoAlumnoRegular({ rut, updateStateMatricula, authPeriodo });
     return;
   }
 
-  certificadoMatricula({ rut, updateStateMatricula, periodo });
+  certificadoMatricula({ rut, updateStateMatricula, authPeriodo });
 };
 
 export const columnsMatricula = ({ updateStateMatricula }) => {
-  const { bloqueo_periodo_actual, proceso_matricula, periodo } = useMatricula();
+  // const { bloqueo_periodo_actual, proceso_matricula, periodo } = useMatricula();
+  const {bloqueoPeriodoActual, authProcesoMatricula, authPeriodo} = useAuth();
 
   return [
     {
@@ -74,7 +77,6 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
       selector: (row) => row.rut,
       width: "130px",
     },
-
     {
       name: "Ap. paterno",
       selector: (row) => row.paterno,
@@ -134,11 +136,11 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
             hover:bg-blue-500 hover:text-white shadow-sm w-10 h-10 flex items-center justify-center"
             onClick={() =>
               exportCertificado({
-                bloqueo_periodo_actual,
-                proceso_matricula,
+                bloqueoPeriodoActual,
+                authProcesoMatricula,
                 rut: row.rut.slice(0, row.rut.length - 2),
                 updateStateMatricula,
-                periodo,
+                authPeriodo,
               })
             }
           >
@@ -169,11 +171,11 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
           <button
             title="Baja de matrícula"
             onClick={() => alert("Mantenimiento")}
-            disabled={!bloqueo_periodo_actual && proceso_matricula}
+            disabled={!bloqueoPeriodoActual && authProcesoMatricula}
             className={`rounded-full p-1 transition-all duration-300 shadow-sm hover:text-white
               w-10 h-10 flex items-center justify-center
               ${
-                !bloqueo_periodo_actual && proceso_matricula
+                !bloqueoPeriodoActual && authProcesoMatricula
                   ? "text-gray-500 hover:bg-gray-700"
                   : "text-red-500 hover:bg-red-500"
               }`}

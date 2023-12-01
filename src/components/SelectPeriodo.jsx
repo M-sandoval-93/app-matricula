@@ -1,29 +1,23 @@
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { getCurrentYear } from "../utils/funciones";
 import { useEffect, useState } from "react";
-import useMatricula from "../hooks/useMatricula";
+import useAuth from "../hooks/useAuth";
 
-const SelectPeriodo = ({ modulo }) => {
-  // if (modulo === "maticula") {
-  //   const { getPeriodo, periodo, proceso_matricula } = useMatricula();
-  // }
+const SelectPeriodo = () => {
+  // const { getPeriodo, periodo, proceso_matricula } = useMatricula();
 
-  // if (modulo ===  "curso") {
-  //   const { getPeriodo, periodo, proceso_matricula } = useMatricula();
-  // }
-
-  const { getPeriodo, periodo, proceso_matricula } = useMatricula();
-  const [currentYear, setCurrentYear] = useState(periodo);
+  const {authPeriodo, authProcesoMatricula, setPeriodo} = useAuth();
+  const [currentYear, setCurrentYear] = useState(authPeriodo);
 
   useEffect(() => {
-    if (!proceso_matricula) {
-      getPeriodo(getCurrentYear());
+    if (!authProcesoMatricula) {
+      setPeriodo(getCurrentYear());
     }
   }, []);
 
   return (
     <section
-      className={`${proceso_matricula ? "flex" : "hidden"}
+      className={`${authProcesoMatricula ? "flex" : "hidden"}
                 relative w-full xs:w-[18rem] gap-2 justify-start items-center sx:mx-2`}
     >
       <label
@@ -38,7 +32,7 @@ const SelectPeriodo = ({ modulo }) => {
         value={currentYear}
         onChange={(e) => {
           setCurrentYear(e.target.value);
-          getPeriodo(e.target.value);
+          setPeriodo(e.target.value);
         }}
         className={`relative border outline-none rounded-md p-[.62rem] text-start w-full
           appearance-none cursor-pointer bg-transparent hover:bg-gray-200 transition-all duration-300`}

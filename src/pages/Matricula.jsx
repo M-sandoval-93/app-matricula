@@ -4,24 +4,30 @@ import HeaderMatricula from "../components/matricula/HeaderMatricula";
 import ErrorHandler from "../components/ErrorHandler";
 import { MatriculaProvider } from "../context/MatriculaProvider";
 import SelectPeriodo from "../components/SelectPeriodo";
+import { useEffect } from "react";
+import useAuth from "../hooks/useAuth";
 
 const Matricula = () => {
   const { response, error } = useLoaderData();
+  const {updateAuthProvider} = useAuth();
+
+  useEffect(() => {
+    updateAuthProvider({authProcesoMatricula: response});
+  }, []);
 
   return (
-    <>
-      {error ? (
-        <ErrorHandler error={error} />
-      ) : (
-        <section className="relative w-auto flex flex-col gap-2 mb-3 overflow-hidden overflow-x-auto">
-          <MatriculaProvider response={response}>
-            <SelectPeriodo modulo={"matricula"} />
+    <section className="relative w-auto flex flex-col gap-2 mb-3 overflow-hidden overflow-x-auto">
+      {error ? 
+        (<ErrorHandler error={error} />) : 
+        (
+          <MatriculaProvider>
+            <SelectPeriodo />
             <HeaderMatricula />
             <TableMatricula />
           </MatriculaProvider>
-        </section>
-      )}
-    </>
+        )
+      }
+    </section>
   );
 };
 

@@ -15,10 +15,13 @@ import apiGet from "../../api/apiGet";
 import ModalMatricula from "../../templates/ModalMatricula";
 import ErrorHandler from "../ErrorHandler";
 import ModalMatriculaReport from "../../templates/ModalMatriculaReport";
+import useAuth from "../../hooks/useAuth";
 
 const TableMatricula = () => {
   // hook personalizados para trabajar con el contexto de matricula
-  const { matricula, updateDataMatricula, periodo } = useMatricula();
+  // const { matricula, updateDataMatricula, periodo } = useMatricula();
+  const {authPeriodo} = useAuth();
+  const { matricula, updateDataMatricula } = useMatricula();
 
   // estado para las variables del modulo de matricula
   const [stateMatricula, setStateMatricula] = useState({
@@ -51,7 +54,7 @@ const TableMatricula = () => {
   useEffect(() => {
     updateStateMatricula({ loading: true });
 
-    apiGet({ route: "matricula/getAll", param: periodo })
+    apiGet({ route: "matricula/getAll", param: authPeriodo })
       .then((response) => {
         // getDataMatricula(response.data);
         updateDataMatricula({ matricula: response?.data });
@@ -63,7 +66,7 @@ const TableMatricula = () => {
           loading: false,
         });
       });
-  }, [periodo]);
+  }, [authPeriodo]);
 
   return (
     <main className="relative rounded-md border border-gray-200 p-2">

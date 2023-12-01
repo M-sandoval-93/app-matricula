@@ -4,19 +4,37 @@ import { getCurrentYear } from "../utils/funciones";
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-  const year = getCurrentYear();
+  const year = getCurrentYear(); // obtención del año actual
+
   const [auth, setAuth] = useState(() => ({
-    auth: sessionStorage.getItem("auth") ?? false,
-    authPrivilege: sessionStorage.getItem("authPrivilege") ?? null,
-    authToken: sessionStorage.getItem("authToken" ?? null),
-    authEmail: sessionStorage.getItem("authEmail" ?? null),
-    authUserName: sessionStorage.getItem("authUserName" ?? null),
+    auth: sessionStorage.getItem("auth") || false,
+    authPrivilege: sessionStorage.getItem("authPrivilege") || null,
+    authToken: sessionStorage.getItem("authToken") || null,
+    authEmail: sessionStorage.getItem("authEmail") || null,
+    authUserName: sessionStorage.getItem("authUserName") || null,
+    authPeriodo: localStorage.getItem("authPeriodo") || year,
+    authProcesoMatricula: localStorage.getItem("authProcesoMatricula") || false,
   }));
 
+  // función para actualizar estados del provider auth
+  const updateAuthProvider = useCallback((newData) => {
+    setAuth((prevData) => ({...prevData, ...newData}));
+  }, []);
+
+  // asigna el nuevo periodo escolar
+  const setPeriodo = useCallback((periodo) => {
+    updateAuthProvider({authPeriodo: periodo});
+    localStorage.setItem("authPeriodo", periodo);
+  }, []);
+
+  const bloqueoPeriodoActual =
+    parseInt(auth.authPeriodo) === parseInt(year) && auth.authProcesoMatricula;
+
+  // función para iniciar sesión
   const login = useCallback((privilege, token, email, userName) => {
-    setAuth({
-      auth: true,
-      authPrivilege: privilege,
+    updateAuthProvider({
+      auth: true, 
+      authPrivilege: privilege, 
       authToken: token,
       authEmail: email,
       authUserName: userName,
@@ -29,10 +47,11 @@ export const AuthProvider = ({ children }) => {
     sessionStorage.setItem("authUserName", userName.toString());
   }, []);
 
+  // función para cerrar sesión
   const logout = useCallback(() => {
-    setAuth({
-      auth: false,
-      authPrivilege: null,
+    updateAuthProvider({
+      auth: false, 
+      authPrivilege: null, 
       authToken: null,
       authEmail: null,
       authUserName: null,
@@ -45,13 +64,24 @@ export const AuthProvider = ({ children }) => {
     sessionStorage.removeItem("authUserName");
   }, []);
 
+  // valores del provider
   const value = useMemo(
     () => ({
+      updateAuthProvider,
+      setPeriodo,
+      bloqueoPeriodoActual,
       login,
       logout,
       ...auth,
     }),
-    [login, logout, auth]
+    [
+      updateAuthProvider,
+      setPeriodo,
+      bloqueoPeriodoActual,
+      login, 
+      logout, 
+      auth
+    ]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

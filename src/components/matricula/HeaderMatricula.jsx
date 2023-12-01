@@ -6,14 +6,18 @@ import apiGet from "../../api/apiGet";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
 import HeaderTitle from "../HeaderTitle";
+import useAuth from "../../hooks/useAuth";
 
 const HeaderMatricula = () => {
-  const { altas, bajas, updateDataMatricula, periodo } = useMatricula();
+  const {authPeriodo} = useAuth()
+  // const { altas, bajas, updateDataMatricula, periodo } = useMatricula();
+  const { altas, bajas, updateDataMatricula } = useMatricula();
   const [headerMatricula, setHeaderMatricula] = useState({
     loading: false,
     error: null,
   });
 
+  // actualizadador del estado de los componentes
   const updateHeaderMatricula = useCallback((newData) => {
     setHeaderMatricula((prevData) => ({ ...prevData, ...newData }));
   }, []);
@@ -21,9 +25,8 @@ const HeaderMatricula = () => {
   useEffect(() => {
     updateHeaderMatricula({ loading: true });
     setTimeout(() => {
-      apiGet({ route: "matricula/getCount", param: periodo })
+      apiGet({ route: "matricula/getCount", param: authPeriodo })
         .then((response) => {
-          // getCountMatricula(response.data);
           updateDataMatricula({
             altas: response?.data?.altas,
             bajas: response?.data?.bajas,
@@ -32,7 +35,7 @@ const HeaderMatricula = () => {
         .catch((error) => updateHeaderMatricula({ error: error }))
         .finally(() => updateHeaderMatricula({ loading: false }));
     }, 200);
-  }, [periodo]);
+  }, [authPeriodo]);
 
   return (
     <HeaderTitle title={"Registro matrículas"}>
@@ -40,8 +43,8 @@ const HeaderMatricula = () => {
         {/* tarjeta altas del año */}
         <article
           className="w-full xs:w-44 min-w-[11rem] flex gap-4 items-center justify-center py-1
-         text-green-500 border border-green-600 rounded-md transition-all duration-300
-         hover:shadow-md hover:shadow-green-400 hover:cursor-pointer hover:scale-105"
+          text-green-500 border border-green-600 rounded-md transition-all duration-300
+            hover:shadow-md hover:shadow-green-400 hover:cursor-pointer hover:scale-105"
         >
           <GroupAddIcon sx={{ fontSize: 40 }} />
           <div className="relative flex flex-col items-center justify-center">
