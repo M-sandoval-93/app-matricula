@@ -18,20 +18,23 @@ export const AuthProvider = ({ children }) => {
 
   // función para actualizar estados del provider auth
   const updateAuthProvider = useCallback((newData) => {
-    setAuth((prevData) => ({...prevData, ...newData}));
+    setAuth((prevData) => ({ ...prevData, ...newData }));
   }, []);
 
   // asigna el nuevo periodo escolar
   const setPeriodo = useCallback((periodo) => {
-    updateAuthProvider({authPeriodo: periodo});
+    updateAuthProvider({ authPeriodo: periodo });
     localStorage.setItem("authPeriodo", periodo);
   }, []);
 
   // asignar el nuevo estado del proceso de matricula
   const setProcesoMatricula = useCallback((procesoMatricula) => {
-    updateAuthProvider({authProcesoMatricula: procesoMatricula});
+    updateAuthProvider({ authProcesoMatricula: procesoMatricula });
     localStorage.setItem("authProcesoMatricula", procesoMatricula);
-  }, [])
+
+    if (procesoMatricula === false) setPeriodo(year);
+    // setPeriodo(year);
+  }, []);
 
   const bloqueoPeriodoActual =
     parseInt(auth.authPeriodo) === parseInt(year) && auth.authProcesoMatricula;
@@ -39,8 +42,8 @@ export const AuthProvider = ({ children }) => {
   // función para iniciar sesión
   const login = useCallback((privilege, token, email, userName) => {
     updateAuthProvider({
-      auth: true, 
-      authPrivilege: privilege, 
+      auth: true,
+      authPrivilege: privilege,
       authToken: token,
       authEmail: email,
       authUserName: userName,
@@ -56,8 +59,8 @@ export const AuthProvider = ({ children }) => {
   // función para cerrar sesión
   const logout = useCallback(() => {
     updateAuthProvider({
-      auth: false, 
-      authPrivilege: null, 
+      auth: false,
+      authPrivilege: null,
       authToken: null,
       authEmail: null,
       authUserName: null,
@@ -86,9 +89,9 @@ export const AuthProvider = ({ children }) => {
       setPeriodo,
       setProcesoMatricula,
       bloqueoPeriodoActual,
-      login, 
-      logout, 
-      auth
+      login,
+      logout,
+      auth,
     ]
   );
 

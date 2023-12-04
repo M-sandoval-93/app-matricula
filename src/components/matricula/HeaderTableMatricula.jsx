@@ -5,8 +5,7 @@ import { FaUserPlus } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth";
 
 const HeaderTableMatricula = ({ filter, updateStateMatricula }) => {
-  // const { bloqueo_periodo_actual } = useMatricula();
-  const {bloqueoPeriodoActual} = useAuth();
+  const { bloqueoPeriodoActual } = useAuth();
 
   return (
     <div className="relative w-full flex flex-wrap gap-3 items-center justify-center sm:justify-between my-2">
@@ -15,10 +14,9 @@ const HeaderTableMatricula = ({ filter, updateStateMatricula }) => {
         text-blue-500 border-blue-500 hover:shadow-blue-600 transition-all duration-200
         ${
           bloqueoPeriodoActual
-            ? "opacity-0 scale-125"
+            ? "opacity-0 scale-125 cursor-not-allowed pointer-events-none"
             : "opacity-100 scale-100"
         }`}
-        disabled={bloqueoPeriodoActual}
         onClick={() => updateStateMatricula({ stateModalMatricula: true })}
       >
         <FaUserPlus size={30} />

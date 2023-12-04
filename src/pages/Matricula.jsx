@@ -9,25 +9,23 @@ import useAuth from "../hooks/useAuth";
 
 const Matricula = () => {
   const { response, error } = useLoaderData();
-  const {setProcesoMatricula} = useAuth();
+  const { setProcesoMatricula } = useAuth();
 
   useEffect(() => {
-    // updateAuthProvider({authProcesoMatricula: response});
     setProcesoMatricula(response);
-  }, []);
+  }, [response]);
 
   return (
     <section className="relative w-auto flex flex-col gap-2 mb-3 overflow-hidden overflow-x-auto">
-      {error ? 
-        (<ErrorHandler error={error} />) : 
-        (
-          <MatriculaProvider>
-            <SelectPeriodo />
-            <HeaderMatricula />
-            <TableMatricula />
-          </MatriculaProvider>
-        )
-      }
+      {error ? (
+        <ErrorHandler error={error} />
+      ) : (
+        <MatriculaProvider>
+          <SelectPeriodo />
+          <HeaderMatricula />
+          <TableMatricula />
+        </MatriculaProvider>
+      )}
     </section>
   );
 };

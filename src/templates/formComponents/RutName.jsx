@@ -1,8 +1,8 @@
 import { MdAdd } from "react-icons/md";
 import { RiEdit2Fill } from "react-icons/ri";
 import { getName, stringFormat } from "../../utils/funciones";
-import useMatricula from "../../hooks/useMatricula";
 import ErrorMessageInput from "./ErrorMessageInput";
+import useAuth from "../../hooks/useAuth";
 
 const RutName = ({
   labelRut, // label del input rut
@@ -23,7 +23,7 @@ const RutName = ({
   type, // indica el tipo de dato que se trabajara; estudiante, titular, suplente
   updateModalMatricula, // actualizar estados del modal matricula
 }) => {
-  const { periodo } = useMatricula();
+  const { authPeriodo } = useAuth();
 
   // funcion para obtener el rut para un nuevo ingreso o edicion de estudiante/apoderado
   const getRut = () => {
@@ -78,7 +78,7 @@ const RutName = ({
                     inputNombre: name,
                     setId: setId,
                     property: property,
-                    periodo: periodo,
+                    periodo: authPeriodo,
                   })
                 )
               }

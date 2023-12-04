@@ -4,16 +4,12 @@ import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
 
 const SelectPeriodo = () => {
-  const {authPeriodo, authProcesoMatricula, setPeriodo} = useAuth();
+  const { authPeriodo, authProcesoMatricula, setPeriodo } = useAuth();
   const [currentYear, setCurrentYear] = useState(authPeriodo);
 
-  // ver el error, ya que al recargar, se vuelva al periodo actual
   useEffect(() => {
-    if (!authProcesoMatricula) {
-      setPeriodo(getCurrentYear());
-    }
-  }, []);
-  // probar activando y desactivando proceso de matricula
+    setCurrentYear(authPeriodo);
+  }, [authProcesoMatricula]);
 
   return (
     <section
