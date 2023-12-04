@@ -4,8 +4,7 @@ import { TbExchange } from "react-icons/tb";
 import { LiaSchoolSolid } from "react-icons/lia";
 import { MdOutlineExitToApp } from "react-icons/md";
 import useAuth from "../hooks/useAuth";
-import { getCurrentYear } from "../utils/funciones";
-import { parse } from "postcss";
+import { getCurrentYear, getReportMatricula } from "../utils/funciones";
 
 const ModalMatriculaReport = ({ stateMatricula, onCloseModal }) => {
   const { stateModalReport } = stateMatricula;
@@ -147,7 +146,7 @@ const ModalMatriculaReport = ({ stateMatricula, onCloseModal }) => {
         </button>
 
         <button
-          onClick={() => getReport(modalReport)}
+          onClick={() => getReportMatricula({stateObject: modalReport, periodo: authPeriodo})}
           className={`relative flex items-center justify-center bg-gray-100
             rounded-full w-10 h-10 p-1 shadow-md text-green-500
             hover:text-white hover:bg-green-500

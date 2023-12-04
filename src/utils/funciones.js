@@ -1,4 +1,6 @@
+import Swal from "sweetalert2";
 import apiGet from "../api/apiGet";
+import apiGetDocument from "../api/apiGetDocument";
 
 // funcion para restringir number, devuelve un number
 // function to restrict number, returns a number
@@ -122,4 +124,38 @@ export const getCurrentYear = () => {
   const fecha = new Date();
   const y = fecha.getFullYear();
   return y;
+};
+
+// funcion para obtener excel con registro matriculas
+export const getReportMatricula = ( {stateObject, periodo} ) => {
+  const {fullPeriod, dateFrom, dateTo} = stateObject;
+
+  if (!fullPeriod && (dateFrom === "" || dateTo === "")) {
+    Swal.fire({
+      icon: "warning",
+      title: "Excepción detectada",
+      text: "Seleccionar fechas",
+    });
+    return;
+  }
+  
+  const from = fullPeriod ? '2023-01-01' : dateFrom;
+  const to = fullPeriod ? `${getCurrentYear()}-12-31` : dateTo;
+
+  apiGetDocument({
+    route: "report/getReportMatricula",
+    param: `${from}/${to}/${periodo}`,
+  })
+    .then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `ReporteMatricula_${getCurrentYear()}.xlsx`);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    })
+    .catch((error) => console.log(error));
+
+
 };
