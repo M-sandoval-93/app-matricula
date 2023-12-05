@@ -42,7 +42,7 @@ const ModalMatriculaReport = ({ stateMatricula, onCloseModal }) => {
       dateFrom: "",
       dateTo: "",
     });
-  }, []);
+  }, [stateModalReport]);
 
   return (
     <Modal
@@ -146,7 +146,12 @@ const ModalMatriculaReport = ({ stateMatricula, onCloseModal }) => {
         </button>
 
         <button
-          onClick={() => getReportMatricula({stateObject: modalReport, periodo: authPeriodo})}
+          onClick={() =>
+            getReportMatricula({
+              stateObject: modalReport,
+              periodo: authPeriodo,
+            })
+          }
           className={`relative flex items-center justify-center bg-gray-100
             rounded-full w-10 h-10 p-1 shadow-md text-green-500
             hover:text-white hover:bg-green-500

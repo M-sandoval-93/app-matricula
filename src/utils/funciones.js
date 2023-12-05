@@ -127,8 +127,8 @@ export const getCurrentYear = () => {
 };
 
 // funcion para obtener excel con registro matriculas
-export const getReportMatricula = ( {stateObject, periodo} ) => {
-  const {fullPeriod, dateFrom, dateTo} = stateObject;
+export const getReportMatricula = ({ stateObject, periodo }) => {
+  const { fullPeriod, dateFrom, dateTo } = stateObject;
 
   if (!fullPeriod && (dateFrom === "" || dateTo === "")) {
     Swal.fire({
@@ -138,8 +138,8 @@ export const getReportMatricula = ( {stateObject, periodo} ) => {
     });
     return;
   }
-  
-  const from = fullPeriod ? '2023-01-01' : dateFrom;
+
+  const from = fullPeriod ? "2023-01-01" : dateFrom;
   const to = fullPeriod ? `${getCurrentYear()}-12-31` : dateTo;
 
   apiGetDocument({
@@ -150,12 +150,10 @@ export const getReportMatricula = ( {stateObject, periodo} ) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", `ReporteMatricula_${getCurrentYear()}.xlsx`);
+      link.setAttribute("download", `ReporteMatricula_${periodo}.xlsx`);
       link.click();
       link.remove();
       window.URL.revokeObjectURL(url);
     })
     .catch((error) => console.log(error));
-
-
 };
