@@ -155,5 +155,6 @@ export const getReportMatricula = ({ stateObject, periodo }) => {
       link.remove();
       window.URL.revokeObjectURL(url);
     })
+    // TRABAJAR EN EXPIRACION DEL TOKEN
     .catch((error) => console.log(error));
 };

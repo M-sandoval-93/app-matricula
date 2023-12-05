@@ -14,10 +14,13 @@ export const MatriculaProvider = ({ children }) => {
     setData((prevData) => ({ ...prevData, ...newData }));
   }, []);
 
-  const value = useMemo(() => ({
+  const value = useMemo(
+    () => ({
       updateDataMatricula,
       ...data,
-    }), [updateDataMatricula, data]);
+    }),
+    [updateDataMatricula, data]
+  );
 
   return (
     <MatriculaContext.Provider value={value}>

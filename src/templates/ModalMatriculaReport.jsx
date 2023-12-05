@@ -114,7 +114,7 @@ const ModalMatriculaReport = ({ stateMatricula, onCloseModal }) => {
       <section className="relative flex justify-between items-center m-8  px-4">
         <button
           disabled={parseInt(authPeriodo) !== getCurrentYear() ? true : false}
-          onClick={() => getReport("cambio apoderado")}
+          onClick={() => alert("Mantenimiento")}
           className={`relative flex items-center justify-center
             rounded-full w-10 h-10 p-1 shadow-md
             transition-all duration-300 group
@@ -174,7 +174,7 @@ const ModalMatriculaReport = ({ stateMatricula, onCloseModal }) => {
 
         <button
           disabled={parseInt(authPeriodo) !== getCurrentYear() ? true : false}
-          onClick={() => getReport("baja matriculas")}
+          onClick={() => alert("Mantenimiento")}
           className={`relative flex items-center justify-center
             rounded-full w-10 h-10 p-1 shadow-md 
             transition-all duration-300 group

@@ -3,42 +3,33 @@ import { getCurrentYear } from "../utils/funciones";
 
 const CursoContext = createContext({});
 
-export const CursoProvider = ({children, response}) => {
-    const year = getCurrentYear();
-    const [data, setData] = useState({
-        curso: [],
-        grade: null,
-        periodo: localStorage.getItem("periodo") || year,
-        proceso_matricula: localStorage.getItem("proceso_matricula") || response,
-    });
+export const CursoProvider = ({ children, response }) => {
+  const year = getCurrentYear();
+  const [data, setData] = useState({
+    altaMatricula: [],
+    letter: [], // usado para suministrar data en header y select
+    selectGrade: null,
+    selectLetter: null,
+    // grade7: 0,
+    // grade8: 0,
+  });
 
-    // restablecer periodo cuando se active o desactive el proceso de matricula
-    const bloqueo_periodo_actual =
-    parseInt(data.periodo) === parseInt(year) && data.proceso_matricula;
+  // Actualizador del objeto de contextos
+  const updateDataCurso = useCallback((newData) => {
+    setData((prevData) => ({ ...prevData, ...newData }));
+  }, []);
 
-    // Actualizador del objeto de contextos
-    const updateDataCurso = useCallback((newData) => {
-        setData((prevData) => ({...prevData, ...newData}));
-    }, []);
+  const value = useMemo(
+    () => ({
+      updateDataCurso,
+      ...data,
+    }),
+    [updateDataCurso, data]
+  );
 
-    const value = useMemo(
-        () => ({
-            bloqueo_periodo_actual,
-            updateDataCurso,
-            ...data,
-        }),
-        [
-            bloqueo_periodo_actual,
-            updateDataCurso,
-            data,
-        ]
-    );
-
-    return (
-        <CursoContext.Provider value={value}>
-            {children}
-        </CursoContext.Provider>
-    );
+  return (
+    <CursoContext.Provider value={value}>{children}</CursoContext.Provider>
+  );
 };
 
 export default CursoContext;
