@@ -3,9 +3,11 @@ import apiGet from "../api/apiGet";
 import apiPut from "../api/apiPut";
 import useMatricula from "./useMatricula";
 import apiPost from "../api/apiPost";
+import useAuth from "./useAuth";
 
 const useSubmitRepresentative = ({ setErrors, updateModalMatricula }) => {
-  const { getDataMatricula, periodo } = useMatricula();
+  const { updateDataMatricula } = useMatricula();
+  const { authPeriodo } = useAuth();
   const onSubmit = async (
     values,
     { setSubmitting, setErrors, errors, resetForm }
@@ -70,8 +72,8 @@ const useSubmitRepresentative = ({ setErrors, updateModalMatricula }) => {
       console.log(error);
     } finally {
       // actualización de la tabla de matricula
-      await apiGet({ route: "matricula/getAll", param: periodo }).then(
-        (responseGet) => getDataMatricula(responseGet?.data)
+      await apiGet({ route: "matricula/getAll", param: authPeriodo }).then(
+        (responseGet) => updateDataMatricula({ matricula: responseGet?.data })
       );
       setSubmitting(false);
     }

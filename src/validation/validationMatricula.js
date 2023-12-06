@@ -26,22 +26,25 @@ const validationMatricula = () => {
     //   .trim()
     //   .notOneOf(
     //     ["Sin registro de estudiante !"],
-    //     "El rut no se encuentra ingresado", 
+    //     "El rut no se encuentra ingresado",
     //   )
     //   .notOneOf(
     //     ["El rut no esta en lista SAE !"],
     //     "El estudiante no puede ser matriculado"
     //   ),
     nombres_estudiante: Yup.string()
-        .optional()
-        .trim()
-        .test('not-valid-rut', "El rut no se encuentra ingresado", (value) => {
-          return value !== "Sin registro de estudiante !"
-        })
-        .test('not-is-sae-list', "El estudiante no puede ser matriculado", (value) => {
-          return value !== "El rut no esta en lista SAE !"
-        }),
-
+      .optional()
+      .trim()
+      .test("not-valid-rut", "El rut no se encuentra ingresado", (value) => {
+        return value !== "Sin registro de estudiante !";
+      })
+      .test(
+        "not-is-sae-list",
+        "El estudiante no puede ser matriculado",
+        (value) => {
+          return value !== "El rut no esta en lista SAE !";
+        }
+      ),
 
     grado: Yup.string()
       .max(1, "Solo se admite un dígito")
@@ -49,12 +52,14 @@ const validationMatricula = () => {
       .required("La asignación del grado es obligatorio !"),
 
     rut_titular: Yup.string()
+      .optional()
       .trim()
       .min(7, "El rut debe tener un minimo de 7 caracteres !")
-      .max(9, "El rut no debe tener más de 9 caracteres !")
-      .required("Rut de apoderado(a) titular requerido !"),
+      .max(9, "El rut no debe tener más de 9 caracteres !"),
+    // .required("Rut de apoderado(a) titular requerido !"),
 
     dv_rut_titular: Yup.string()
+      .optional()
       .trim()
       .max(1, "Solo se admite un caracter !")
       .matches(

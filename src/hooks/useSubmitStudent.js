@@ -2,9 +2,12 @@ import Swal from "sweetalert2";
 import apiPut from "../api/apiPut";
 import apiGet from "../api/apiGet";
 import useMatricula from "./useMatricula";
+import useAuth from "./useAuth";
 
 const useSubmitStudent = ({ setError, updateModalMatricula }) => {
-  const { getDataMatricula, periodo } = useMatricula();
+  // const { getDataMatricula, periodo } = useMatricula();
+  const { updateDataMatricula } = useMatricula();
+  const { authPeriodo } = useAuth();
   const onSubmit = async (
     values,
     { setSubmitting, setErrors, errors, resetForm } // ver como usar setErrors y errors
@@ -55,8 +58,8 @@ const useSubmitStudent = ({ setError, updateModalMatricula }) => {
       setError(error);
     } finally {
       // actualización de la tabla de matricula
-      await apiGet({ route: "matricula/getAll", param: periodo }).then(
-        (responseGet) => getDataMatricula(responseGet?.data)
+      await apiGet({ route: "matricula/getAll", param: authPeriodo }).then(
+        (responseGet) => updateDataMatricula({ matricula: responseGet?.data })
       );
       setSubmitting(false);
     }

@@ -46,40 +46,40 @@ export const router = createBrowserRouter([
         loader: async () => {
           try {
             await apiGet({ route: "validateSession" });
-            const getProcesoMatricula = await apiGet({route: "matricula/getPeriodoMatricula"});
+            const getProcesoMatricula = await apiGet({
+              route: "matricula/getPeriodoMatricula",
+            });
             const response = await getProcesoMatricula?.data?.state;
             return { response };
-
           } catch (error) {
             return { error };
-
           }
         },
       },
       {
         path: "/matricula/app/matricula",
         element: (
-          <PrivateRutes privilege={"1"}>
+          <PrivateRutes privilege={["1", "2"]}>
             <Matricula />
           </PrivateRutes>
         ),
         loader: async () => {
           try {
             await apiGet({ route: "validateSession" });
-            const getProcesoMatricula = await apiGet({route: "matricula/getPeriodoMatricula"});
+            const getProcesoMatricula = await apiGet({
+              route: "matricula/getPeriodoMatricula",
+            });
             const response = await getProcesoMatricula?.data?.state;
             return { response };
-
           } catch (error) {
             return { error };
-
           }
         },
       },
       {
         path: "/matricula/app/setting",
         element: (
-          <PrivateRutes privilege={"1"}>
+          <PrivateRutes privilege={["1"]}>
             <Setting />
           </PrivateRutes>
         ),
