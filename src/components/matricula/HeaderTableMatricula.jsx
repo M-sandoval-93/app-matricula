@@ -1,7 +1,9 @@
-import SearchIcon from "@mui/icons-material/Search";
-import ClearIcon from "@mui/icons-material/Clear";
+// import SearchIcon from "@mui/icons-material/Search";
+// import ClearIcon from "@mui/icons-material/Clear";
 import { BsFileEarmarkExcelFill } from "react-icons/bs";
 import { FaUserPlus } from "react-icons/fa";
+import { IoSearchSharp } from "react-icons/io5";
+import { MdClear } from "react-icons/md";
 import useAuth from "../../hooks/useAuth";
 
 const HeaderTableMatricula = ({ filter, updateStateMatricula }) => {
@@ -51,7 +53,8 @@ const HeaderTableMatricula = ({ filter, updateStateMatricula }) => {
 
         <div className="relative flex items-center justify-end gap-2">
           <span className="absolute left-2 text-gray-400">
-            <SearchIcon sx={{ fontSize: 25 }} />
+            {/* <SearchIcon sx={{ fontSize: 25 }} /> */}
+            <IoSearchSharp size={25} />
           </span>
           <input
             type="text"
@@ -69,7 +72,8 @@ const HeaderTableMatricula = ({ filter, updateStateMatricula }) => {
               ${filter ? "opacity-100 scale-100" : "opacity-0 scale-125"}`}
             onClick={() => updateStateMatricula({ filter: "" })}
           >
-            <ClearIcon sx={{ fontSize: 25 }} />
+            {/* <ClearIcon sx={{ fontSize: 25 }} /> */}
+            <MdClear size={25} />
           </span>
         </div>
       </div>

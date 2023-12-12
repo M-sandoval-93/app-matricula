@@ -9,6 +9,8 @@ import useProcesoMatricula from "../../hooks/useProcesoMatricula";
 import apiGet from "../../api/apiGet";
 import useAuth from "../../hooks/useAuth";
 import ErrorHandler from "../ErrorHandler";
+import HeaderTableProcessMatricula from "./HeaderTableProcessMatricula";
+import { columnsProcessMatricula } from "./DataProcessMatricula";
 
 const TableProcessMatricula = () => {
   const { authPeriodo } = useAuth();
@@ -54,7 +56,8 @@ const TableProcessMatricula = () => {
           fixedHeader
           fixedHeaderScrollHeight="540px"
           subHeader
-          // subHeaderComponent={}
+          subHeaderComponent={HeaderTableProcessMatricula({filter: processMatricula.filterProcessMatricula, updateDataProcesoMatricula})}
+          columns={columnsProcessMatricula()}
           // columns={columnsProcessMatricula({actualizador de datos})}
           //   data={providerFilter({
           //     data: listProcessMatricula,
