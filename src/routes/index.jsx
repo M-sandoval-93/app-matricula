@@ -35,14 +35,13 @@ export const router = createBrowserRouter([
         path: "/matricula/app/home",
         element: <Home />,
       },
-      // {
-      //   path: "/matricula/app/estudiante",
-      //   element: <Student />,
-      //   loader: loaderStudent,
-      // },
       {
         path: "/matricula/app/cursos",
-        element: <Cursos />,
+        element: (
+          <PrivateRutes privilege={["1"]}>
+            <Cursos />,
+          </PrivateRutes>
+        ),
         loader: async () => {
           try {
             await apiGet({ route: "validateSession" });

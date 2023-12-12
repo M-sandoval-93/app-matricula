@@ -1,20 +1,17 @@
+import HeaderHome from "../components/home/HeaderHome";
+import InfoProcesoMatricula from "../components/home/InfoProcesoMatricula";
+import TableProcessMatricula from "../components/home/TableProcessMatricula";
+import { ProcesoMatriculaProvider } from "../context/ProcesoMatriculaProvider";
+
 const Home = () => {
   return (
-    <div className="relative overflow-x-hiddenflex flex-col gap-2 w-full">
-      <header className="">
-        Página principal, trabajando en modelamiento !!!
-      </header>
-
-      <p>
-        Presentar informacion de estudiantes a matricula y estudiantes
-        matriculados
-      </p>
-      <p>
-        Mostrar cantidad de estudiantes matriculados y estudiantes por matricula
-      </p>
-
-      <section className="flex flex-col bg-blue-200 flex-1"></section>
-    </div>
+    <section className="relative w-auto flex flex-col gap-2 mb-3 overflow-hidden overflow-x-auto">
+      <ProcesoMatriculaProvider>
+        <HeaderHome />
+        {/* <InfoProcesoMatricula /> */}
+        <TableProcessMatricula />
+      </ProcesoMatriculaProvider>
+    </section>
   );
 };
 

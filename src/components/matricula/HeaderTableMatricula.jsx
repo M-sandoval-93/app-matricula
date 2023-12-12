@@ -54,7 +54,7 @@ const HeaderTableMatricula = ({ filter, updateStateMatricula }) => {
             <SearchIcon sx={{ fontSize: 25 }} />
           </span>
           <input
-            type="search"
+            type="text"
             placeholder="Search ..."
             value={filter}
             onChange={(event) =>

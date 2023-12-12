@@ -19,7 +19,6 @@ import useAuth from "../../hooks/useAuth";
 
 const TableMatricula = () => {
   // hook personalizados para trabajar con el contexto de matricula
-  // const { matricula, updateDataMatricula, periodo } = useMatricula();
   const {authPeriodo} = useAuth();
   const { matricula, updateDataMatricula } = useMatricula();
 

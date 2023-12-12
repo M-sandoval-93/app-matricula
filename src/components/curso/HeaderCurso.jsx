@@ -10,11 +10,11 @@ const HeaderCurso = () => {
   const { authPeriodo } = useAuth();
   const [grade, setGrade] = useState({});
 
-  useEffect(() => {
-    apiGet({ route: "", param: authPeriodo }).then((response) =>
-      console.log(response)
-    );
-  }, []);
+  // useEffect(() => {
+  //   apiGet({ route: "", param: authPeriodo }).then((response) =>
+  //     console.log(response)
+  //   );
+  // }, []);
 
   return (
     <HeaderTitle title={"Regitro cursos"}>
