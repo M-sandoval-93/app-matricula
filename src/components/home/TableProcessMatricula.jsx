@@ -4,13 +4,14 @@ import {
   providerFilter,
   providerPaginationComponent,
 } from "../../utils/providerDataTable";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useProcesoMatricula from "../../hooks/useProcesoMatricula";
 import apiGet from "../../api/apiGet";
 import useAuth from "../../hooks/useAuth";
 import ErrorHandler from "../ErrorHandler";
 import HeaderTableProcessMatricula from "./HeaderTableProcessMatricula";
 import { columnsProcessMatricula } from "./DataProcessMatricula";
+import customStyle from "../../style/styleDataTable";
 
 const TableProcessMatricula = () => {
   const { authPeriodo } = useAuth();
@@ -24,9 +25,9 @@ const TableProcessMatricula = () => {
   });
 
   // actualizador de estados
-  const updateProcessMatricula = (newState) => {
-    setProcessMatricula((prevData) => ({ ...prevData, ...newState }));
-  };
+  const updateProcessMatricula = useCallback((newState) => {
+    setProcessMatricula((prevDate) => ({ ...prevDate, ...newState }));
+  }, []);
 
   useEffect(() => {
     updateProcessMatricula({ loadingProcessMatricula: true });
@@ -36,7 +37,19 @@ const TableProcessMatricula = () => {
       param: authPeriodo,
     })
       .then((response) => {
-        updateDataProcesoMatricula({ listProcessMatricula: response?.data });
+        const listSae = response?.data;
+        const matriculados = listSae.filter(
+          (matriculado) => matriculado.estado_matricula === true
+        ).length;
+
+        // Asignación de los datos del contexto
+        updateDataProcesoMatricula({
+          listProcessMatricula: listSae,
+          countList: listSae.length,
+          countMatriculados: matriculados,
+          countNoMatriculados: listSae.length - matriculados,
+        });
+
         updateProcessMatricula({ loadingProcessMatricula: false });
       })
       .catch((error) => {
@@ -47,23 +60,23 @@ const TableProcessMatricula = () => {
       });
   }, []);
 
-  // useEfect para consultar data de lista sae
   return (
     <main className="relative rounded-md border border-gray-200 p-2">
       <section>
         <DataTable
-          // customStyles={customStyleProcessMatricula}
+          customStyles={customStyle}
           fixedHeader
           fixedHeaderScrollHeight="540px"
           subHeader
-          subHeaderComponent={HeaderTableProcessMatricula({filter: processMatricula.filterProcessMatricula, updateDataProcesoMatricula})}
+          subHeaderComponent={HeaderTableProcessMatricula({
+            filter: processMatricula.filterProcessMatricula,
+            updateProcessMatricula,
+          })}
           columns={columnsProcessMatricula()}
-          // columns={columnsProcessMatricula({actualizador de datos})}
-          //   data={providerFilter({
-          //     data: listProcessMatricula,
-          //     filter: processMatricula.filterProcessMatricula,
-          //   })}
-          data={listProcessMatricula}
+          data={providerFilter({
+            data: listProcessMatricula,
+            filter: processMatricula.filterProcessMatricula,
+          })}
           highlightOnHover
           persistTableHead
           noDataComponent={InfoDataTable()}

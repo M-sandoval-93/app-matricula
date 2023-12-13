@@ -1,4 +1,4 @@
-export const customStyle = {
+const customStyle = {
   subHeader: {
     style: {
       "border-top-right-radius": "0.375rem",
@@ -26,3 +26,5 @@ export const customStyle = {
     },
   },
 };
+
+export default customStyle;

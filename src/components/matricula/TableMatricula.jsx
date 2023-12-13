@@ -7,7 +7,6 @@ import {
   providerFilter,
   providerPaginationComponent,
 } from "../../utils/providerDataTable";
-import { customStyle } from "./styleDataTable";
 import SubTableMatricula from "./SubTableMatricula";
 import useMatricula from "../../hooks/useMatricula";
 import apiGet from "../../api/apiGet";
@@ -16,10 +15,11 @@ import ModalMatricula from "../../templates/ModalMatricula";
 import ErrorHandler from "../ErrorHandler";
 import ModalMatriculaReport from "../../templates/ModalMatriculaReport";
 import useAuth from "../../hooks/useAuth";
+import customStyle from "../../style/styleDataTable";
 
 const TableMatricula = () => {
   // hook personalizados para trabajar con el contexto de matricula
-  const {authPeriodo} = useAuth();
+  const { authPeriodo } = useAuth();
   const { matricula, updateDataMatricula } = useMatricula();
 
   // estado para las variables del modulo de matricula

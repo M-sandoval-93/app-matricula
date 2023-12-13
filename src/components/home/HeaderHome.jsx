@@ -3,9 +3,12 @@ import CardProcesoMatricula from "./CardProcesoMatricula";
 import { MdPlaylistAdd } from "react-icons/md";
 import { MdOutlinePlaylistAddCheck } from "react-icons/md";
 import { MdOutlinePlaylistRemove } from "react-icons/md";
+import useProcesoMatricula from "../../hooks/useProcesoMatricula";
 
 const HeaderHome = () => {
   // estado para controlar las cantidades acordadas
+  const { countList, countMatriculados, countNoMatriculados } =
+    useProcesoMatricula();
 
   return (
     <HeaderTitle title={"Sistema matrículas"}>
@@ -13,21 +16,21 @@ const HeaderHome = () => {
         <CardProcesoMatricula
           icon={<MdPlaylistAdd size={50} />}
           name={"Lista SAE"}
-          count={0}
+          count={countList}
           color={`blue`}
         />
 
         <CardProcesoMatricula
           icon={<MdOutlinePlaylistAddCheck size={50} />}
-          name={"Registrados"}
-          count={0}
+          name={"Matriculados"}
+          count={countMatriculados}
           color={`green`}
         />
 
         <CardProcesoMatricula
           icon={<MdOutlinePlaylistRemove size={50} />}
           name={"Pendientes"}
-          count={0}
+          count={countNoMatriculados}
           color={`red`}
         />
       </section>

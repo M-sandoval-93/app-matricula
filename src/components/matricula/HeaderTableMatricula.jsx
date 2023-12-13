@@ -37,15 +37,13 @@ const HeaderTableMatricula = ({ filter, updateStateMatricula }) => {
         <button
           onClick={() => updateStateMatricula({ stateModalReport: true })}
           className="px-2 py-1 border rounded-md hover:shadow-md hover:scale-105 group
-          text-green-700 border-green-700 hover:shadow-green-900 transition-all duration-200"
+          text-green-700 border-green-700 hover:shadow-green-900 transition-all duration-300"
         >
           <BsFileEarmarkExcelFill size={30} />
           <div
-            className={`invisible opacity-0 absolute p-2 -ml-[8.5rem] -top-[.8rem]
+            className={`invisible opacity-0 absolute p-2 -ml-[8.6rem] -top-[.5rem]
             bg-cyan-100 text-blue-500 text-sm transition-all duration-300
-            group-hover:visible group-hover:opacity-100 whitespace-nowrap
-            rounded-md
-          `}
+              group-hover:visible group-hover:opacity-100 whitespace-nowrap rounded-md`}
           >
             Descargar datos
           </div>

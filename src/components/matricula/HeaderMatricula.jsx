@@ -9,8 +9,7 @@ import HeaderTitle from "../HeaderTitle";
 import useAuth from "../../hooks/useAuth";
 
 const HeaderMatricula = () => {
-  const {authPeriodo} = useAuth()
-  // const { altas, bajas, updateDataMatricula, periodo } = useMatricula();
+  const { authPeriodo } = useAuth();
   const { altas, bajas, updateDataMatricula } = useMatricula();
   const [headerMatricula, setHeaderMatricula] = useState({
     loading: false,
