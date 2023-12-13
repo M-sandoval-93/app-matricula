@@ -1,4 +1,4 @@
-const CardProcesoMatricula = ({ icon, name, count, color }) => {
+const CardProcesoMatricula = ({ icon, name, count, color, countNew, countContinue }) => {
   return (
     <button
       onClick={() => alert("Trabajando...")}
@@ -17,6 +17,8 @@ const CardProcesoMatricula = ({ icon, name, count, color }) => {
           </div>
         </div>
       </div>
+      <span>{countNew}</span>
+      <span>{countContinue}</span>
     </button>
   );
 };

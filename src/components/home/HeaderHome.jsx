@@ -7,8 +7,17 @@ import useProcesoMatricula from "../../hooks/useProcesoMatricula";
 
 const HeaderHome = () => {
   // estado para controlar las cantidades acordadas
-  const { countList, countMatriculados, countNoMatriculados } =
-    useProcesoMatricula();
+  const { 
+    countList,
+    countMatriculados,
+    countNoMatriculados,
+    countListNew,
+    countListContinue,
+    countMatriculadosNew,
+    countMatriculadosContinue,
+    countNoMatriculadosNew,
+    countNoMatriculadosContinue,
+  } = useProcesoMatricula();
 
   return (
     <HeaderTitle title={"Sistema matrículas"}>
@@ -18,6 +27,8 @@ const HeaderHome = () => {
           name={"Lista SAE"}
           count={countList}
           color={`blue`}
+          countNew={countListNew}
+          countContinue={countListContinue}
         />
 
         <CardProcesoMatricula
@@ -25,6 +36,8 @@ const HeaderHome = () => {
           name={"Matriculados"}
           count={countMatriculados}
           color={`green`}
+          countNew={countMatriculadosNew}
+          countContinue={countMatriculadosContinue}
         />
 
         <CardProcesoMatricula
@@ -32,6 +45,8 @@ const HeaderHome = () => {
           name={"Pendientes"}
           count={countNoMatriculados}
           color={`red`}
+          countNew={countNoMatriculadosNew}
+          countContinue={countNoMatriculadosContinue}
         />
       </section>
     </HeaderTitle>

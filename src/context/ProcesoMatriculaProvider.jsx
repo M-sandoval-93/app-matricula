@@ -8,6 +8,12 @@ export const ProcesoMatriculaProvider = ({ children }) => {
     countList: 0,
     countMatriculados: 0,
     countNoMatriculados: 0,
+    countListNew: 0,
+    countListContinue: 0,
+    countMatriculadosNew: 0,
+    countMatriculadosContinue: 0,
+    countNoMatriculadosNew: 0,
+    countNoMatriculadosContinue: 0,
   });
 
   const updateDataProcesoMatricula = useCallback((newData) => {
