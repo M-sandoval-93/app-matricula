@@ -158,3 +158,21 @@ export const getReportMatricula = ({ stateObject, periodo }) => {
     // TRABAJAR EN EXPIRACION DEL TOKEN
     .catch((error) => console.log(error));
 };
+
+export const getReportProcessMatricula = ({ periodo }) => {
+  apiGetDocument({
+    route: "report/getReportProcessMatricula",
+    param: periodo,
+  })
+    .then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `Proceso_matricula_${periodo}.xlsx`);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    })
+    // TRABAJAR EN EXPIRACION DEL TOKEN
+    .catch((error) => console.log(error));
+};

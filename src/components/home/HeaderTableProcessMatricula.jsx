@@ -1,8 +1,12 @@
 import { BsFileEarmarkExcelFill } from "react-icons/bs";
 import { IoSearchSharp } from "react-icons/io5";
 import { MdClear } from "react-icons/md";
+import useAuth from "../../hooks/useAuth";
+import { getReportProcessMatricula } from "../../utils/funciones";
 
 const HeaderTableProcessMatricula = ({ filter, updateProcessMatricula }) => {
+  const { authPeriodo } = useAuth();
+
   return (
     <section className="relative w-full flex flex-wrap gap-3 items-center justify-between my-2">
       <article className="text-xl text-blue-600 font-semibold">
@@ -10,7 +14,7 @@ const HeaderTableProcessMatricula = ({ filter, updateProcessMatricula }) => {
       </article>
       <article className="flex gap-3">
         <button
-          onClick={() => alert("Mantenimiento")}
+          onClick={() => getReportProcessMatricula({ periodo: authPeriodo })}
           className="px-2 py-1 border rounded-md hover:shadow-md hover:scale-105 group
           text-green-700 border-green-700 hover:shadow-green-900 transition-all duration-300"
         >
