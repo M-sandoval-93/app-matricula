@@ -5,8 +5,8 @@ const MatriculaContext = createContext({});
 export const MatriculaProvider = ({ children }) => {
   const [data, setData] = useState({
     matricula: [],
-    altas: null,
-    bajas: null,
+    countMatriculados: 0,
+    countRetirados: 0,
   });
 
   // mejorar la actualizacion de los elementos mediante funcion de actualizacion usando objetos como parametros

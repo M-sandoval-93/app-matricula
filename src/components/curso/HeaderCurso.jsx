@@ -5,16 +5,13 @@ import useAuth from "../../hooks/useAuth";
 import apiGet from "../../api/apiGet";
 
 const HeaderCurso = () => {
-  // const [] = useState();
 
   const { authPeriodo } = useAuth();
   const [grade, setGrade] = useState({});
 
-  // useEffect(() => {
-  //   apiGet({ route: "", param: authPeriodo }).then((response) =>
-  //     console.log(response)
-  //   );
-  // }, []);
+  // los valores se pasaran desde la consulta de table
+  // mantener estado del provide, con el cual, se selecciona el grado
+
 
   return (
     <HeaderTitle title={"Regitro cursos"}>

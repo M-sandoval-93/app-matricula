@@ -8,13 +8,14 @@ import apiPut from "../api/apiPut";
 const useSubmitMatricula = ({
   setError,
   id,
+  idMatricula,
   onCloseModal,
   formikMatriculaRef,
+  updateId,
 }) => {
-  // const { updateDataMatricula, getCountMatricula } = useMatricula();
   const { updateDataMatricula } = useMatricula();
   const { authPeriodo } = useAuth();
-  const { idEstudiante, idTitular, idSuplente, idMatricula } = id;
+  const { idEstudiante, idTitular, idSuplente } = id;
 
   const onSubmit = async (
     values,
@@ -47,7 +48,23 @@ const useSubmitMatricula = ({
                 ? "Datos de matrícula actualizada !"
                 : `Numero de matrícula actualizado: ${res?.data}`,
           }).then(() => {
+            // setear los id registrados
+            updateId({
+              idEstudiante: "",
+              idTitular: "",
+              idSuplente: "",
+            });
+
+            // cerrar el modal
             onCloseModal();
+
+            // actualización de la tabla de matricula
+            apiGet({ route: "matricula/getAll", param: authPeriodo }).then(
+              (responseGet) =>
+                updateDataMatricula({ matricula: responseGet?.data })
+            );
+
+            setSubmitting(false);
           });
         });
         return;
@@ -58,18 +75,11 @@ const useSubmitMatricula = ({
         route: "matricula/setMatricula",
         object: dataSet,
       });
+
+      // obtención del número de matrícula asignado
       const numeroMatricula = await responseSet?.data?.numero_matricual;
 
-      // actualizacion de la cantidad de altas y bajas
-      apiGet({ route: "matricula/getCount", param: authPeriodo }).then(
-        // (responseCount) => getCountMatricula(responseCount.data)
-        (responseCount) =>
-          updateDataMatricula({
-            altas: responseCount?.data?.altas,
-            bajas: responseCount?.data?.bajas,
-          })
-      );
-
+      // visualización del número de matrícula asignado
       Swal.fire({
         icon: "success",
         title: "Success",
@@ -79,15 +89,41 @@ const useSubmitMatricula = ({
       // setear form al registrar datos
       const handleReset = formikMatriculaRef.current.handleReset;
       handleReset();
-    } catch (error) {
-      setError(error);
-    } finally {
+
       // actualización de la tabla de matricula
       apiGet({ route: "matricula/getAll", param: authPeriodo }).then(
-        // (responseGet) => getDataMatricula(responseGet?.data)
-        (responseGet) => updateDataMatricula({ matricula: responseGet?.data })
+        (responseGet) => {
+          // lista de matriculados
+          const listMatricula = responseGet?.data;
+
+          // cantidad de matriculados
+          const matriculados = listMatricula.filter(
+            (count) => count.estado === "ACTIVO"
+          ).length;
+
+          // cantidad de retirados
+          const retirados = listMatricula.filter(
+            (count) => count.estado === "RETIRADO"
+          ).length;
+
+          updateDataMatricula({
+            matricula: listMatricula,
+            countMatriculados: matriculados,
+            countRetirados: retirados,
+          });
+        }
       );
+
+      // setear los id registrados
+      updateId({
+        idEstudiante: "",
+        idTitular: "",
+        idSuplente: "",
+      });
+
       setSubmitting(false);
+    } catch (error) {
+      setError(error);
     }
   };
 

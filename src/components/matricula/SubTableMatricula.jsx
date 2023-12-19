@@ -12,6 +12,7 @@ const SubTableMatricula = ({ data }) => {
               <th className="py-1 px-2">Sexo</th>
               <th className="py-1 px-2">Fecha Alta</th>
               <th className="py-1 px-2">Fecha Baja</th>
+              <th className="py-1 px-2">Fecha Matricula</th>
             </tr>
           </thead>
 
@@ -21,9 +22,14 @@ const SubTableMatricula = ({ data }) => {
                 {data.fecha_nacimiento ?? "SIN REGISTRO"}
               </td>
               <td className="py-1 px-2">{data.sexo ?? "SIN REGISTRO"}</td>
-              <td className="py-1 px-2">{data.fecha_alta ?? "SIN REGISTRO"}</td>
-              <td className="py-1 px-2 text-red-400">
+              <td className="py-1 px-2 tracking-wide">
+                {data.fecha_alta ?? "SIN REGISTRO"}
+              </td>
+              <td className="py-1 px-2 text-red-400 tracking-wide">
                 {data.fecha_baja ?? "SIN REGISTRO"}
+              </td>
+              <td className="py-1 px-2 tracking-wide">
+                {data.fecha_matricula}
               </td>
             </tr>
           </tbody>

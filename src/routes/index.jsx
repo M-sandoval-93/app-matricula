@@ -9,7 +9,6 @@ import Home from "../pages/Home";
 import Matricula from "../pages/Matricula";
 import Setting from "../pages/Setting";
 import NotFound from "../pages/NotFound";
-// import Student, { loaderStudent } from "../pages/Student";
 
 import apiGet from "../api/apiGet";
 import Cursos from "../pages/Cursos";
@@ -39,7 +38,7 @@ export const router = createBrowserRouter([
         path: "/matricula/app/cursos",
         element: (
           <PrivateRutes privilege={["1"]}>
-            <Cursos />,
+            <Cursos />
           </PrivateRutes>
         ),
         loader: async () => {

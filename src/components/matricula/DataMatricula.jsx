@@ -62,7 +62,6 @@ const exportCertificado = ({
 };
 
 export const columnsMatricula = ({ updateStateMatricula }) => {
-  // const { bloqueo_periodo_actual, proceso_matricula, periodo } = useMatricula();
   const {bloqueoPeriodoActual, authProcesoMatricula, authPeriodo} = useAuth();
 
   return [

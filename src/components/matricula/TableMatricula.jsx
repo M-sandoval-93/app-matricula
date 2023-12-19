@@ -55,8 +55,24 @@ const TableMatricula = () => {
 
     apiGet({ route: "matricula/getAll", param: authPeriodo })
       .then((response) => {
-        // getDataMatricula(response.data);
-        updateDataMatricula({ matricula: response?.data });
+        // lista de matriculados
+        const listMatricula = response?.data;
+
+        // cantidad de matriculados
+        const matriculados = listMatricula.filter(
+          (count) => count.estado === "ACTIVO"
+        ).length;
+
+        // cantidad de retirados
+        const retirados = listMatricula.filter(
+          (count) => count.estado === "RETIRADO"
+        ).length;
+
+        updateDataMatricula({
+          matricula: listMatricula,
+          countMatriculados: matriculados,
+          countRetirados: retirados,
+        });
         updateStateMatricula({ loading: false });
       })
       .catch((error) => {

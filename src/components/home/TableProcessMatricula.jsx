@@ -37,13 +37,30 @@ const TableProcessMatricula = () => {
       param: authPeriodo,
     })
       .then((response) => {
+        // lista sae
         const listSae = response?.data;
-        const matriculados = listSae.filter((count) => count.estado_matricula === true).length;
-        const listSaeNew = listSae.filter((count) => count.estudiante_nuevo === true).length;
 
-        const matriculadosNew = listSae.filter((count) => count.estado_matricula === true && count.estudiante_nuevo === true).length;
+        // cantidad de la lista sae
+        const matriculados = listSae.filter(
+          (count) => count.estado_matricula === true
+        ).length;
 
-        const noMatriculadosNew = listSae.filter((count) => count.estado_matricula === false && count.estudiante_nuevo === true).length;
+        // cantidad de estudiantes nuevos
+        const listSaeNew = listSae.filter(
+          (count) => count.estudiante_nuevo === true
+        ).length;
+
+        // cantidad de estudiantes matriculados nuevos
+        const matriculadosNew = listSae.filter(
+          (count) =>
+            count.estado_matricula === true && count.estudiante_nuevo === true
+        ).length;
+
+        // cantidad de estudiantes no matriculados nuevos
+        const noMatriculadosNew = listSae.filter(
+          (count) =>
+            count.estado_matricula === false && count.estudiante_nuevo === true
+        ).length;
 
         // Asignación de los datos del contexto
         updateDataProcesoMatricula({
@@ -56,7 +73,8 @@ const TableProcessMatricula = () => {
           countMatriculadosNew: matriculadosNew,
           countMatriculadosContinue: matriculados - matriculadosNew,
           countNoMatriculadosNew: noMatriculadosNew,
-          countNoMatriculadosContinue: (listSae.length - matriculados) - noMatriculadosNew,
+          countNoMatriculadosContinue:
+            listSae.length - matriculados - noMatriculadosNew,
         });
 
         updateProcessMatricula({ loadingProcessMatricula: false });

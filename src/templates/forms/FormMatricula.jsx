@@ -2,7 +2,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 import { Formik } from "formik";
 import { numberFormat } from "../../utils/funciones";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import ErrorHandler from "../../components/ErrorHandler";
 import RutName from "../formComponents/RutName";
 import FooterForm from "../formComponents/FooterForm";
@@ -27,16 +27,33 @@ const FormMatricula = ({
     idEstudiante: "",
     idTitular: "",
     idSuplente: "",
-    idMatricula: "",
   });
 
+  const updateId = useCallback((newId) => {
+    setId((prevId) => ({ ...prevId, ...newId }));
+  }, []);
+
   const formikMatriculaRef = useRef(); // referencia del formulario
-  const { onSubmit } = useSubmitMatricula({ setError, id, onCloseModal, formikMatriculaRef }); //obtencion del evento submit del formulario
+  const { onSubmit } = useSubmitMatricula({
+    setError,
+    id,
+    idMatricula,
+    onCloseModal,
+    formikMatriculaRef,
+    updateId,
+  }); //obtencion del evento submit del formulario
   const initialValues = initialValuesMatricula(); // obtencion de los valores iniciales del formulario
   const validationSchema = validationMatricula(); // obtencion de las validaciones del formulario
 
   // Efecto para limpiar formulario de matricula y asignar valores
   useEffect(() => {
+    // setear los id`s del estado general
+    updateId({
+      idEstudiante: "",
+      idTitular: "",
+      idSuplente: "",
+    });
+
     // setear formulario y sus campos
     if (!stateModal) {
       const handleReset = formikMatriculaRef.current.handleReset;
@@ -70,16 +87,13 @@ const FormMatricula = ({
               : "Asignar apoderado(a) suplente !",
           });
 
-          // asignacion de los id´s
-          setId((prev) => ({
-            ...prev,
+          updateId({
             idEstudiante: data.id_estudiante,
             idTitular: data.id_apoderado_titular,
             idSuplente: data.id_apoderado_suplente
               ? data.id_apoderado_suplente
               : "",
-            idMatricula: idMatricula,
-          }));
+          });
         })
         .catch((error) => setError(error));
     }
@@ -218,7 +232,8 @@ const FormMatricula = ({
               setError={setError}
               handleBlur={handleBlur}
               setFieldValue={setFieldValue}
-              setId={setId}
+              // setId={setId}
+              updateId={updateId}
               property={"idEstudiante"}
               type={"estudiante"}
               updateModalMatricula={updateModalMatricula}
@@ -241,7 +256,8 @@ const FormMatricula = ({
               setError={setError}
               handleBlur={handleBlur}
               setFieldValue={setFieldValue}
-              setId={setId}
+              // setId={setId}
+              updateId={updateId}
               property={"idTitular"}
               type={"apoderado(a)"}
               updateModalMatricula={updateModalMatricula}
@@ -261,7 +277,8 @@ const FormMatricula = ({
               setError={setError}
               handleBlur={handleBlur}
               setFieldValue={setFieldValue}
-              setId={setId}
+              // setId={setId}
+              updateId={updateId}
               property={"idSuplente"}
               type={"apoderado(a)"}
               updateModalMatricula={updateModalMatricula}

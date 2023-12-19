@@ -45,6 +45,13 @@ const useSubmitStudent = ({ setError, updateModalMatricula }) => {
             })
           );
         });
+
+        // actualización de la tabla de matricula
+        await apiGet({ route: "matricula/getAll", param: authPeriodo }).then(
+          (responseGet) => updateDataMatricula({ matricula: responseGet?.data })
+        );
+        setSubmitting(false);
+
         return;
       }
 
@@ -56,12 +63,6 @@ const useSubmitStudent = ({ setError, updateModalMatricula }) => {
       // actualizar cantidad de estudiantes
     } catch (error) {
       setError(error);
-    } finally {
-      // actualización de la tabla de matricula
-      await apiGet({ route: "matricula/getAll", param: authPeriodo }).then(
-        (responseGet) => updateDataMatricula({ matricula: responseGet?.data })
-      );
-      setSubmitting(false);
     }
   };
 

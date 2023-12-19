@@ -29,11 +29,11 @@ const Cursos = () => {
         <ErrorHandler error={error} />
       ) : (
         <section className="relative w-auto flex flex-col gap-2 mb-3 overflow-hidden overflow-x-auto">
-          <CursoProvider response={response}>
-            {/* <SelectPeriodo /> */}
+          <CursoProvider>
             <SelectPeriodo />
             <HeaderCurso />
-            <ListCourse />
+
+            {/* <ListCourse /> */}
           </CursoProvider>
         </section>
       )}

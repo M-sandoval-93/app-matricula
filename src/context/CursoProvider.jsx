@@ -10,8 +10,6 @@ export const CursoProvider = ({ children, response }) => {
     letter: [], // usado para suministrar data en header y select
     selectGrade: null,
     selectLetter: null,
-    // grade7: 0,
-    // grade8: 0,
   });
 
   // Actualizador del objeto de contextos

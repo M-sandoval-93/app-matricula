@@ -43,6 +43,13 @@ const useSubmitRepresentative = ({ setErrors, updateModalMatricula }) => {
             })
           );
         });
+
+        // actualización de la tabla de matricula
+        await apiGet({ route: "matricula/getAll", param: authPeriodo }).then(
+          (responseGet) => updateDataMatricula({ matricula: responseGet?.data })
+        );
+        setSubmitting(false);
+
         return;
       }
 
@@ -68,14 +75,14 @@ const useSubmitRepresentative = ({ setErrors, updateModalMatricula }) => {
       // actualizar tabla apoderados
 
       // actualizar cantidad de apoderados
-    } catch (error) {
-      console.log(error);
-    } finally {
+
       // actualización de la tabla de matricula
       await apiGet({ route: "matricula/getAll", param: authPeriodo }).then(
         (responseGet) => updateDataMatricula({ matricula: responseGet?.data })
       );
       setSubmitting(false);
+    } catch (error) {
+      console.log(error);
     }
   };
 

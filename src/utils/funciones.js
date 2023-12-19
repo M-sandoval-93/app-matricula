@@ -61,7 +61,8 @@ export const getName = ({
   inputGrade,
   inputDv,
   inputNombre,
-  setId,
+  // setId,
+  updateId,
   property,
   periodo,
 }) => {
@@ -83,7 +84,8 @@ export const getName = ({
         const grade = data?.grado ? data?.grado : null;
         setFieldValue(inputNombre, name);
         grade && setFieldValue(inputGrade, grade);
-        setId((prev) => ({ ...prev, [property]: id }));
+        // setId((prev) => ({ ...prev, [property]: id }));
+        updateId({ [property]: id });
       })
       .catch((error) => {
         setFieldValue(
@@ -93,7 +95,8 @@ export const getName = ({
       });
   } else {
     setFieldValue(inputDv, "");
-    setId((prev) => ({ ...prev, [property]: "" }));
+    // setId((prev) => ({ ...prev, [property]: "" }));
+    updateId({ [property]: "" });
     setFieldValue(inputNombre, "");
   }
 

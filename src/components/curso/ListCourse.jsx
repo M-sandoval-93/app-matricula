@@ -1,5 +1,9 @@
 import CourseCard from "./CourseCard";
 
+// mostrar lista de cursos según filtro aplicado a la consulta primaria para la tabla
+// actualizar por cada asignacion del curso
+// solicitar asignación de fecha para el caso del cambio de curso
+
 const ListCourse = () => {
   return (
     <section className="w-full flex-wrap relative flex justify-start mt-2 gap-3">

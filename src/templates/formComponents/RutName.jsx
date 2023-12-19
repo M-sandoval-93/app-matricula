@@ -17,7 +17,8 @@ const RutName = ({
   errors, // Errors de validacion con Yup
   handleBlur, // evento blur de formik
   setFieldValue, // setear el valor de los input con formik
-  setId, // Setear los id de los estudiantes y/o apoderados
+  // setId, // Setear los id de los estudiantes y/o apoderados
+  updateId,
   // route, // ruta donde hacer la peticion de la api
   property, // id a setear en la llamada a la api
   type, // indica el tipo de dato que se trabajara; estudiante, titular, suplente
@@ -76,7 +77,8 @@ const RutName = ({
                     inputGrade: grade,
                     inputDv: dvRut,
                     inputNombre: name,
-                    setId: setId,
+                    // setId: setId,
+                    updateId: updateId,
                     property: property,
                     periodo: authPeriodo,
                   })
