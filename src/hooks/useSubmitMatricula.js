@@ -77,7 +77,7 @@ const useSubmitMatricula = ({
       });
 
       // obtención del número de matrícula asignado
-      const numeroMatricula = await responseSet?.data?.numero_matricual;
+      const numeroMatricula = await responseSet?.data?.numero_matricula;
 
       // visualización del número de matrícula asignado
       Swal.fire({
