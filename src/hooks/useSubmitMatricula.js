@@ -83,7 +83,7 @@ const useSubmitMatricula = ({
       Swal.fire({
         icon: "success",
         title: "Success",
-        text: `Número de matrícua asignado: ${numeroMatricula}`,
+        text: `Número de matrícula asignado: ${numeroMatricula}`,
       });
 
       // setear form al registrar datos
