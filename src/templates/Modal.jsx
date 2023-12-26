@@ -3,6 +3,7 @@ import { MdClose } from "react-icons/md";
 import { useEffect, useState } from "react";
 import ErrorHandler from "../components/ErrorHandler";
 import apiGet from "../api/apiGet";
+import useAuth from "../hooks/useAuth";
 
 const Modal = ({
   children, // contenido del modal
@@ -12,11 +13,20 @@ const Modal = ({
   color, // color barra superior del modal
   report = false, // para manejar tamaño del modal reportes
 }) => {
+  const { authPrivilege } = useAuth();
   const [error, setError] = useState(null);
+
+  // privilegios permitidos para utilizar el modal
+  const acceptedPrivilege = [1, 2];
 
   useEffect(() => {
     if (stateModal) {
       apiGet({ route: "validateSession" }).catch((error) => setError(error));
+
+      if (!acceptedPrivilege.includes(authPrivilege)) {
+        setError({ message: "Advertencia: Privilegios insuficientes !" });
+        onCloseModal();
+      }
     }
   }, [stateModal]);
 
@@ -28,7 +38,11 @@ const Modal = ({
       <div
         className={`bg-white rounded-xl shadow transition-all duration-300
             relative flex flex-col 
-            ${report ? "w-[40%] max-w-[30rem]" : "w-[80%] min-h-[37.5rem] max-w-[50rem]  " }
+            ${
+              report
+                ? "w-[40%] max-w-[30rem]"
+                : "w-[80%] min-h-[37.5rem] max-w-[50rem]  "
+            }
             max-h-[37.5rem] min-w-[20rem]        
             ${stateModal ? "scale-100 opacity-100" : "scale-125 opacity-0"}`}
       >

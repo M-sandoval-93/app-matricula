@@ -4,8 +4,6 @@ import useAuth from "../hooks/useAuth";
 const Error = ({ error }) => {
   const { logout } = useAuth();
 
-  console.log(error);
-
   const errorText = error?.response
     ? error?.response?.data?.message
     : error?.message;
@@ -14,7 +12,8 @@ const Error = ({ error }) => {
     Swal.fire({
       icon: "warning",
       title: "Excepción detectada",
-      text: errorText,
+      // text: errorText,
+      // text: "prueba",
       showConfirmButton: false,
       timer: 1500,
     });

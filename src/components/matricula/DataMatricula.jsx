@@ -1,4 +1,3 @@
-
 import apiGetDocument from "../../api/apiGetDocument";
 import { FaFileDownload } from "react-icons/fa";
 import { MdEditSquare } from "react-icons/md";
@@ -11,7 +10,11 @@ import useAuth from "../../hooks/useAuth";
 //   return `${part[2]}-${part[1]}-${part[0]}`;
 // };
 
-const certificadoAlumnoRegular = ({ rut, updateStateMatricula, authPeriodo }) => {
+const certificadoAlumnoRegular = ({
+  rut,
+  updateStateMatricula,
+  authPeriodo,
+}) => {
   apiGetDocument({
     route: "report/getCertificadoAlumnoRegular",
     param: `${rut}/${authPeriodo}`,
@@ -25,7 +28,8 @@ const certificadoAlumnoRegular = ({ rut, updateStateMatricula, authPeriodo }) =>
       link.remove();
       window.URL.revokeObjectURL(url);
     })
-    .catch((error) => updateStateMatricula({ error: "Matricula sin curso asignado!" })
+    .catch((error) =>
+      updateStateMatricula({ error: "Matricula sin curso asignado!" })
     );
 };
 
@@ -62,7 +66,7 @@ const exportCertificado = ({
 };
 
 export const columnsMatricula = ({ updateStateMatricula }) => {
-  const {authPrivilege, bloqueoPeriodoActual, authProcesoMatricula, authPeriodo} = useAuth();
+  const { bloqueoPeriodoActual, authProcesoMatricula, authPeriodo } = useAuth();
 
   return [
     {
@@ -131,14 +135,9 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
           {/* boton para descargar certificado */}
           <button
             title="Descargar certificado"
-            disabled={authPrivilege === "3"}
             className={`rounded-full p-1 transition-all duration-300
-            hover:text-white shadow-sm w-10 h-10 flex items-center justify-center
-            ${
-              authPrivilege === "3"
-              ? "text-gray-500 hover:bg-gray-700"
-              : "text-blue-500 hover:bg-blue-500"
-            }`}
+            hover:text-white shadow-sm w-10 h-10 flex items-center 
+            justify-center text-blue-500 hover:bg-blue-500`}
             onClick={() =>
               exportCertificado({
                 bloqueoPeriodoActual,
@@ -157,7 +156,6 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
           {/* boton para editar una matricula */}
           <button
             title="Editar matrícula"
-            disabled={authPrivilege === "3"}
             onClick={() => {
               updateStateMatricula({
                 stateModalMatricula: true, // Cambio de estado para lanzar el modal
@@ -166,12 +164,7 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
               });
             }}
             className={`rounded-full p-1 transition-all duration-300 shadow-sm hover:text-white 
-              w-10 h-10 flex items-center justify-center
-              ${
-                authPrivilege === "3"
-                ? "text-gray-500 hover:bg-gray-700"
-                : "text-green-500 hover:bg-green-500"
-              }`}
+              w-10 h-10 flex items-center justify-center text-green-500 hover:bg-green-500`}
           >
             <span className="flex justify-center items-center">
               <MdEditSquare size={26} />

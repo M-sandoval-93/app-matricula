@@ -7,7 +7,7 @@ import useProcesoMatricula from "../../hooks/useProcesoMatricula";
 
 const HeaderHome = () => {
   // estado para controlar las cantidades acordadas
-  const { 
+  const {
     countList,
     countMatriculados,
     countNoMatriculados,
@@ -26,7 +26,7 @@ const HeaderHome = () => {
           icon={<MdPlaylistAdd size={50} />}
           name={"Lista SAE"}
           count={countList}
-          color={`blue`}
+          color={"blue"}
           countNew={countListNew}
           countContinue={countListContinue}
         />
@@ -35,7 +35,7 @@ const HeaderHome = () => {
           icon={<MdOutlinePlaylistAddCheck size={50} />}
           name={"Matriculados"}
           count={countMatriculados}
-          color={`green`}
+          color={"green"}
           countNew={countMatriculadosNew}
           countContinue={countMatriculadosContinue}
         />
@@ -44,7 +44,7 @@ const HeaderHome = () => {
           icon={<MdOutlinePlaylistRemove size={50} />}
           name={"Pendientes"}
           count={countNoMatriculados}
-          color={`red`}
+          color={"red"}
           countNew={countNoMatriculadosNew}
           countContinue={countNoMatriculadosContinue}
         />

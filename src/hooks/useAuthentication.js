@@ -30,18 +30,18 @@ const useAuthentication = ({ login }) => {
         });
       }
     } catch (error) {
-      if (error?.response?.data?.statusText === "error email")
+      if (error?.response?.data?.statusText === "errorCode 406")
         return setErrors({ email: error?.response?.data?.message });
 
-      if (error?.response?.data?.statusText === "error password")
+      if (error?.response?.data?.statusText === "errorCode 401")
         return setErrors({ password: error?.response?.data?.message });
 
       Swal.fire({
         icon: "error",
         title: "Error",
         text: "sin conexión con el servidor",
-        showConfirmButton: false,
-        timer: 1500,
+        // showConfirmButton: false,
+        // timer: 1500,
       });
     } finally {
       setSubmitting(false);
