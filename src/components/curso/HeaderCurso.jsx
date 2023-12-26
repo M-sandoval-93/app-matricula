@@ -6,8 +6,8 @@ import apiGet from "../../api/apiGet";
 
 const HeaderCurso = () => {
 
-  const { authPeriodo } = useAuth();
-  const [grade, setGrade] = useState({});
+  // const { authPeriodo } = useAuth();
+  // const [grade, setGrade] = useState({});
 
   // los valores se pasaran desde la consulta de table
   // mantener estado del provide, con el cual, se selecciona el grado

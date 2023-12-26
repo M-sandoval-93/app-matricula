@@ -6,7 +6,7 @@ const CursoContext = createContext({});
 export const CursoProvider = ({ children, response }) => {
   const year = getCurrentYear();
   const [data, setData] = useState({
-    altaMatricula: [],
+    cursos: [],
     letter: [], // usado para suministrar data en header y select
     selectGrade: null,
     selectLetter: null,

@@ -6,6 +6,7 @@ import ErrorHandler from "../components/ErrorHandler";
 import SelectPeriodo from "../components/SelectPeriodo";
 import useAuth from "../hooks/useAuth";
 import { useEffect } from "react";
+import TableCourse from "../components/curso/TableCourse";
 
 const Cursos = () => {
   const { response, error } = useLoaderData();
@@ -34,6 +35,8 @@ const Cursos = () => {
             <HeaderCurso />
 
             {/* <ListCourse /> */}
+
+            <TableCourse />
           </CursoProvider>
         </section>
       )}
