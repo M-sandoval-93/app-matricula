@@ -1,4 +1,4 @@
-const CourseCard = ({ grade, letter }) => {
+const CardCourse = ({ grade, letter }) => {
   return (
     <article className="relative flex justify-center items-center border border-blue-400 rounded-md p-2">
       <div className="relative flex gap-1 text-2xl text-blue-500 font-bold">
@@ -12,4 +12,4 @@ const CourseCard = ({ grade, letter }) => {
   );
 };
 
-export default CourseCard;
+export default CardCourse;
