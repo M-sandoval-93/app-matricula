@@ -1,10 +1,10 @@
 import { createContext, useCallback, useMemo, useState } from "react";
-import { getCurrentYear } from "../utils/funciones";
+// import { getCurrentYear } from "../utils/funciones";
 
 const CourseContext = createContext({});
 
 export const CourseProvider = ({ children }) => {
-  const year = getCurrentYear();
+  // const year = getCurrentYear();
   const [data, setData] = useState({
     course: [],
     grade: {
@@ -15,7 +15,7 @@ export const CourseProvider = ({ children }) => {
       tercero: null,
       cuarto: null,
     },
-    letter: [],
+    letter: [], // cargar con letras para cada curso
     selectGrade: null,
     selectLetter: null,
   });

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useCourse from "../../hooks/useCourse";
 import HeaderTitle from "../HeaderTitle";
 import CardGradeCourse from "./CardGradeCourse";
@@ -7,6 +7,7 @@ const HeaderCourse = () => {
   const { grade } = useCourse();
   // const { active, setActive } = useState(null);
 
+  // revisar !!
   const [gradeCourse, setGradeCourse] = useState([
     { grade: "7", level: "Básico", count: grade.septimo, active: false },
     { grade: "8", level: "Básico", count: grade.octavo, active: false },
@@ -15,6 +16,10 @@ const HeaderCourse = () => {
     { grade: "3", level: "Medio", count: grade.tercero, active: false },
     { grade: "4", level: "Medio", count: grade.cuarto, active: false },
   ]);
+
+  // useEffect(() => {
+  //   console.log(grade);
+  // }, []);
 
   return (
     <HeaderTitle title={"Regitro cursos"}>

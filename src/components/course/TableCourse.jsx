@@ -31,8 +31,6 @@ const TableCourse = () => {
     setStateCourse((prevState) => ({ ...prevState, ...newState }));
   }, []);
 
-  // efecto inicial para consultar la data de la tabla
-  // a la escucha del cambio de periodo seleccionado
 
   useEffect(() => {
     updateStateCourse({ loadingCourse: true });
@@ -61,6 +59,12 @@ const TableCourse = () => {
           loadingCourse: false,
         });
       });
+
+      // apiGet({ route: "course/getListCourse", param: authPeriodo })
+      //   .then((response) => {
+      //     console.log(response?.data);
+      //     // updateDataCourse({letter: response?.data});
+      //   })
   }, [authPeriodo]);
 
   return (
