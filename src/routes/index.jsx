@@ -57,7 +57,7 @@ export const router = createBrowserRouter([
       {
         path: "/matricula/app/matricula",
         element: (
-          <PrivateRutes privilege={["1", "2", "3"]}>
+          <PrivateRutes privilege={["1", "2", "3", "4"]}>
             <Matricula />
           </PrivateRutes>
         ),

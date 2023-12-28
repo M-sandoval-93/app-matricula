@@ -33,7 +33,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("authProcesoMatricula", procesoMatricula);
 
     if (procesoMatricula === false) setPeriodo(year);
-    // setPeriodo(year);
   }, []);
 
   const bloqueoPeriodoActual =

@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { CourseProvider } from "../context/CourseProvider";
 import HeaderCourse from "../components/course/HeaderCourse";
 import TableCourse from "../components/course/TableCourse";
+import ListCourse from "../components/course/ListCourse";
 
 const Course = () => {
   const { response, error } = useLoaderData();
@@ -24,6 +25,8 @@ const Course = () => {
           <CourseProvider>
             <SelectPeriodo />
             <HeaderCourse />
+
+            <ListCourse />
 
             <TableCourse />
           </CourseProvider>

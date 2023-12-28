@@ -16,7 +16,7 @@ import useCourse from "../../hooks/useCourse";
 const TableCourse = () => {
   // ver las variables grobales que utilizare
   const { authPeriodo } = useAuth();
-  const { course, grade, updateDataCourse } = useCourse();
+  const { course, updateDataCourse } = useCourse();
 
   // estado para las variables del modulo de curso
   const [stateCourse, setStateCourse] = useState({
@@ -55,20 +55,18 @@ const TableCourse = () => {
     //     });
     //   } catch (error) {
     //     updateStateCourse({ errorCourse: error });
-    //   } finally {
-    //     updateStateCourse({ loadingCourse: false });
-    //   }
+    //   } 
     // };
 
     // getDataCourse();
 
     updateStateCourse({ loadingCourse: true });
 
+    // petición para obtener lista de cursos
     apiGet({ route: "course/getCourseAll", param: authPeriodo })
       .then((response) => {
         const dataCourse = response?.data;
 
-        // Asignación de datos
         updateDataCourse({
           course: dataCourse,
           grade: {
@@ -83,17 +81,21 @@ const TableCourse = () => {
         updateStateCourse({ loadingCourse: false });
       })
       .catch((error) => {
-        updateStateCourse({
-          errorCourse: error,
-          loadingCourse: false,
-        });
+        updateStateCourse({errorCourse: error});
       });
 
-    // apiGet({ route: "course/getListCourse", param: authPeriodo })
-    //   .then((response) => {
-    //     console.log(response?.data);
-    //     // updateDataCourse({letter: response?.data});
-    //   })
+    // petición para obtener lista de letras 
+    apiGet({ route: "course/getListCourse", param: authPeriodo })
+      .then((response) => {
+        updateDataCourse({letter: response?.data?.listCourse});
+        // console.log(response?.data.listCourse);
+      })
+      .catch((error) => {
+        updateStateCourse({errorCourse: error});
+      })
+
+    updateStateCourse({ loadingCourse: true });
+
   }, [authPeriodo]);
 
   return (

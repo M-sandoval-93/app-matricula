@@ -53,7 +53,7 @@ const Aside = () => {
           />
         )}
 
-        {(authPrivilege === "1" || authPrivilege === "2" || authPrivilege === "3") && (
+        {(authPrivilege === "1" || authPrivilege === "2" || authPrivilege === "3" || authPrivilege === "4") && (
           <SidebarItem
             icon={<SchoolIcon sx={{ fontSize: 30 }} />}
             text={"Matrícula"}
