@@ -15,14 +15,6 @@ const Course = () => {
     setProcesoMatricula(response);
   }, [response]);
 
-  // consideraciones;
-  //  -> obtener cantidad de estudiantes por grado
-  //  -> obtener cantidad de cursos, para generar tarjetas
-  //  -> colorear y habilitar cantidad de cursos según grado presionado junto con sus respectivas cantidades
-  //  -> aplicar filtro en tabla según grado y curso
-
-  // nota; restablecer filtro al cambiar de grado
-
   return (
     <>
       {error ? (

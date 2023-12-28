@@ -16,7 +16,7 @@ import useCourse from "../../hooks/useCourse";
 const TableCourse = () => {
   // ver las variables grobales que utilizare
   const { authPeriodo } = useAuth();
-  const { course, updateDataCourse } = useCourse();
+  const { course, grade, updateDataCourse } = useCourse();
 
   // estado para las variables del modulo de curso
   const [stateCourse, setStateCourse] = useState({
@@ -31,8 +31,37 @@ const TableCourse = () => {
     setStateCourse((prevState) => ({ ...prevState, ...newState }));
   }, []);
 
-
   useEffect(() => {
+    // updateStateCourse({ loadingCourse: true });
+
+    // const getDataCourse = async () => {
+    //   try {
+    //     const responseCourse = await apiGet({
+    //       route: "course/getCourseAll",
+    //       param: authPeriodo,
+    //     });
+
+    //     const dataCourse = await responseCourse?.data;
+    //     await updateDataCourse({
+    //       course: dataCourse,
+    //       grade: {
+    //         septimo: dataCourse.filter((count) => count.grado === 7).length,
+    //         octavo: dataCourse.filter((count) => count.grado === 8).length,
+    //         primero: dataCourse.filter((count) => count.grado === 1).length,
+    //         segundo: dataCourse.filter((count) => count.grado === 2).length,
+    //         tercero: dataCourse.filter((count) => count.grado === 3).length,
+    //         cuarto: dataCourse.filter((count) => count.grado === 4).length,
+    //       },
+    //     });
+    //   } catch (error) {
+    //     updateStateCourse({ errorCourse: error });
+    //   } finally {
+    //     updateStateCourse({ loadingCourse: false });
+    //   }
+    // };
+
+    // getDataCourse();
+
     updateStateCourse({ loadingCourse: true });
 
     apiGet({ route: "course/getCourseAll", param: authPeriodo })
@@ -60,11 +89,11 @@ const TableCourse = () => {
         });
       });
 
-      // apiGet({ route: "course/getListCourse", param: authPeriodo })
-      //   .then((response) => {
-      //     console.log(response?.data);
-      //     // updateDataCourse({letter: response?.data});
-      //   })
+    // apiGet({ route: "course/getListCourse", param: authPeriodo })
+    //   .then((response) => {
+    //     console.log(response?.data);
+    //     // updateDataCourse({letter: response?.data});
+    //   })
   }, [authPeriodo]);
 
   return (

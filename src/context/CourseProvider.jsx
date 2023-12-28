@@ -1,19 +1,17 @@
 import { createContext, useCallback, useMemo, useState } from "react";
-// import { getCurrentYear } from "../utils/funciones";
 
 const CourseContext = createContext({});
 
 export const CourseProvider = ({ children }) => {
-  // const year = getCurrentYear();
-  const [data, setData] = useState({
+  const [dataCourse, setDataCourse] = useState({
     course: [],
     grade: {
-      septimo: null,
-      octavo: null,
-      primero: null,
-      segundo: null,
-      tercero: null,
-      cuarto: null,
+      septimo: 0,
+      octavo: 0,
+      primero: 0,
+      segundo: 0,
+      tercero: 0,
+      cuarto: 0,
     },
     letter: [], // cargar con letras para cada curso
     selectGrade: null,
@@ -22,15 +20,15 @@ export const CourseProvider = ({ children }) => {
 
   // Actualizador del objeto de contextos
   const updateDataCourse = useCallback((newData) => {
-    setData((prevData) => ({ ...prevData, ...newData }));
+    setDataCourse((prevData) => ({ ...prevData, ...newData }));
   }, []);
 
   const value = useMemo(
     () => ({
       updateDataCourse,
-      ...data,
+      ...dataCourse,
     }),
-    [updateDataCourse, data]
+    [updateDataCourse, dataCourse]
   );
 
   return (
