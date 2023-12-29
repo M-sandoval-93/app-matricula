@@ -32,38 +32,10 @@ const TableCourse = () => {
   }, []);
 
   useEffect(() => {
-    // updateStateCourse({ loadingCourse: true });
-
-    // const getDataCourse = async () => {
-    //   try {
-    //     const responseCourse = await apiGet({
-    //       route: "course/getCourseAll",
-    //       param: authPeriodo,
-    //     });
-
-    //     const dataCourse = await responseCourse?.data;
-    //     await updateDataCourse({
-    //       course: dataCourse,
-    //       grade: {
-    //         septimo: dataCourse.filter((count) => count.grado === 7).length,
-    //         octavo: dataCourse.filter((count) => count.grado === 8).length,
-    //         primero: dataCourse.filter((count) => count.grado === 1).length,
-    //         segundo: dataCourse.filter((count) => count.grado === 2).length,
-    //         tercero: dataCourse.filter((count) => count.grado === 3).length,
-    //         cuarto: dataCourse.filter((count) => count.grado === 4).length,
-    //       },
-    //     });
-    //   } catch (error) {
-    //     updateStateCourse({ errorCourse: error });
-    //   }
-    // };
-
-    // getDataCourse();
-
     updateStateCourse({ loadingCourse: true });
 
     // petición para obtener lista de cursos
-    apiGet({ route: "course/getCourseAll", param: authPeriodo })
+    const getCourseAll = apiGet({ route: "course/getCourseAll", param: authPeriodo })
       .then((response) => {
         updateDataCourse({ course: response?.data });
       })
@@ -72,7 +44,7 @@ const TableCourse = () => {
       });
 
     // petición para obtener lista de letras
-    apiGet({ route: "course/getListCourse", param: authPeriodo })
+    const getListCourse = apiGet({ route: "course/getListCourse", param: authPeriodo })
       .then((response) => {
         updateDataCourse({ letter: response?.data?.listCourse });
       })
@@ -80,7 +52,12 @@ const TableCourse = () => {
         updateStateCourse({ errorCourse: error });
       });
 
-    updateStateCourse({ loadingCourse: false });
+    // ejecutar una acción al terminar todas las peticiones (promesas)
+    Promise.all([getCourseAll, getListCourse])
+      .finally(() => {
+        updateStateCourse({ loadingCourse: false });
+      });
+
   }, [authPeriodo]);
 
   return (
