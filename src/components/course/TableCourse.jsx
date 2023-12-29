@@ -55,7 +55,7 @@ const TableCourse = () => {
     //     });
     //   } catch (error) {
     //     updateStateCourse({ errorCourse: error });
-    //   } 
+    //   }
     // };
 
     // getDataCourse();
@@ -65,37 +65,22 @@ const TableCourse = () => {
     // petición para obtener lista de cursos
     apiGet({ route: "course/getCourseAll", param: authPeriodo })
       .then((response) => {
-        const dataCourse = response?.data;
-
-        updateDataCourse({
-          course: dataCourse,
-          grade: {
-            septimo: dataCourse.filter((count) => count.grado === 7).length,
-            octavo: dataCourse.filter((count) => count.grado === 8).length,
-            primero: dataCourse.filter((count) => count.grado === 1).length,
-            segundo: dataCourse.filter((count) => count.grado === 2).length,
-            tercero: dataCourse.filter((count) => count.grado === 3).length,
-            cuarto: dataCourse.filter((count) => count.grado === 4).length,
-          },
-        });
-        updateStateCourse({ loadingCourse: false });
+        updateDataCourse({ course: response?.data });
       })
       .catch((error) => {
-        updateStateCourse({errorCourse: error});
+        updateStateCourse({ errorCourse: error });
       });
 
-    // petición para obtener lista de letras 
+    // petición para obtener lista de letras
     apiGet({ route: "course/getListCourse", param: authPeriodo })
       .then((response) => {
-        updateDataCourse({letter: response?.data?.listCourse});
-        // console.log(response?.data.listCourse);
+        updateDataCourse({ letter: response?.data?.listCourse });
       })
       .catch((error) => {
-        updateStateCourse({errorCourse: error});
-      })
+        updateStateCourse({ errorCourse: error });
+      });
 
-    updateStateCourse({ loadingCourse: true });
-
+    updateStateCourse({ loadingCourse: false });
   }, [authPeriodo]);
 
   return (

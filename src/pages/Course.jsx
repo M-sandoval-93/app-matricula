@@ -26,7 +26,7 @@ const Course = () => {
             <SelectPeriodo />
             <HeaderCourse />
 
-            <ListCourse />
+            {/* <ListCourse /> */}
 
             <TableCourse />
           </CourseProvider>

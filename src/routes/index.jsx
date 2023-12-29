@@ -6,12 +6,12 @@ import PrivateRutes from "../utils/PrivateRutes";
 
 import Login from "../pages/Login";
 import Home from "../pages/Home";
+import Course from "../pages/Course";
 import Matricula from "../pages/Matricula";
 import Setting from "../pages/Setting";
 import NotFound from "../pages/NotFound";
 
 import apiGet from "../api/apiGet";
-import Course from "../pages/Course";
 
 export const router = createBrowserRouter([
   {
@@ -43,11 +43,15 @@ export const router = createBrowserRouter([
         ),
         loader: async () => {
           try {
+            // validación de la sesión
             await apiGet({ route: "validateSession" });
+
+            // consulta del periodo de matricula
             const getProcesoMatricula = await apiGet({
               route: "matricula/getPeriodoMatricula",
             });
             const response = await getProcesoMatricula?.data?.state;
+
             return { response };
           } catch (error) {
             return { error };

@@ -5,14 +5,7 @@ const CourseContext = createContext({});
 export const CourseProvider = ({ children }) => {
   const [dataCourse, setDataCourse] = useState({
     course: [],
-    grade: {
-      septimo: 0,
-      octavo: 0,
-      primero: 0,
-      segundo: 0,
-      tercero: 0,
-      cuarto: 0,
-    },
+    grade: [],
     letter: [], // cargar con letras para cada curso
     selectGrade: null,
     selectLetter: null,

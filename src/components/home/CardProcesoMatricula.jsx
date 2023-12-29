@@ -9,7 +9,8 @@ const CardProcesoMatricula = ({
   return (
     <article className="relative flex w-48 cursor-pointer group hover:scale-105 transition-all duration-300">
       <div
-        className={`relative w-full flex rounded-md border px-4 py-2 border-${color}-500 text-${color}-600 gap-2`}
+        className={`relative w-full flex rounded-md border px-4 py-2 
+            border-${color}-500 text-${color}-600 gap-2`}
       >
         <span className="flex justify-center items-center">{icon}</span>
         <div className="flex flex-col">
