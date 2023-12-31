@@ -25,7 +25,7 @@ const ErrorHandler = ({ error }) => {
         text: errorText,
       }).then(() => {
         // aqui trabajar la renovacion del token
-        if (errorText === "Expired token") {
+        if (errorText === "Error: Expired token") {
           localStorage.removeItem("activeItem");
           logout();
         }

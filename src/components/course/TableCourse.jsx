@@ -16,7 +16,7 @@ import useCourse from "../../hooks/useCourse";
 const TableCourse = () => {
   // ver las variables grobales que utilizare
   const { authPeriodo } = useAuth();
-  const { course, updateDataCourse } = useCourse();
+  const { filterCourseContex, updateDataCourse } = useCourse();
 
   // estado para las variables del modulo de curso
   const [stateCourse, setStateCourse] = useState({
@@ -35,33 +35,41 @@ const TableCourse = () => {
     updateStateCourse({ loadingCourse: true });
 
     // petición para obtener lista de cursos
-    const getCourseAll = apiGet({ route: "course/getCourseAll", param: authPeriodo })
+    const getCourseAll = apiGet({
+      route: "course/getCourseAll",
+      param: authPeriodo,
+    })
       .then((response) => {
-        updateDataCourse({ course: response?.data });
+        const dataCourse = response?.data;
+        updateDataCourse({
+          course: dataCourse,
+          filterCourseContex: dataCourse,
+        });
       })
       .catch((error) => {
         updateStateCourse({ errorCourse: error });
       });
 
     // petición para obtener lista de letras
-    const getListCourse = apiGet({ route: "course/getListCourse", param: authPeriodo })
+    const getListCourse = apiGet({
+      route: "course/getListCourse",
+      param: authPeriodo,
+    })
       .then((response) => {
-        updateDataCourse({ letter: response?.data?.listCourse });
+        updateDataCourse({ letters: response?.data?.listCourse });
       })
       .catch((error) => {
         updateStateCourse({ errorCourse: error });
       });
 
     // ejecutar una acción al terminar todas las peticiones (promesas)
-    Promise.all([getCourseAll, getListCourse])
-      .finally(() => {
-        updateStateCourse({ loadingCourse: false });
-      });
-
+    Promise.all([getCourseAll, getListCourse]).finally(() => {
+      updateStateCourse({ loadingCourse: false });
+    });
   }, [authPeriodo]);
 
   return (
-    <main className="relative rounded-md border border-gray-200 p-2">
+    <main className="relative rounded-md border border-gray-200 p-2 my-2">
       <section>
         <DataTable
           customStyles={customStyle}
@@ -74,7 +82,7 @@ const TableCourse = () => {
           })}
           columns={columnsCourse()}
           data={providerFilter({
-            data: course,
+            data: filterCourseContex,
             filter: stateCourse.filterCourse,
           })}
           highlightOnHover

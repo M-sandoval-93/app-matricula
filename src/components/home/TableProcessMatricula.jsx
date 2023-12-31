@@ -88,7 +88,7 @@ const TableProcessMatricula = () => {
   }, []);
 
   return (
-    <main className="relative rounded-md border border-gray-200 p-2">
+    <main className="relative rounded-md border border-gray-200 p-2 my-2">
       <section>
         <DataTable
           customStyles={customStyle}

@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { CourseProvider } from "../context/CourseProvider";
 import HeaderCourse from "../components/course/HeaderCourse";
 import TableCourse from "../components/course/TableCourse";
-import ListCourse from "../components/course/ListCourse";
+import ListLetter from "../components/course/ListLetter";
 
 const Course = () => {
   const { response, error } = useLoaderData();
@@ -26,7 +26,7 @@ const Course = () => {
             <SelectPeriodo />
             <HeaderCourse />
 
-            {/* <ListCourse /> */}
+            <ListLetter />
 
             <TableCourse />
           </CourseProvider>

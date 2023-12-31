@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const CardProcesoMatricula = ({
   icon,
   name,
@@ -6,11 +8,19 @@ const CardProcesoMatricula = ({
   countNew,
   countContinue,
 }) => {
+  const colorClasses = {
+    blue: "text-blue-600 border-blue-500",
+    green: "text-green-600 border-green-500",
+    red: "text-red-600 border-red-500",
+  };
+
+  const colorClass = colorClasses[color] || "";
+
   return (
     <article className="relative flex w-48 cursor-pointer group hover:scale-105 transition-all duration-300">
       <div
-        className={`relative w-full flex rounded-md border px-4 py-2 
-            border-${color}-500 text-${color}-600 gap-2`}
+        className={`relative w-full flex rounded-md border px-4 py-2 gap-2 ${colorClass}
+        `}
       >
         <span className="flex justify-center items-center">{icon}</span>
         <div className="flex flex-col">
