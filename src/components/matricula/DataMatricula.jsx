@@ -57,7 +57,15 @@ const exportCertificado = ({
   updateStateMatricula,
   authPeriodo,
 }) => {
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth() + 1;
+
   if (bloqueoPeriodoActual || !authProcesoMatricula) {
+    if (currentMonth === 1 || currentMonth === 2) {
+      certificadoMatricula({ rut, updateStateMatricula, authPeriodo });
+      return;
+    }
+
     certificadoAlumnoRegular({ rut, updateStateMatricula, authPeriodo });
     return;
   }
