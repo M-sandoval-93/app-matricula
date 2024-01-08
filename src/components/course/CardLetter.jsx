@@ -1,7 +1,16 @@
-const CardLetter = ({ grade, letter, active }) => {
-  const activeColorLetter = active
+import useCourse from "../../hooks/useCourse";
+
+const CardLetter = ({ letter }) => {
+  const { selectGrade, lettersForCourse } = useCourse();
+
+  const letterInCourse = lettersForCourse.includes(letter);
+
+  const activeColorLetter = letterInCourse
     ? "text-blue-500 border-blue-600 hover:shadow-blue-400"
     : "text-gray-500 border-gray-600 hover:shadow-gray-400";
+
+  const letterWithGrade = letterInCourse ? `${selectGrade} º` : "? º";
+  const letterWithCount = letterInCourse ? "(13)" : "(0)";
 
   return (
     <article
@@ -10,10 +19,12 @@ const CardLetter = ({ grade, letter, active }) => {
         transition-all duration-300 ${activeColorLetter}`}
     >
       <div className="relative flex gap-1 text-2xl font-bold">
-        <span>{grade}º</span>
+        <span>{letterWithGrade}</span>
         <span>{letter}</span>
       </div>
-      <span className="relative flex items-end pl-2 text-sm">(36)</span>
+      <span className="relative flex items-end pl-2 text-sm">
+        {letterWithCount}
+      </span>
     </article>
   );
 };

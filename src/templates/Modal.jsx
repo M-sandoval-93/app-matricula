@@ -24,8 +24,8 @@ const Modal = ({
       apiGet({ route: "validateSession" }).catch((error) => setError(error));
 
       if (!acceptedPrivilege.includes(authPrivilege)) {
-        setError({ message: "Advertencia: Privilegios insuficientes !" });
         onCloseModal();
+        setError({ message: "Advertencia: Privilegios insuficientes !" });
       }
     }
   }, [stateModal]);
