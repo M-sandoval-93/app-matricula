@@ -1,81 +1,17 @@
-import apiGetDocument from "../../api/apiGetDocument";
+import useAuth from "../../hooks/useAuth";
+import StudenStatusButton from "../studentStatusButton";
+
+// funciones
+import { functionSortStates } from "../../utils/sortFunctions";
+import { exportCertificates } from "../../utils/downloadFunctions";
+
+// iconos
 import { FaFileDownload } from "react-icons/fa";
 import { MdEditSquare } from "react-icons/md";
 import { ImExit } from "react-icons/im";
-import useAuth from "../../hooks/useAuth";
-
-// funcion para convertir fecha texto a fecha date
-// const formatDate = (date) => {
-//   const part = date.split(" / ");
-//   return `${part[2]}-${part[1]}-${part[0]}`;
-// };
-
-const certificadoAlumnoRegular = ({
-  rut,
-  updateStateMatricula,
-  authPeriodo,
-}) => {
-  apiGetDocument({
-    route: "report/getCertificadoAlumnoRegular",
-    param: `${rut}/${authPeriodo}`,
-  })
-    .then((response) => {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", `cert_AlumnoRegular_${rut}.docx`);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
-    })
-    .catch((error) =>
-      updateStateMatricula({ error: "Matricula sin curso asignado!" })
-    );
-};
-
-const certificadoMatricula = ({ rut, updateStateMatricula, authPeriodo }) => {
-  apiGetDocument({
-    route: "report/getCertificadoMatricula",
-    param: `${rut}/${authPeriodo}`,
-  })
-    .then((response) => {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", `cert_Matricula_${rut}.docx`);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
-    })
-    .catch((error) => updateStateMatricula({ error: error }));
-};
-
-const exportCertificado = ({
-  bloqueoPeriodoActual,
-  authProcesoMatricula,
-  rut,
-  updateStateMatricula,
-  authPeriodo,
-}) => {
-  const currentDate = new Date();
-  const currentMonth = currentDate.getMonth() + 1;
-
-  if (bloqueoPeriodoActual || !authProcesoMatricula) {
-    if (currentMonth === 1 || currentMonth === 2) {
-      certificadoMatricula({ rut, updateStateMatricula, authPeriodo });
-      return;
-    }
-
-    certificadoAlumnoRegular({ rut, updateStateMatricula, authPeriodo });
-    return;
-  }
-
-  certificadoMatricula({ rut, updateStateMatricula, authPeriodo });
-};
 
 export const columnsMatricula = ({ updateStateMatricula }) => {
   const { bloqueoPeriodoActual, authProcesoMatricula, authPeriodo } = useAuth();
-
   return [
     {
       name: "Matrícula",
@@ -121,18 +57,10 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
     },
     {
       name: "Estado",
-      cell: (row) => (
-        <span
-          className={`p-2 border hover:shadow-md rounded-md hover:scale-110 
-            transition-all duration-300 w-full flex justify-center items-center
-            ${row.estado === "ACTIVO" && "border-blue-500  text-blue-500"}`}
-        >
-          {row.estado}
-        </span>
-      ),
+      cell: (row) => <StudenStatusButton estado={row.estado} />,
       width: "140px",
       center: true,
-      sortable: true,
+      sortFunction: functionSortStates,
     },
     {
       name: "Acciones",
@@ -147,7 +75,7 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
             hover:text-white shadow-sm w-10 h-10 flex items-center 
             justify-center text-blue-500 hover:bg-blue-500`}
             onClick={() =>
-              exportCertificado({
+              exportCertificates({
                 bloqueoPeriodoActual,
                 authProcesoMatricula,
                 rut: row.rut.slice(0, row.rut.length - 2),
@@ -179,7 +107,7 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
             </span>
           </button>
 
-          {/* boton para suspender una matricula */}
+          {/* boton para retirar una matricula */}
           <button
             title="Baja de matrícula"
             onClick={() => alert("Mantenimiento")}

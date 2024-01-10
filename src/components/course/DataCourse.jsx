@@ -1,3 +1,6 @@
+import { functionSortStates } from "../../utils/sortFunctions";
+import StudenStatusButton from "../studentStatusButton";
+
 export const columnsCourse = () => {
   return [
     {
@@ -34,19 +37,11 @@ export const columnsCourse = () => {
     },
     {
       name: "Estado",
-      cell: (row) => (
-        <span
-          className={`p-2 border hover:shadow-md rounded-md hover:scale-110 
-            transition-all duration-300 w-full flex justify-center items-center
-            ${row.estado === "ACTIVO" && "border-blue-500  text-blue-500"}`}
-          // seguir colocando y coloreando estados
-        >
-          {row.estado}
-        </span>
-      ),
+      cell: (row) => <StudenStatusButton estado={row.estado} />,
       width: "140px",
       center: true,
-      sortable: true,
+      // sortable: true,
+      sortFunction: functionSortStates,
     },
     {
       name: "Acciones",

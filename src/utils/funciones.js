@@ -179,3 +179,9 @@ export const getReportProcessMatricula = ({ periodo }) => {
     // TRABAJAR EN EXPIRACION DEL TOKEN
     .catch((error) => console.log(error));
 };
+
+// funcion para convertir fecha texto a fecha date
+// const formatDate = (date) => {
+//   const part = date.split(" / ");
+//   return `${part[2]}-${part[1]}-${part[0]}`;
+// };
