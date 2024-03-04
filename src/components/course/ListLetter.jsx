@@ -1,76 +1,112 @@
-// mostrar lista de cursos según filtro aplicado a la consulta primaria para la tabla
-// actualizar por cada asignacion del curso
-// solicitar asignación de fecha para el caso del cambio de curso
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useCourse from "../../hooks/useCourse";
 import CardLetter from "./CardLetter";
 
-// ver si paso la lógica desde la data en el componente en si
-// Esto quiere decir que se obtiene la lista y se ahce el conteo
 const ListLetter = () => {
-  const { filterCourseContex, selectGrade, letters, updateDataCourse } =
-    useCourse();
+  const {
+    course,
+    filterCourseContex,
+    selectedGrade,
+    selectedLetter,
+    listCourseForGrade,
+    letter,
+    updateDataCourse,
+  } = useCourse();
 
-  useEffect(() => {
-    // if (selectGrade !== null) {
-    //   const letterCourse = filterCourseContex
-    //     .filter((course) => course.curso !== null)
-    //     .map((course) => course.curso.replace(/\d+/g, ""));
-    //   const letterUniqueSet = new Set(letterCourse);
-    //   const letterUnique = Array.from(letterUniqueSet).sort();
-    //   updateDataCourse({ lettersForCourse: letterUnique });
-    // } else {
-    //   updateDataCourse({ lettersForCourse: [] });
-    // }
-
-    // se obtiene la lista de letras según el grado seleccionado
-    const lettersForCourse =
-      selectGrade !== null
-        ? Array.from(
-            new Set(
-              filterCourseContex
-                .filter((course) => course.curso !== null)
-                .map((course) => course.curso.replace(/\d+/g, ""))
-            )
-          ).sort()
-        : [];
-
-    updateDataCourse({ lettersForCourse });
-
-    // pasar a condicion if
-    // probar si es factible conbinar con script anterior
-
-    if (selectGrade !== null) {
-      // inicialización del objeto y sus propiedades
-      const letterData = lettersForCourse.reduce((acc, letter) => {
-        acc[selectGrade + letter] = {
-          total: 0,
-          masculino: 0,
-          femenino: 0,
-        };
-        return acc;
-      }, {});
-
-      // asignacion de los valores
-      filterCourseContex.forEach(({ curso, sexo }) => {
-        const letterKey = curso;
-        const sexoLower = sexo.toLowerCase();
-
-        if (letterData[letterKey]) {
-          letterData[letterKey].total++;
-          letterData[letterKey][sexoLower]++;
-        }
-      });
-
-      console.log(letterData);
+  // obtención del array con las letras del grado
+  const letterArray = useMemo(() => {
+    if (selectedGrade !== null) {
+      return JSON.parse(
+        listCourseForGrade.find(
+          (grade) => grade.grado === parseInt(selectedGrade)
+        )?.letra || []
+      );
     }
-  }, [filterCourseContex]);
+
+    return [];
+  }, [selectedGrade, listCourseForGrade]);
+
+  // función para obtener datos de los cursos pertenecientes al grado seleccionado
+  const getDataForLetter = () => {
+    // inicialización del objeto con propiedades para cada letra
+    const letterObject = letterArray.reduce((acc, letterGrade) => {
+      acc[letterGrade] = {
+        total: 0,
+        masculino: 0,
+        femenino: 0,
+      };
+      return acc;
+    }, {});
+
+    // asignacion de los valores, al objeto
+    course.forEach(({ curso, sexo }) => {
+      const letterKey = curso;
+      const sexoLower = sexo.toLowerCase();
+
+      if (letterObject[letterKey]) {
+        letterObject[letterKey].total++;
+        letterObject[letterKey][sexoLower]++;
+      }
+    });
+
+    // actualización de los datos para cada letra
+    updateDataCourse({ letter: letterObject });
+  };
+
+  // función para generar elementos de curso con sus datos respectivos
+  const generateLetterDataForUI = () => {
+    return letterArray.map((letterString) => ({
+      letterCourse: letterString,
+      countMale: letter[letterString]?.masculino,
+      countFemale: letter[letterString]?.femenino,
+      countTotal: letter[letterString]?.total,
+      activate: false,
+    }));
+  };
+
+  // función para manejar el click en una tarjeta de letra
+  const handleLetterCardClick = (clickedLetter) => {
+    updateDataCourse({
+      selectedLetter: clickedLetter === selectedLetter ? null : clickedLetter,
+    });
+
+    // obtención de los datos filtrados
+    const filterLetterCourse =
+      clickedLetter === selectedLetter
+        ? course.filter((data) => data.grado === parseInt(selectedGrade))
+        : selectedLetter === null
+        ? filterCourseContex.filter((data) => data.curso === clickedLetter)
+        : course.filter((data) => data.curso === clickedLetter);
+
+    // actualizar lista de datos para mostrar en la tabla
+    updateDataCourse({ filterCourseContex: filterLetterCourse });
+  };
+
+  // función para manejar el click en el boton de descarga de una tarjeta de letra
+  const handleDownloadLetterCardClick = (clickedLetter) => {};
+
+  // obtención del array de cursos al seleccionar un grado
+  useEffect(() => {
+    getDataForLetter();
+  }, [selectedGrade, course]);
+
+  const letterCourse = useMemo(() => generateLetterDataForUI(), [letter]);
 
   return (
-    <section className="w-full flex-wrap relative flex justify-start mt-2 gap-4 px-1">
-      {letters.map((letters) => (
-        <CardLetter key={letters} letter={letters} />
-      ))}
+    <section className="w-full flex-wrap relative flex gap-3">
+      {letterCourse.map(
+        ({ letterCourse, countMale, countFemale, countTotal }) => (
+          <CardLetter
+            key={letterCourse}
+            letterString={letterCourse}
+            countMale={countMale}
+            countFemale={countFemale}
+            countTotal={countTotal}
+            active={letterCourse === selectedLetter}
+            onLetterClick={handleLetterCardClick}
+          />
+        )
+      )}
     </section>
   );
 };

@@ -18,18 +18,19 @@ export const stringFormat = (val) => {
 
 // funcion para remover espacios en blanco
 // function to remove whitespace
-// export const removeSpaces = ({ values }) => {
-//   const newValues = {};
-//   Object.keys(values).map((key) => {
-//     if (typeof values[key] === "string") {
-//       newValues[key] = values[key].trim();
-//     } else {
-//       newValues[key] = values[key];
-//     }
-//   });
+// sin uso !!!
+export const removeSpaces = ({ values }) => {
+  const newValues = {};
+  Object.keys(values).map((key) => {
+    if (typeof values[key] === "string") {
+      newValues[key] = values[key].trim();
+    } else {
+      newValues[key] = values[key];
+    }
+  });
 
-//   return newValues;
-// };
+  return newValues;
+};
 
 // funcion para calcular el digito verificador del rut
 // function to calculate the verification digit of the rut
@@ -61,7 +62,6 @@ export const getName = ({
   inputGrade,
   inputDv,
   inputNombre,
-  // setId,
   updateId,
   property,
   periodo,
@@ -84,7 +84,6 @@ export const getName = ({
         const grade = data?.grado ? data?.grado : null;
         setFieldValue(inputNombre, name);
         grade && setFieldValue(inputGrade, grade);
-        // setId((prev) => ({ ...prev, [property]: id }));
         updateId({ [property]: id });
       })
       .catch((error) => {
@@ -95,7 +94,6 @@ export const getName = ({
       });
   } else {
     setFieldValue(inputDv, "");
-    // setId((prev) => ({ ...prev, [property]: "" }));
     updateId({ [property]: "" });
     setFieldValue(inputNombre, "");
   }
@@ -128,6 +126,33 @@ export const getCurrentYear = () => {
   const y = fecha.getFullYear();
   return y;
 };
+
+// función para convertir fecha tipo string en tipo fecha
+export const getDateFormat = (dateString) => {
+  // división del string en partes (año, mes, dia)
+  // const partsDate = dateString.split("/");
+
+  return new Date(dateString);
+};
+
+// funcion para convertir fecha texto a fecha date
+// sin uso !!!
+export const formatDate = (date) => {
+  const part = date.split(" / ");
+  return `${part[2]}-${part[1]}-${part[0]}`;
+};
+
+// funcion para convertir fecha a texto
+export const getDateStringFormat = (date) => {
+  // obtener las fechas
+  const dia = date.getDate().toString().padStart(2, "0");
+  const mes = (date.getMonth() + 1).toString().padStart(2, "0");
+  const anio = date.getFullYear();
+  return `${dia}/${mes}/${anio}`;
+};
+
+// ==========================================>
+// mover funciones a downloadFunction =======>
 
 // funcion para obtener excel con registro matriculas
 export const getReportMatricula = ({ stateObject, periodo }) => {
@@ -162,6 +187,7 @@ export const getReportMatricula = ({ stateObject, periodo }) => {
     .catch((error) => console.log(error));
 };
 
+// funcion para obtener excel con registro de estado de matricula
 export const getReportProcessMatricula = ({ periodo }) => {
   apiGetDocument({
     route: "report/getReportProcessMatricula",
@@ -179,9 +205,3 @@ export const getReportProcessMatricula = ({ periodo }) => {
     // TRABAJAR EN EXPIRACION DEL TOKEN
     .catch((error) => console.log(error));
 };
-
-// funcion para convertir fecha texto a fecha date
-// const formatDate = (date) => {
-//   const part = date.split(" / ");
-//   return `${part[2]}-${part[1]}-${part[0]}`;
-// };

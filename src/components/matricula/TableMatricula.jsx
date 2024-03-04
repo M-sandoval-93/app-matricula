@@ -60,12 +60,14 @@ const TableMatricula = () => {
 
         // cantidad de matriculados
         const matriculados = listMatricula.filter(
-          (count) => count.estado === "ACTIVO"
+          (count) =>
+            count.estado === "MATRICULADO (A)" ||
+            count.estado === "SUSPENDIDO (A)"
         ).length;
 
         // cantidad de retirados
         const retirados = listMatricula.filter(
-          (count) => count.estado === "RETIRADO"
+          (count) => count.estado === "RETIRADO (A)"
         ).length;
 
         updateDataMatricula({

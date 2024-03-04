@@ -33,6 +33,23 @@ export const router = createBrowserRouter([
       {
         path: "/matricula/app/home",
         element: <Home />,
+        loader: async () => {
+          try {
+            // validación de la sesión
+            await apiGet({ route: "validateSession" });
+
+            // consulta del periodo de matricula
+            const getProcesoMatricula = await apiGet({
+              route: "matricula/getPeriodoMatricula",
+            });
+
+            const response = await getProcesoMatricula?.data?.state;
+
+            return { response };
+          } catch (error) {
+            return { error };
+          }
+        },
       },
       {
         path: "/matricula/app/cursos",

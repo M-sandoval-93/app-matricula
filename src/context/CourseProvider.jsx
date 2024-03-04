@@ -4,13 +4,13 @@ const CourseContext = createContext({});
 
 export const CourseProvider = ({ children }) => {
   const [dataCourse, setDataCourse] = useState({
-    course: [], // datos de la consulta y respaldo
-    filterCourseContex: [], // datos filtrados
+    course: [], // datos base de la consulta
+    filterCourseContex: [], // datos para trabajar con filtros
+    listCourseForGrade: {}, // almacena un array de los cursos por grado
     grade: [], // array con los datos del grado
-    selectGrade: null, // grado seleccionado
-    letters: [], // todas las letras de curso del periodo
-    selectLetter: null, // letra seleccionado
-    lettersForCourse: [], // letras por grado
+    letter: [], // array con los datos de las letras
+    selectedGrade: null, // estado para la selección de un grado
+    selectedLetter: null, // estado para la selección de un curso
   });
 
   // Actualizador del objeto de contextos

@@ -1,3 +1,8 @@
+import {
+  functionSortDateText,
+  functionSortTypeStudent,
+} from "../../utils/sortFunctions";
+
 export const columnsProcessMatricula = () => {
   return [
     {
@@ -35,13 +40,7 @@ export const columnsProcessMatricula = () => {
       width: "170px",
       center: true,
       sortable: true,
-      sortFunction: (rowA, rowB) => {
-        return rowA.estudiante_nuevo === rowB.estudiante_nuevo
-          ? 0
-          : rowA.estudiante_nuevo
-          ? 1
-          : -1;
-      },
+      sortFunction: functionSortTypeStudent,
     },
     {
       name: "Estado Estudiante",
@@ -77,38 +76,8 @@ export const columnsProcessMatricula = () => {
         "letter-spacing": "0.025rem",
       },
       center: true,
-      sortable: true,
-      sortFunction: (rowA, rowB) => {
-        // función personalizada para ordenar fecha pasada a texto
-        const dateA = rowA.fecha_matricula
-          ? new Date(
-              rowA.fecha_matricula.replace(
-                /(\d{2})\/(\d{2})\/(\d{4})/,
-                "$2/$1/$3"
-              )
-            )
-          : null;
-
-        const dateB = rowB.fecha_matricula
-          ? new Date(
-              rowB.fecha_matricula.replace(
-                /(\d{2})\/(\d{2})\/(\d{4})/,
-                "$2/$1/$3"
-              )
-            )
-          : null;
-
-        // condición para controlar los campos nulos al final
-        if (dateA && dateB) {
-          return dateA - dateB;
-        } else if (dateA) {
-          return 1; // dateA es una fecha, pero dateB es nulo, colocamos dateA al final
-        } else if (dateB) {
-          return -1; // dateB es una fecha, pero dateA es nulo, colocamos dateB al final
-        } else {
-          return 0; // Ambos son nulos, no hay diferencia
-        }
-      },
+      // sortable: true,
+      sortFunction: functionSortDateText("fecha_matricula"),
     },
   ];
 };

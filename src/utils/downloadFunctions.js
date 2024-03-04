@@ -9,8 +9,8 @@ const regularStudentCertificate = ({
   apiGetDocument({
     route: "report/getCertificadoAlumnoRegular",
     param: `${rut}/${authPeriodo}`,
-  })
-    .then((response) => {
+  }).then((response) => {
+    if (response.status === 200) {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
@@ -18,10 +18,10 @@ const regularStudentCertificate = ({
       link.click();
       link.remove();
       window.URL.revokeObjectURL(url);
-    })
-    .catch((error) =>
-      updateStateMatricula({ error: "Matricula sin curso asignado!" })
-    );
+    } else {
+      updateStateMatricula({ error: response.data });
+    }
+  });
 };
 
 // función para obtener certificado de matricula
@@ -33,8 +33,8 @@ const registrationCertificate = ({
   apiGetDocument({
     route: "report/getCertificadoMatricula",
     param: `${rut}/${authPeriodo}`,
-  })
-    .then((response) => {
+  }).then((response) => {
+    if (response.status === 200) {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
@@ -42,8 +42,10 @@ const registrationCertificate = ({
       link.click();
       link.remove();
       window.URL.revokeObjectURL(url);
-    })
-    .catch((error) => updateStateMatricula({ error: error }));
+    } else {
+      updateStateMatricula({ error: response.data });
+    }
+  });
 };
 
 // función para exportar certificados
@@ -58,6 +60,7 @@ export const exportCertificates = ({
   const currentMonth = currentDate.getMonth() + 1;
 
   if (bloqueoPeriodoActual || !authProcesoMatricula) {
+    // condición para exportar certificado de matrícula hasta el último día de febrero
     if (currentMonth === 1 || currentMonth === 2) {
       registrationCertificate({ rut, updateStateMatricula, authPeriodo });
       return;
@@ -68,4 +71,24 @@ export const exportCertificates = ({
   }
 
   registrationCertificate({ rut, updateStateMatricula, authPeriodo });
+};
+
+// función para descargar reporte de cursos del periodo
+export const getReportCourses = ({ periodo, updateStateCourse }) => {
+  apiGetDocument({
+    route: "report/getReportCourses",
+    param: periodo,
+  }).then((response) => {
+    if (response.status === 200) {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `ReporteCursos_${periodo}.xlsx`);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } else {
+      updateStateCourse({ errorCourse: response.data });
+    }
+  });
 };

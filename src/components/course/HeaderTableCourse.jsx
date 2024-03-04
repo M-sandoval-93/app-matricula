@@ -1,20 +1,33 @@
 import { BsFileEarmarkExcelFill } from "react-icons/bs";
 import { IoSearchSharp } from "react-icons/io5";
 import { MdClear } from "react-icons/md";
+import ListLetter from "./ListLetter";
+import { getReportCourses } from "../../utils/downloadFunctions";
+import useAuth from "../../hooks/useAuth";
 
 const HeaderTableCourse = ({ filter, updateStateCourse }) => {
+  const { authPeriodo } = useAuth();
+
+  // const downloadDataCourse = () => {
+  //   alert("descargar datos de cursos");
+  //   // se descargará la información que se encuentra filtrada en el momento
+  //   // considerar grado seleccionado y letra seleccionada
+  // };
+
   return (
-    <div className="relative w-full flex flex-wrap gap-3 items-center justify-center sm:justify-between my-2">
+    <div className="relative flex gap-3 w-full items-center justify-between flex-wrap-reverse">
       <div className="relative flex gap-3">
         <button
-          onClick={() => console.log("btn descarga")}
+          onClick={() =>
+            getReportCourses({ periodo: authPeriodo, updateStateCourse })
+          }
           className="px-2 py-1 border rounded-md hover:shadow-md hover:scale-105 group
           text-green-700 border-green-700 hover:shadow-green-900 transition-all duration-300"
         >
           <BsFileEarmarkExcelFill size={35} />
           <div
-            className={`invisible opacity-0 absolute p-2 -ml-[8.6rem] -top-[.5rem]
-            bg-cyan-100 text-blue-500 text-sm transition-all duration-300
+            className={`invisible opacity-0 absolute p-2 ml-[2.6rem] -top-[2.3rem]
+            bg-cyan-100 text-blue-500 text-sm transition-all duration-300 z-50
               group-hover:visible group-hover:opacity-100 whitespace-nowrap rounded-md`}
           >
             Descargar datos
@@ -44,6 +57,11 @@ const HeaderTableCourse = ({ filter, updateStateCourse }) => {
             <MdClear size={25} />
           </span>
         </div>
+      </div>
+
+      {/* Lista de letras por curso */}
+      <div className="relative flex justify-end">
+        <ListLetter />
       </div>
     </div>
   );

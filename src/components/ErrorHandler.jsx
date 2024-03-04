@@ -9,6 +9,8 @@ const ErrorHandler = ({ error }) => {
 
   if (status === 403) {
     errorText = "Advertencia: Privilegios insuficientes !";
+  } else if (status === 401) {
+    errorText = "Error: Expired token";
   } else {
     errorText = error?.response
       ? error?.response?.data?.message

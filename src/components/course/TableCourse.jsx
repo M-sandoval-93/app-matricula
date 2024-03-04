@@ -32,6 +32,7 @@ const TableCourse = () => {
   }, []);
 
   useEffect(() => {
+    // se establece el estado de carga
     updateStateCourse({ loadingCourse: true });
 
     // petición para obtener lista de cursos
@@ -50,13 +51,13 @@ const TableCourse = () => {
         updateStateCourse({ errorCourse: error });
       });
 
-    // petición para obtener lista de letras
+    // petición para obtener lista grados y sus letras correspondientes
     const getListCourse = apiGet({
       route: "course/getListCourse",
       param: authPeriodo,
     })
       .then((response) => {
-        updateDataCourse({ letters: response?.data?.listCourse });
+        updateDataCourse({ listCourseForGrade: response?.data });
       })
       .catch((error) => {
         updateStateCourse({ errorCourse: error });
@@ -64,7 +65,7 @@ const TableCourse = () => {
 
     // ejecutar una acción al terminar todas las peticiones (promesas)
     Promise.all([getCourseAll, getListCourse]).finally(() => {
-      updateStateCourse({ loadingCourse: false });
+      updateStateCourse({ loadingCourse: false, dataFetched: true });
     });
   }, [authPeriodo]);
 

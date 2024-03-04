@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
     authUserName: sessionStorage.getItem("authUserName") ?? null,
     authPeriodo: localStorage.getItem("authPeriodo") ?? year,
     authProcesoMatricula: localStorage.getItem("authProcesoMatricula") ?? false,
+    authClassStartDate: localStorage.getItem("authClassStartDate") ?? null,
   }));
 
   // función para actualizar estados del provider auth
@@ -33,6 +34,11 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("authProcesoMatricula", procesoMatricula);
 
     if (procesoMatricula === false) setPeriodo(year);
+  }, []);
+
+  const setClassStartDate = useCallback((classStartDate) => {
+    updateAuthProvider({ authClassStartDate: classStartDate });
+    localStorage.setItem("authClassStartDate", classStartDate);
   }, []);
 
   const bloqueoPeriodoActual =
@@ -78,6 +84,7 @@ export const AuthProvider = ({ children }) => {
       updateAuthProvider,
       setPeriodo,
       setProcesoMatricula,
+      setClassStartDate,
       bloqueoPeriodoActual,
       login,
       logout,
@@ -87,6 +94,7 @@ export const AuthProvider = ({ children }) => {
       updateAuthProvider,
       setPeriodo,
       setProcesoMatricula,
+      setClassStartDate,
       bloqueoPeriodoActual,
       login,
       logout,
