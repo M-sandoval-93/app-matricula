@@ -55,9 +55,23 @@ export const exportCertificates = ({
   rut,
   updateStateMatricula,
   authPeriodo,
+  estado,
+  curso,
 }) => {
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth() + 1;
+
+  if (estado === "RETIRADO (A)") {
+    updateStateMatricula({ error: { message: "Estudiante retirado !!" } });
+    return;
+  }
+
+  if (!curso) {
+    updateStateMatricula({
+      error: { message: "Matrícula sin curso asignado !!" },
+    });
+    return;
+  }
 
   if (bloqueoPeriodoActual || !authProcesoMatricula) {
     // condición para exportar certificado de matrícula hasta el último día de febrero
@@ -89,6 +103,27 @@ export const getReportCourses = ({ periodo, updateStateCourse }) => {
       window.URL.revokeObjectURL(url);
     } else {
       updateStateCourse({ errorCourse: response.data });
+    }
+  });
+};
+
+// función para descargar reporte de curso
+export const getReportCourse = ({ periodo, course }) => {
+  apiGetDocument({
+    route: "report/getReportCourse",
+    param: `${periodo}/${course}`,
+  }).then((response) => {
+    if (response.status === 200) {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `Nómina_${course}_${periodo}.xlsx`);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } else {
+      // updateStateCourse({ errorCourse: response.data });
+      console.log("error");
     }
   });
 };

@@ -239,8 +239,8 @@ const FormStudent = ({
                   Género
                 </label>
                 <select
-                  name="genero"
-                  id="genero"
+                  name="sexo"
+                  id="sexo"
                   value={values.sexo}
                   onChange={handleChange}
                   onBlur={handleBlur}

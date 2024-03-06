@@ -10,7 +10,7 @@ const SelectCourse = ({ idMatricula, grado, value }) => {
     useCourse();
 
   // datos para trabajar fecha de asignacion de curso
-  const currentDate = new Date();
+  const currentDate = new Date(getDateStringFormat(new Date()));
   const classStartDate = new Date(authClassStartDate);
 
   // función para obtener la lista de cursos según el grado
@@ -47,7 +47,7 @@ const SelectCourse = ({ idMatricula, grado, value }) => {
     let dateOfAssignment;
 
     // condición para manejar solicitud de fecha de asignación
-    if (classStartDate >= currentDate) {
+    if (classStartDate > currentDate) {
       // La asignación de curso se hace con la fecha de inicio de clases
       dateOfAssignment = getDateStringFormat(classStartDate);
     } else {
@@ -68,31 +68,39 @@ const SelectCourse = ({ idMatricula, grado, value }) => {
             Swal.showValidationMessage("Seleccionar fecha válida!");
           }
         },
+        customClass: {
+          input: "input-date", // clase personalizada desde main.css
+        },
       });
 
       // cancelacion de la asignación de fecha y curso
       if (!date) return;
 
       // asignación de la fecha ingresada
-      dateOfAssignment = getDateStringFormat(new Date(date.replace(/-/g, "/")));
+      dateOfAssignment = date.replace(/-/g, "/");
     }
 
     // actualizar los datos del contexto o ver si se hace nuevamente la consulta para traer los datos nuevamente
     updateDataCourse({
-      course: updatedArray(course, selectedLetter, dateOfAssignment),
+      course: updatedArray(
+        course,
+        selectedLetter,
+        getDateStringFormat(new Date(dateOfAssignment), true)
+      ),
       filterCourseContex: updatedArray(
         filterCourseContex,
         selectedLetter,
-        dateOfAssignment
+        getDateStringFormat(new Date(dateOfAssignment), true)
       ),
     });
+
     apiPut({
       route: "course/updateLetterCourse",
       object: {
         idMatricula: idMatricula,
         curso: selectedLetter,
         periodo: authPeriodo,
-        fechaAlta: authClassStartDate,
+        fechaAlta: dateOfAssignment,
       },
     }).then((res) => {
       const cursoAsignado = res?.data;
@@ -117,8 +125,6 @@ const SelectCourse = ({ idMatricula, grado, value }) => {
         title: textTitle,
       });
     });
-    // trabajar trigger al hacer cambio de curso, para almacenar la fecha de baja y posterior fecha de alta
-    // hacer una respectiva tabla de cambio de curso para dicho fin
   };
 
   return (

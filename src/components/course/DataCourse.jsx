@@ -61,7 +61,7 @@ export const columnsCourse = () => {
       sortFunction: functionSortDateText("fecha_alta"),
     },
     {
-      name: "Suspención",
+      name: "Suspensión",
       center: true,
       grow: 2,
       cell: (row) => <SuspendStudentButton estado={row.estado} />,

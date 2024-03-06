@@ -76,6 +76,8 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
                 rut: row.rut.slice(0, row.rut.length - 2),
                 updateStateMatricula,
                 authPeriodo,
+                estado: row.estado,
+                curso: row.curso,
               })
             }
           />

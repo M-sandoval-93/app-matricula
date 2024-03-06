@@ -3,6 +3,7 @@ import apiPut from "../api/apiPut";
 import apiGet from "../api/apiGet";
 import useMatricula from "./useMatricula";
 import useAuth from "./useAuth";
+import apiPost from "../api/apiPost";
 
 const useSubmitStudent = ({ setError, updateModalMatricula }) => {
   // const { getDataMatricula, periodo } = useMatricula();
@@ -12,7 +13,6 @@ const useSubmitStudent = ({ setError, updateModalMatricula }) => {
     values,
     { setSubmitting, setErrors, errors, resetForm } // ver como usar setErrors y errors
   ) => {
-    // console.log(values);
     setSubmitting(true);
     const student = {
       id: values?.id_estudiante,
@@ -51,12 +51,32 @@ const useSubmitStudent = ({ setError, updateModalMatricula }) => {
           (responseGet) => updateDataMatricula({ matricula: responseGet?.data })
         );
         setSubmitting(false);
-
         return;
       }
 
-      console.log("nuevo estudiante");
-      // ingresar nuevo estudiante
+      await apiPost({
+        route: "student/setStudent",
+        object: student,
+      }).then(() => {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: `Estudiante registrado`,
+        }).then(() => {
+          updateModalMatricula({
+            rut: "",
+            formMatricula: true,
+            formStudent: false,
+          });
+        });
+      });
+
+      // actualización de la tabla de matricula
+      await apiGet({ route: "matricula/getAll", param: authPeriodo }).then(
+        (responseGet) => updateDataMatricula({ matricula: responseGet?.data })
+      );
+      setSubmitting(false);
+      return;
 
       // actualizar tabla de estudiantes
 

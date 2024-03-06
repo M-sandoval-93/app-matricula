@@ -8,16 +8,17 @@ const CardLetter = ({
   countTotal,
   active,
   onLetterClick,
+  onDownloadClick,
 }) => {
   // manejador del evento click
-  const handleClick = (event) => {
+  const handleClick = () => {
     onLetterClick(letterString);
   };
 
   const handleDowloadClick = (event) => {
     // detener la propagación del evento, para que no afecte al article
     event.stopPropagation();
-    alert("Descargar hoja de estudiantes del curso");
+    onDownloadClick(letterString);
   };
 
   const activeColorCourse = active

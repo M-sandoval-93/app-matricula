@@ -20,11 +20,11 @@ const HeaderCourse = () => {
     }, {});
 
     // asignación de los valores
-    course.forEach(({ grado, sexo }) => {
+    course.forEach(({ grado, sexo, estado }) => {
       const gradeKey = grado;
       const sexoLower = sexo.toLowerCase();
 
-      if (gradeData[gradeKey]) {
+      if (gradeData[gradeKey] && estado !== "RETIRADO (A)") {
         gradeData[gradeKey].total++;
         gradeData[gradeKey][sexoLower]++;
       }

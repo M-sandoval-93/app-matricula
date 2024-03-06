@@ -27,7 +27,7 @@
 
 /* clases para elementos de sweetalert2 */
 .input-date {
-  width: 200px;
+  display: block !important;
 }
 
 @media screen and (max-width: 1024px) {

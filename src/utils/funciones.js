@@ -137,18 +137,23 @@ export const getDateFormat = (dateString) => {
 
 // funcion para convertir fecha texto a fecha date
 // sin uso !!!
-export const formatDate = (date) => {
-  const part = date.split(" / ");
-  return `${part[2]}-${part[1]}-${part[0]}`;
-};
+// export const formatDate = (date) => {
+//   const part = date.split(" / ");
+//   return `${part[2]}-${part[1]}-${part[0]}`;
+// };
 
-// funcion para convertir fecha a texto
-export const getDateStringFormat = (date) => {
+// funcion para convertir fecha a texto en diferente orden
+export const getDateStringFormat = (date, string = false) => {
   // obtener las fechas
   const dia = date.getDate().toString().padStart(2, "0");
   const mes = (date.getMonth() + 1).toString().padStart(2, "0");
   const anio = date.getFullYear();
-  return `${dia}/${mes}/${anio}`;
+
+  // devolución de la fecha en formato para visualizar
+  if (string) return `${dia}/${mes}/${anio}`;
+
+  // devolución de la fecha en formato para registrar
+  return `${anio}/${mes}/${dia}`;
 };
 
 // ==========================================>

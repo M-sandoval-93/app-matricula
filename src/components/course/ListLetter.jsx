@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import useCourse from "../../hooks/useCourse";
 import CardLetter from "./CardLetter";
+import useAuth from "../../hooks/useAuth";
+import { getReportCourse } from "../../utils/downloadFunctions";
 
 const ListLetter = () => {
   const {
@@ -12,6 +14,8 @@ const ListLetter = () => {
     letter,
     updateDataCourse,
   } = useCourse();
+
+  const { authPeriodo } = useAuth();
 
   // obtención del array con las letras del grado
   const letterArray = useMemo(() => {
@@ -39,11 +43,11 @@ const ListLetter = () => {
     }, {});
 
     // asignacion de los valores, al objeto
-    course.forEach(({ curso, sexo }) => {
+    course.forEach(({ curso, sexo, estado }) => {
       const letterKey = curso;
       const sexoLower = sexo.toLowerCase();
 
-      if (letterObject[letterKey]) {
+      if (letterObject[letterKey] && estado !== "RETIRADO (A)") {
         letterObject[letterKey].total++;
         letterObject[letterKey][sexoLower]++;
       }
@@ -83,7 +87,10 @@ const ListLetter = () => {
   };
 
   // función para manejar el click en el boton de descarga de una tarjeta de letra
-  const handleDownloadLetterCardClick = (clickedLetter) => {};
+  const handleDownloadLetterCardClick = (clickedLetter) => {
+    // alert(clickedLetter + authPeriodo);
+    getReportCourse({ periodo: authPeriodo, course: clickedLetter });
+  };
 
   // obtención del array de cursos al seleccionar un grado
   useEffect(() => {
@@ -104,6 +111,7 @@ const ListLetter = () => {
             countTotal={countTotal}
             active={letterCourse === selectedLetter}
             onLetterClick={handleLetterCardClick}
+            onDownloadClick={handleDownloadLetterCardClick}
           />
         )
       )}
