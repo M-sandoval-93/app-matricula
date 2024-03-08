@@ -107,8 +107,6 @@ const FormMatricula = ({
     // }, [stateModal, stateFormMatricula]); // proboca que al abrir otro modal student/representative, se borren los id
   }, [stateModal]);
 
-  console.log(id);
-
   return (
     <Formik
       initialValues={initialValues}

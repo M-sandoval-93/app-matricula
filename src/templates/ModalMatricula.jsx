@@ -3,9 +3,17 @@ import Modal from "./Modal";
 import FormMatricula from "./forms/FormMatricula";
 import FormStudent from "./forms/FormStudent";
 import FormRepresentative from "./forms/FormRepresentative";
+import useAuth from "../hooks/useAuth";
+import ErrorHandler from "../components/ErrorHandler";
 
 const ModalMatricula = ({ stateMatricula, onCloseModal }) => {
   const { stateModalMatricula, newMatricula, idMatricula } = stateMatricula; // estados para modulo matricula
+
+  const { authPrivilege } = useAuth();
+  const [error, setError] = useState(null);
+
+  // privilegios permitidos para utilizar el modal
+  const acceptedPrivilege = ["1", "2"];
 
   // estados para trabajar con el modal matricula
   const [modalMatricula, setModalMatricula] = useState({
@@ -31,6 +39,11 @@ const ModalMatricula = ({ stateMatricula, onCloseModal }) => {
         formRepresentative: false,
         editSubForm: false,
       });
+
+      if (!acceptedPrivilege.includes(authPrivilege)) {
+        onCloseModal();
+        setError({ message: "Advertencia: Privilegios insuficientes !" });
+      }
     }
   }, [stateModalMatricula]);
 
@@ -85,6 +98,8 @@ const ModalMatricula = ({ stateMatricula, onCloseModal }) => {
           stateFormRepresentative={modalMatricula.formRepresentative}
         />
       </section>
+
+      <ErrorHandler error={error} />
     </Modal>
   );
 };

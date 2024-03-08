@@ -13,20 +13,20 @@ const Modal = ({
   color, // color barra superior del modal
   report = false, // para manejar tamaño del modal reportes
 }) => {
-  const { authPrivilege } = useAuth();
+  // const { authPrivilege } = useAuth();
   const [error, setError] = useState(null);
 
-  // privilegios permitidos para utilizar el modal
-  const acceptedPrivilege = ["1", "2"];
+  // // privilegios permitidos para utilizar el modal
+  // const acceptedPrivilege = ["1", "2"];
 
   useEffect(() => {
     if (stateModal) {
       apiGet({ route: "validateSession" }).catch((error) => setError(error));
 
-      if (!acceptedPrivilege.includes(authPrivilege)) {
-        onCloseModal();
-        setError({ message: "Advertencia: Privilegios insuficientes !" });
-      }
+      // if (!acceptedPrivilege.includes(authPrivilege)) {
+      //   onCloseModal();
+      //   setError({ message: "Advertencia: Privilegios insuficientes !" });
+      // }
     }
   }, [stateModal]);
 

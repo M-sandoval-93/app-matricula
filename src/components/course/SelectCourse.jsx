@@ -56,7 +56,7 @@ const SelectCourse = ({ idMatricula, grado, value }) => {
 
       // modal para solicitar fecha de asignacion
       const { value: date } = await Swal.fire({
-        title: `Fecha de ${dateAssignmentText} `,
+        title: `Fecha de ${dateAssignmentText}`,
         input: "date",
         showCancelButton: true,
         confirmButtonText: "Asignar",
@@ -94,6 +94,7 @@ const SelectCourse = ({ idMatricula, grado, value }) => {
       ),
     });
 
+    // petición put
     apiPut({
       route: "course/updateLetterCourse",
       object: {

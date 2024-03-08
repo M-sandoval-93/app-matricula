@@ -1,5 +1,6 @@
 import useAuth from "../../hooks/useAuth";
 import StudenStatusButton from "../StudentStatusButton";
+import withDrawalMatricula from "./withDrawalMatricula";
 
 // funciones
 import { functionSortStates } from "../../utils/sortFunctions";
@@ -7,6 +8,7 @@ import { exportCertificates } from "../../utils/downloadFunctions";
 
 // iconos
 import RegistrationActionButton from "./RegistrationActionButton";
+import useMatricula from "../../hooks/useMatricula";
 
 export const columnsMatricula = ({ updateStateMatricula }) => {
   const {
@@ -15,6 +17,8 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
     authPeriodo,
     authPrivilege,
   } = useAuth();
+  const { matricula, updateDataMatricula } = useMatricula();
+
   return [
     {
       name: "Matrícula",
@@ -103,7 +107,17 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
           {/* boton para retirar una matricula */}
           <RegistrationActionButton
             title={"Baja de matrícula"}
-            onClick={() => alert("prueba baja matricula")}
+            // onClick={() => alert("prueba baja matricula")}
+            onClick={() =>
+              withDrawalMatricula({
+                matricula,
+                updateDataMatricula,
+                updateStateMatricula,
+                idMatricula: row.id,
+                authPeriodo,
+                authPrivilege,
+              })
+            }
           />
         </div>
       ),
