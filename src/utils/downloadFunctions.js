@@ -55,11 +55,23 @@ export const exportCertificates = ({
   rut,
   updateStateMatricula,
   authPeriodo,
+  authPrivilege,
   estado,
   curso,
 }) => {
+  // variables tipo fecha
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth() + 1;
+
+  // privilegios permitidos para utilizar el modal
+  const acceptedPrivilege = ["1", "2"];
+
+  if (!acceptedPrivilege.includes(authPrivilege)) {
+    updateStateMatricula({
+      error: { message: "Advertencia: Privilegios insuficientes !" },
+    });
+    return;
+  }
 
   if (estado === "RETIRADO (A)") {
     updateStateMatricula({ error: { message: "Estudiante retirado !!" } });

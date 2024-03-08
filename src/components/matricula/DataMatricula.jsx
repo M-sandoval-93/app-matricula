@@ -9,7 +9,12 @@ import { exportCertificates } from "../../utils/downloadFunctions";
 import RegistrationActionButton from "./RegistrationActionButton";
 
 export const columnsMatricula = ({ updateStateMatricula }) => {
-  const { bloqueoPeriodoActual, authProcesoMatricula, authPeriodo } = useAuth();
+  const {
+    bloqueoPeriodoActual,
+    authProcesoMatricula,
+    authPeriodo,
+    authPrivilege,
+  } = useAuth();
   return [
     {
       name: "Matrícula",
@@ -76,6 +81,7 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
                 rut: row.rut.slice(0, row.rut.length - 2),
                 updateStateMatricula,
                 authPeriodo,
+                authPrivilege,
                 estado: row.estado,
                 curso: row.curso,
               })

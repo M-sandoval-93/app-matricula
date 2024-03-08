@@ -28,30 +28,14 @@ const RutName = ({
 
   // funcion para obtener el rut para un nuevo ingreso o edicion de estudiante/apoderado
   const getRut = () => {
-    // Asignar rut al contexto rut del modal matricula
-    updateModalMatricula({ rut: values[rut] });
-
-    // condición para identificar new or edit
-    if (values[name] === `Sin registro de ${type} !`) {
-      updateModalMatricula({ editSubForm: true });
-    } else {
-      updateModalMatricula({ editSubForm: false });
-    }
-
-    // condición para alternar entre los formularios del modal
-    if (type === "estudiante") {
-      // mostrar formulario de estudiante
-      updateModalMatricula({
-        formMatricula: false,
-        formStudent: true,
-      });
-    } else {
-      // mostrar formulario de apoderado
-      updateModalMatricula({
-        formMatricula: false,
-        formRepresentative: true,
-      });
-    }
+    // asignación de los valores del contexto formMatricula
+    updateModalMatricula({
+      rut: values[rut],
+      editSubForm: values[name] === `Sin registro de ${type} !`,
+      formMatricula: false,
+      formStudent: type === "estudiante",
+      formRepresentative: type !== "estudiante",
+    });
   };
 
   return (

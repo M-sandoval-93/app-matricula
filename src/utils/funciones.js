@@ -12,25 +12,25 @@ export const numberFormat = (val) => {
 // funcion para restringir string, devuelve un string
 // function to restrict string, returns a string
 export const stringFormat = (val) => {
-  val.target.value = val.target.value.replace(/[^A-Za-z\s]/g, "");
+  val.target.value = val.target.value.replace(/[^A-Za-zñÑá-úÁ-Ú´\s]/g, "");
   return val;
 };
 
 // funcion para remover espacios en blanco
 // function to remove whitespace
 // sin uso !!!
-export const removeSpaces = ({ values }) => {
-  const newValues = {};
-  Object.keys(values).map((key) => {
-    if (typeof values[key] === "string") {
-      newValues[key] = values[key].trim();
-    } else {
-      newValues[key] = values[key];
-    }
-  });
+// export const removeSpaces = ({ values }) => {
+//   const newValues = {};
+//   Object.keys(values).map((key) => {
+//     if (typeof values[key] === "string") {
+//       newValues[key] = values[key].trim();
+//     } else {
+//       newValues[key] = values[key];
+//     }
+//   });
 
-  return newValues;
-};
+//   return newValues;
+// };
 
 // funcion para calcular el digito verificador del rut
 // function to calculate the verification digit of the rut
@@ -67,6 +67,15 @@ export const getName = ({
   periodo,
 }) => {
   const rut = val.target.value;
+
+  // selección del texto del input nombre
+  const textInputName = {
+    idEstudiante: "Asignar estudiante !",
+    idTitular: "Asignar apoderado(a) titular !",
+    idSuplente: "Asignar apoderado(a) suplente !",
+  };
+
+  // Selección de ruta para la api de consulta de nombre
   const route =
     property === "idEstudiante"
       ? "student/getNameStudent"
@@ -74,6 +83,7 @@ export const getName = ({
 
   const param = property === "idEstudiante" ? `${rut}/${periodo}` : `${rut}`;
 
+  // condición para buscar rut
   if (rut.length >= 7 && rut.length <= 9) {
     setFieldValue(inputDv, calculateCheckDigit(rut));
 
@@ -94,8 +104,8 @@ export const getName = ({
       });
   } else {
     setFieldValue(inputDv, "");
-    updateId({ [property]: "" });
-    setFieldValue(inputNombre, "");
+    updateId({ [property]: null });
+    setFieldValue(inputNombre, rut.length === 0 ? textInputName[property] : "");
   }
 
   return numberFormat(val);
@@ -134,13 +144,6 @@ export const getDateFormat = (dateString) => {
 
   return new Date(dateString);
 };
-
-// funcion para convertir fecha texto a fecha date
-// sin uso !!!
-// export const formatDate = (date) => {
-//   const part = date.split(" / ");
-//   return `${part[2]}-${part[1]}-${part[0]}`;
-// };
 
 // funcion para convertir fecha a texto en diferente orden
 export const getDateStringFormat = (date, string = false) => {

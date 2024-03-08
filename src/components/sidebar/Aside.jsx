@@ -43,17 +43,21 @@ const Aside = () => {
           onClick={() => handlerActiveItem(1)}
         /> */}
 
-        {authPrivilege === "1" && (
-          <SidebarItem
-            icon={<AssignmentIndIcon sx={{ fontSize: 30 }} />}
-            text={"Cursos"}
-            to="/matricula/app/cursos"
-            active={activeItem === 1}
-            onClick={() => handlerActiveItem(1)}
-          />
-        )}
+        {authPrivilege === "1" ||
+          (authPrivilege === "4" && (
+            <SidebarItem
+              icon={<AssignmentIndIcon sx={{ fontSize: 30 }} />}
+              text={"Cursos"}
+              to="/matricula/app/cursos"
+              active={activeItem === 1}
+              onClick={() => handlerActiveItem(1)}
+            />
+          ))}
 
-        {(authPrivilege === "1" || authPrivilege === "2" || authPrivilege === "3" || authPrivilege === "4") && (
+        {(authPrivilege === "1" ||
+          authPrivilege === "2" ||
+          authPrivilege === "3" ||
+          authPrivilege === "4") && (
           <SidebarItem
             icon={<SchoolIcon sx={{ fontSize: 30 }} />}
             text={"Matrícula"}

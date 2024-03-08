@@ -24,9 +24,9 @@ const FormMatricula = ({
 
   // estado para el manejo de los id
   const [id, setId] = useState({
-    idEstudiante: "",
-    idTitular: "",
-    idSuplente: "",
+    idEstudiante: null,
+    idTitular: null,
+    idSuplente: null,
   });
 
   const updateId = useCallback((newId) => {
@@ -45,13 +45,22 @@ const FormMatricula = ({
   const initialValues = initialValuesMatricula(); // obtencion de los valores iniciales del formulario
   const validationSchema = validationMatricula(); // obtencion de las validaciones del formulario
 
+  // useEffect(() => {
+  //   // setear los id`s del estado general
+  //   updateId({
+  //     idEstudiante: null,
+  //     idTitular: null,
+  //     idSuplente: null,
+  //   });
+  // }, [stateModal]);
+
   // Efecto para limpiar formulario de matricula y asignar valores
   useEffect(() => {
     // setear los id`s del estado general
     updateId({
-      idEstudiante: "",
-      idTitular: "",
-      idSuplente: "",
+      idEstudiante: null,
+      idTitular: null,
+      idSuplente: null,
     });
 
     // setear formulario y sus campos
@@ -90,14 +99,15 @@ const FormMatricula = ({
           updateId({
             idEstudiante: data.id_estudiante,
             idTitular: data.id_apoderado_titular,
-            idSuplente: data.id_apoderado_suplente
-              ? data.id_apoderado_suplente
-              : "",
+            idSuplente: data.id_apoderado_suplente,
           });
         })
         .catch((error) => setError(error));
     }
-  }, [stateModal, stateFormMatricula]);
+    // }, [stateModal, stateFormMatricula]); // proboca que al abrir otro modal student/representative, se borren los id
+  }, [stateModal]);
+
+  console.log(id);
 
   return (
     <Formik

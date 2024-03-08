@@ -17,7 +17,7 @@ const Modal = ({
   const [error, setError] = useState(null);
 
   // privilegios permitidos para utilizar el modal
-  const acceptedPrivilege = ["1", "2", "4"];
+  const acceptedPrivilege = ["1", "2"];
 
   useEffect(() => {
     if (stateModal) {
@@ -37,13 +37,13 @@ const Modal = ({
     >
       <div
         className={`bg-white rounded-xl shadow transition-all duration-300
-            relative flex flex-col 
+            relative flex flex-col
             ${
               report
                 ? "w-[40%] max-w-[30rem]"
                 : "w-[80%] min-h-[37.5rem] max-w-[50rem]  "
             }
-            max-h-[37.5rem] min-w-[20rem]        
+            max-h-[37.5rem] min-w-[20rem]
             ${stateModal ? "scale-100 opacity-100" : "scale-125 opacity-0"}`}
       >
         <header
