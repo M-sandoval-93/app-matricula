@@ -15,7 +15,7 @@ import useCourse from "../../hooks/useCourse";
 
 const TableCourse = () => {
   // ver las variables grobales que utilizare
-  const { authPeriodo } = useAuth();
+  const { authPeriodo, error } = useAuth();
   const { filterCourseContex, updateDataCourse } = useCourse();
 
   // estado para las variables del modulo de curso
@@ -23,7 +23,7 @@ const TableCourse = () => {
     filterCourse: "", // datos para el filtro de la tabla
     idMatriculaCourse: "", // id de la matricula para asignar el curso
     loadingCourse: false, // estado de la carga de datos
-    errorCourse: null, // estado para el control de errores
+    // errorCourse: null, // estado para el control de errores
   });
 
   // actualizador del estado de las variables del modulo de curso
@@ -81,7 +81,7 @@ const TableCourse = () => {
             filter: stateCourse.filterCourse,
             updateStateCourse,
           })}
-          columns={columnsCourse()}
+          columns={columnsCourse({ updateStateCourse })}
           data={providerFilter({
             data: filterCourseContex,
             filter: stateCourse.filterCourse,
@@ -100,7 +100,8 @@ const TableCourse = () => {
       </section>
 
       {/* componente para manejar los errores */}
-      <ErrorHandler error={stateCourse.errorCourse} />
+      <ErrorHandler error={error} />
+      {/* <ErrorHandler error={stateCourse.errorCourse} /> */}
     </main>
   );
 };

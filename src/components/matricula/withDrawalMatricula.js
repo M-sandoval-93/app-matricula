@@ -22,6 +22,7 @@ const withDrawalMatricula = async ({
 
   // función para actualizar array de course y filtro con nuevas letras de curso
   const updatedArray = (dataArray, state, dateString) => {
+    // actualización de datos en data matricula
     const newArray = dataArray.map((item) => {
       if (item.id === idMatricula) {
         return { ...item, estado: state, fecha_baja: dateString };
@@ -29,7 +30,18 @@ const withDrawalMatricula = async ({
       return item;
     });
 
-    return newArray;
+    // actualización cantidad matriculados
+    const matriculados = newArray.filter(
+      (count) => count.estado === "MATRICULADO (A)"
+    ).length;
+
+    // actualización cantidad retirados
+    const retirados = newArray.filter(
+      (count) => count.estado === "RETIRADO (A)"
+    ).length;
+
+    // return newArray;
+    return { newArray, matriculados, retirados };
   };
 
   // modal para solicitar fecha de baja
@@ -57,13 +69,18 @@ const withDrawalMatricula = async ({
   // asignación de la fecha ingresada
   const dischargeDate = date.replace(/-/g, "/");
 
+  // obtención de data matricula actualizada
+  const newDataMatricula = updatedArray(
+    matricula,
+    "RETIRADO (A)",
+    getDateStringFormat(new Date(dischargeDate), true)
+  );
+
   // actualización de los datos de la tabla matrícula
   updateDataMatricula({
-    matricula: updatedArray(
-      matricula,
-      "RETIRADO (A)",
-      getDateStringFormat(new Date(dischargeDate), true)
-    ),
+    matricula: newDataMatricula.newArray,
+    countMatriculados: newDataMatricula.matriculados,
+    countRetirados: newDataMatricula.retirados,
   });
 
   // petición put

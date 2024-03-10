@@ -74,7 +74,9 @@ export const exportCertificates = ({
   }
 
   if (estado === "RETIRADO (A)") {
-    updateStateMatricula({ error: { message: "Estudiante retirado !!" } });
+    updateStateMatricula({
+      error: { message: "Advertencia: Estudiante retirado !" },
+    });
     return;
   }
 

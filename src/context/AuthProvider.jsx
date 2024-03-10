@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
     authPeriodo: localStorage.getItem("authPeriodo") ?? year,
     authProcesoMatricula: localStorage.getItem("authProcesoMatricula") ?? false,
     authClassStartDate: localStorage.getItem("authClassStartDate") ?? null,
+    error: null, // probar funcionalidad y eficiencia
   }));
 
   // función para actualizar estados del provider auth

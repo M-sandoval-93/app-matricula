@@ -6,7 +6,7 @@ import StudenStatusButton from "../StudentStatusButton";
 import SelectCourse from "./SelectCourse";
 import SuspendStudentButton from "./SuspendStudentButton";
 
-export const columnsCourse = () => {
+export const columnsCourse = ({ updateStateCourse }) => {
   return [
     {
       name: "Matrícula",
@@ -23,7 +23,7 @@ export const columnsCourse = () => {
     {
       name: "Nombres estudiante",
       selector: (row) => row.nombres_estudiante,
-      width: "480px",
+      width: "380px",
       sortable: true,
     },
     {
@@ -43,8 +43,16 @@ export const columnsCourse = () => {
           idMatricula={row.id}
           grado={row.grado}
           value={row.curso}
+          estado={row.estado}
+          updateStateCourse={updateStateCourse}
         />
       ),
+    },
+    {
+      name: "Nº Lista",
+      selector: (row) => row.n_lista ?? "-",
+      width: "90px",
+      center: true,
     },
     {
       name: "Estado",

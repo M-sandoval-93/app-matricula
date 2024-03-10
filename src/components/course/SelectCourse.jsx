@@ -4,8 +4,14 @@ import useAuth from "../../hooks/useAuth";
 import useCourse from "../../hooks/useCourse";
 import { getDateStringFormat } from "../../utils/funciones";
 
-const SelectCourse = ({ idMatricula, grado, value }) => {
-  const { authPeriodo, authClassStartDate } = useAuth();
+const SelectCourse = ({
+  idMatricula,
+  grado,
+  value,
+  estado,
+  updateStateCourse,
+}) => {
+  const { authPeriodo, authClassStartDate, updateAuthProvider } = useAuth();
   const { course, filterCourseContex, listCourseForGrade, updateDataCourse } =
     useCourse();
 
@@ -30,10 +36,15 @@ const SelectCourse = ({ idMatricula, grado, value }) => {
   const selectLetter = listLetter(grado) || [];
 
   // función para actualizar array de course y filtro con nuevas letras de curso
-  const updatedArray = (dataArray, letter, dateString) => {
+  const updatedArray = ({ dataArray, letter, numberList, dateString }) => {
     const newArray = dataArray.map((item) => {
       if (item.id === idMatricula) {
-        return { ...item, curso: letter, fecha_alta: dateString };
+        return {
+          ...item,
+          curso: letter,
+          n_lista: numberList,
+          fecha_alta: dateString,
+        };
       }
       return item;
     });
@@ -43,6 +54,17 @@ const SelectCourse = ({ idMatricula, grado, value }) => {
 
   // función onchange para manejar la logica al cambiar la letra dentro de un grado
   const handleChange = async (selectedLetter) => {
+    // comprobar estado de la matricula, para poder hacer la asignación o cambio
+    if (estado === "RETIRADO (A)") {
+      // updateStateCourse({
+      //   errorCourse: { message: "Advertencia: Privilegios insuficientes !" },
+      // });
+      updateAuthProvider({
+        error: { message: "Advertencia: Privilegios insuficientes !" },
+      });
+      return;
+    }
+
     // variable para la fecha de la asignación de curso
     let dateOfAssignment;
 
@@ -80,20 +102,6 @@ const SelectCourse = ({ idMatricula, grado, value }) => {
       dateOfAssignment = date.replace(/-/g, "/");
     }
 
-    // actualizar los datos del contexto o ver si se hace nuevamente la consulta para traer los datos nuevamente
-    updateDataCourse({
-      course: updatedArray(
-        course,
-        selectedLetter,
-        getDateStringFormat(new Date(dateOfAssignment), true)
-      ),
-      filterCourseContex: updatedArray(
-        filterCourseContex,
-        selectedLetter,
-        getDateStringFormat(new Date(dateOfAssignment), true)
-      ),
-    });
-
     // petición put
     apiPut({
       route: "course/updateLetterCourse",
@@ -103,13 +111,30 @@ const SelectCourse = ({ idMatricula, grado, value }) => {
         periodo: authPeriodo,
         fechaAlta: dateOfAssignment,
       },
-    }).then((res) => {
-      const cursoAsignado = res?.data;
+    }).then((response) => {
+      const cursoAsignado = response?.data?.curso;
+      const numeroListaAsignado = response?.data?.numero_lista ?? "-";
+
+      // actualización del array del sistema
+      updateDataCourse({
+        course: updatedArray({
+          dataArray: course,
+          letter: selectedLetter,
+          numberList: numeroListaAsignado,
+          dateString: getDateStringFormat(new Date(dateOfAssignment), true),
+        }),
+        filterCourseContex: updatedArray({
+          dataArray: course,
+          letter: selectedLetter,
+          numberList: numeroListaAsignado,
+          dateString: getDateStringFormat(new Date(dateOfAssignment), true),
+        }),
+      });
 
       // texto a mostrar en el toast
-      const textTitle = `
-        Estudiante ${!value ? "asignado" : "cambiado"} al ${cursoAsignado}
-      `;
+      const textTitle = `Estudiante ${
+        !value ? "asignado" : "cambiado"
+      } al ${cursoAsignado}`;
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",

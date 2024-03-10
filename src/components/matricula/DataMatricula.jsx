@@ -95,13 +95,23 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
           {/* boton para editar una matricula */}
           <RegistrationActionButton
             title={"Editar matrícula"}
-            onClick={() =>
+            onClick={() => {
+              // comprobar estado de la matricula, para poder hacer la asignación o cambio
+              if (row.estado === "RETIRADO (A)") {
+                updateStateMatricula({
+                  error: {
+                    message: "Advertencia: Estudiante retirado !",
+                  },
+                });
+                return;
+              }
+
               updateStateMatricula({
                 stateModalMatricula: true, // Cambio de estado para lanzar el modal
                 newMatricula: false, // Cambio de estado para modo edicion
                 idMatricula: row.id, // asignación del id de la matrícula
-              })
-            }
+              });
+            }}
           />
 
           {/* boton para retirar una matricula */}

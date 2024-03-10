@@ -50,9 +50,9 @@ const useSubmitMatricula = ({
           }).then(() => {
             // setear los id registrados
             updateId({
-              idEstudiante: "",
-              idTitular: "",
-              idSuplente: "",
+              idEstudiante: null,
+              idTitular: null,
+              idSuplente: null,
             });
 
             // cerrar el modal
@@ -98,12 +98,12 @@ const useSubmitMatricula = ({
 
           // cantidad de matriculados
           const matriculados = listMatricula.filter(
-            (count) => count.estado === "ACTIVO"
+            (count) => count.estado === "MATRICULADO (A)"
           ).length;
 
           // cantidad de retirados
           const retirados = listMatricula.filter(
-            (count) => count.estado === "RETIRADO"
+            (count) => count.estado === "RETIRADO (A)"
           ).length;
 
           updateDataMatricula({
@@ -116,9 +116,9 @@ const useSubmitMatricula = ({
 
       // setear los id registrados
       updateId({
-        idEstudiante: "",
-        idTitular: "",
-        idSuplente: "",
+        idEstudiante: null,
+        idTitular: null,
+        idSuplente: null,
       });
 
       setSubmitting(false);
