@@ -43,7 +43,9 @@ const Aside = () => {
           onClick={() => handlerActiveItem(1)}
         /> */}
 
-        {(authPrivilege === "1" || authPrivilege === "4") && (
+        {(authPrivilege === "1" ||
+          authPrivilege === "2" ||
+          authPrivilege === "4") && (
           <SidebarItem
             icon={<AssignmentIndIcon sx={{ fontSize: 30 }} />}
             text={"Cursos"}
