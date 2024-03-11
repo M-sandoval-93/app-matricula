@@ -4,13 +4,7 @@ import useAuth from "../../hooks/useAuth";
 import useCourse from "../../hooks/useCourse";
 import { getDateStringFormat } from "../../utils/funciones";
 
-const SelectCourse = ({
-  idMatricula,
-  grado,
-  value,
-  estado,
-  updateStateCourse,
-}) => {
+const SelectCourse = ({ idMatricula, grado, value, estado }) => {
   const { authPeriodo, authClassStartDate, updateAuthProvider } = useAuth();
   const { course, filterCourseContex, listCourseForGrade, updateDataCourse } =
     useCourse();
@@ -56,11 +50,8 @@ const SelectCourse = ({
   const handleChange = async (selectedLetter) => {
     // comprobar estado de la matricula, para poder hacer la asignación o cambio
     if (estado === "RETIRADO (A)") {
-      // updateStateCourse({
-      //   errorCourse: { message: "Advertencia: Privilegios insuficientes !" },
-      // });
       updateAuthProvider({
-        error: { message: "Advertencia: Privilegios insuficientes !" },
+        error: { message: "Advertencia: Estudiante retirado !" },
       });
       return;
     }
@@ -124,7 +115,7 @@ const SelectCourse = ({
           dateString: getDateStringFormat(new Date(dateOfAssignment), true),
         }),
         filterCourseContex: updatedArray({
-          dataArray: course,
+          dataArray: filterCourseContex,
           letter: selectedLetter,
           numberList: numeroListaAsignado,
           dateString: getDateStringFormat(new Date(dateOfAssignment), true),
