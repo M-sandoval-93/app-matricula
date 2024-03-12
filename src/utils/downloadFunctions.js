@@ -3,7 +3,7 @@ import apiGetDocument from "../api/apiGetDocument";
 // función para obtener certificado de alumno regular
 const regularStudentCertificate = ({
   rut,
-  updateStateMatricula,
+  updateDataMatricula,
   authPeriodo,
 }) => {
   apiGetDocument({
@@ -19,17 +19,13 @@ const regularStudentCertificate = ({
       link.remove();
       window.URL.revokeObjectURL(url);
     } else {
-      updateStateMatricula({ error: response.data });
+      updateDataMatricula({ error: response.data });
     }
   });
 };
 
 // función para obtener certificado de matricula
-const registrationCertificate = ({
-  rut,
-  updateStateMatricula,
-  authPeriodo,
-}) => {
+const registrationCertificate = ({ rut, updateDataMatricula, authPeriodo }) => {
   apiGetDocument({
     route: "report/getCertificadoMatricula",
     param: `${rut}/${authPeriodo}`,
@@ -43,7 +39,7 @@ const registrationCertificate = ({
       link.remove();
       window.URL.revokeObjectURL(url);
     } else {
-      updateStateMatricula({ error: response.data });
+      updateDataMatricula({ error: response.data });
     }
   });
 };
@@ -53,9 +49,9 @@ export const exportCertificates = ({
   bloqueoPeriodoActual,
   authProcesoMatricula,
   rut,
-  updateStateMatricula,
   authPeriodo,
   authPrivilege,
+  updateDataMatricula,
   estado,
   curso,
 }) => {
@@ -66,22 +62,25 @@ export const exportCertificates = ({
   // privilegios permitidos para utilizar el modal
   const acceptedPrivilege = ["1", "2"];
 
+  // condición para lanzar error por falta de privilegios
   if (!acceptedPrivilege.includes(authPrivilege)) {
-    updateStateMatricula({
+    updateDataMatricula({
       error: { message: "Advertencia: Privilegios insuficientes !" },
     });
     return;
   }
 
+  // condición para lanzar error por estudiante retirado
   if (estado === "RETIRADO (A)") {
-    updateStateMatricula({
+    updateDataMatricula({
       error: { message: "Advertencia: Estudiante retirado !" },
     });
     return;
   }
 
+  // condición para lanzar error por matricula sin curso asignado
   if (!curso) {
-    updateStateMatricula({
+    updateDataMatricula({
       error: { message: "Matrícula sin curso asignado !!" },
     });
     return;
@@ -90,15 +89,15 @@ export const exportCertificates = ({
   if (bloqueoPeriodoActual || !authProcesoMatricula) {
     // condición para exportar certificado de matrícula hasta el último día de febrero
     if (currentMonth === 1 || currentMonth === 2) {
-      registrationCertificate({ rut, updateStateMatricula, authPeriodo });
+      registrationCertificate({ rut, updateDataMatricula, authPeriodo });
       return;
     }
 
-    regularStudentCertificate({ rut, updateStateMatricula, authPeriodo });
+    regularStudentCertificate({ rut, updateDataMatricula, authPeriodo });
     return;
   }
 
-  registrationCertificate({ rut, updateStateMatricula, authPeriodo });
+  registrationCertificate({ rut, updateDataMatricula, authPeriodo });
 };
 
 // función para descargar reporte de cursos del periodo

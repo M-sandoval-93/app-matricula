@@ -16,6 +16,7 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
     authProcesoMatricula,
     authPeriodo,
     authPrivilege,
+    updateAuthProvider,
   } = useAuth();
   const { matricula, updateDataMatricula } = useMatricula();
 
@@ -83,9 +84,9 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
                 bloqueoPeriodoActual,
                 authProcesoMatricula,
                 rut: row.rut.slice(0, row.rut.length - 2),
-                updateStateMatricula,
                 authPeriodo,
                 authPrivilege,
+                updateDataMatricula,
                 estado: row.estado,
                 curso: row.curso,
               })
@@ -98,10 +99,8 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
             onClick={() => {
               // comprobar estado de la matricula, para poder hacer la asignación o cambio
               if (row.estado === "RETIRADO (A)") {
-                updateStateMatricula({
-                  error: {
-                    message: "Advertencia: Estudiante retirado !",
-                  },
+                updateDataMatricula({
+                  error: { message: "Advertencia: Estudiante retirado !" },
                 });
                 return;
               }
@@ -117,12 +116,11 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
           {/* boton para retirar una matricula */}
           <RegistrationActionButton
             title={"Baja de matrícula"}
-            // onClick={() => alert("prueba baja matricula")}
             onClick={() =>
               withDrawalMatricula({
                 matricula,
-                updateDataMatricula,
                 updateStateMatricula,
+                updateDataMatricula,
                 idMatricula: row.id,
                 authPeriodo,
                 authPrivilege,

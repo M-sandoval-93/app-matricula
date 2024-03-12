@@ -4,8 +4,14 @@ import useAuth from "../../hooks/useAuth";
 import useCourse from "../../hooks/useCourse";
 import { getDateStringFormat } from "../../utils/funciones";
 
-const SelectCourse = ({ idMatricula, grado, value, estado }) => {
-  const { authPeriodo, authClassStartDate, updateAuthProvider } = useAuth();
+const SelectCourse = ({
+  idMatricula,
+  grado,
+  value,
+  estado,
+  updateStateCourse,
+}) => {
+  const { authPeriodo, authClassStartDate } = useAuth();
   const { course, filterCourseContex, listCourseForGrade, updateDataCourse } =
     useCourse();
 
@@ -50,7 +56,7 @@ const SelectCourse = ({ idMatricula, grado, value, estado }) => {
   const handleChange = async (selectedLetter) => {
     // comprobar estado de la matricula, para poder hacer la asignación o cambio
     if (estado === "RETIRADO (A)") {
-      updateAuthProvider({
+      updateStateCourse({
         error: { message: "Advertencia: Estudiante retirado !" },
       });
       return;
@@ -102,46 +108,50 @@ const SelectCourse = ({ idMatricula, grado, value, estado }) => {
         periodo: authPeriodo,
         fechaAlta: dateOfAssignment,
       },
-    }).then((response) => {
-      const cursoAsignado = response?.data?.curso;
-      const numeroListaAsignado = response?.data?.numero_lista ?? "-";
+    })
+      .then((response) => {
+        const cursoAsignado = response?.data?.curso;
+        const numeroListaAsignado = response?.data?.numero_lista ?? "-";
 
-      // actualización del array del sistema
-      updateDataCourse({
-        course: updatedArray({
-          dataArray: course,
-          letter: selectedLetter,
-          numberList: numeroListaAsignado,
-          dateString: getDateStringFormat(new Date(dateOfAssignment), true),
-        }),
-        filterCourseContex: updatedArray({
-          dataArray: filterCourseContex,
-          letter: selectedLetter,
-          numberList: numeroListaAsignado,
-          dateString: getDateStringFormat(new Date(dateOfAssignment), true),
-        }),
-      });
+        // actualización del array del sistema
+        updateDataCourse({
+          course: updatedArray({
+            dataArray: course,
+            letter: selectedLetter,
+            numberList: numeroListaAsignado,
+            dateString: getDateStringFormat(new Date(dateOfAssignment), true),
+          }),
+          filterCourseContex: updatedArray({
+            dataArray: filterCourseContex,
+            letter: selectedLetter,
+            numberList: numeroListaAsignado,
+            dateString: getDateStringFormat(new Date(dateOfAssignment), true),
+          }),
+        });
 
-      // texto a mostrar en el toast
-      const textTitle = `Estudiante ${
-        !value ? "asignado" : "cambiado"
-      } al ${cursoAsignado}`;
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.onmouseenter = Swal.stopTimer;
-          toast.onmouseleave = Swal.resumeTimer;
-        },
+        // texto a mostrar en el toast
+        const textTitle = `Estudiante ${
+          !value ? "asignado" : "cambiado"
+        } al ${cursoAsignado}`;
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title: textTitle,
+        });
+      })
+      .catch((error) => {
+        updateStateCourse({ error: error });
       });
-      Toast.fire({
-        icon: "success",
-        title: textTitle,
-      });
-    });
   };
 
   return (

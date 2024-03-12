@@ -81,8 +81,8 @@ const TableProcessMatricula = () => {
       })
       .catch((error) => {
         updateProcessMatricula({
-          errorProcessMatricula: error,
           loadingProcessMatricula: false,
+          error: error,
         });
       });
   }, []);

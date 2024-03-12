@@ -30,7 +30,7 @@ const TableMatricula = () => {
     stateModalReport: false, // estado del modal de reportes
     newMatricula: true, // estado para el ingreso de una matricula agregar/editar
     idMatricula: "", // id para modificar una matricula
-    error: null, // estado para el control de errores
+    errorMatricula: null, // estado para el control de errores
   });
 
   // actualizador del estado de las variables del modulo de matricula
@@ -79,7 +79,7 @@ const TableMatricula = () => {
       })
       .catch((error) => {
         updateStateMatricula({
-          error: error,
+          errorMatricula: error,
           loading: false,
         });
       });
@@ -128,7 +128,7 @@ const TableMatricula = () => {
       />
 
       {/* componente para manejar los errores */}
-      <ErrorHandler error={stateMatricula.error} />
+      <ErrorHandler error={stateMatricula.errorMatricula} />
     </main>
   );
 };

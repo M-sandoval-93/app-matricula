@@ -8,12 +8,6 @@ import useAuth from "../../hooks/useAuth";
 const HeaderTableCourse = ({ filter, updateStateCourse }) => {
   const { authPeriodo } = useAuth();
 
-  // const downloadDataCourse = () => {
-  //   alert("descargar datos de cursos");
-  //   // se descargará la información que se encuentra filtrada en el momento
-  //   // considerar grado seleccionado y letra seleccionada
-  // };
-
   return (
     <div className="relative flex gap-3 w-full items-center justify-between flex-wrap-reverse">
       <div className="relative flex gap-3">

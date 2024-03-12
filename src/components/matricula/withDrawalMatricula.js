@@ -13,6 +13,7 @@ const withDrawalMatricula = async ({
   // privilegios permitidos para utilizar el modal
   const acceptedPrivilege = ["1", "2"];
 
+  // control de privilegios
   if (!acceptedPrivilege.includes(authPrivilege)) {
     updateStateMatricula({
       error: { message: "Advertencia: Privilegios insuficientes !" },
@@ -76,13 +77,6 @@ const withDrawalMatricula = async ({
     getDateStringFormat(new Date(dischargeDate), true)
   );
 
-  // actualización de los datos de la tabla matrícula
-  updateDataMatricula({
-    matricula: newDataMatricula.newArray,
-    countMatriculados: newDataMatricula.matriculados,
-    countRetirados: newDataMatricula.retirados,
-  });
-
   // petición put
   apiPut({
     route: "matricula/putWithdrawalDateMatricula",
@@ -91,26 +85,37 @@ const withDrawalMatricula = async ({
       idMatricula: idMatricula,
       periodo: authPeriodo,
     },
-  }).then(() => {
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "top-end",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.onmouseenter = Swal.stopTimer;
-        toast.onmouseleave = Swal.resumeTimer;
-      },
+  })
+    .then(() => {
+      // actualización de los datos de la tabla matrícula
+      updateDataMatricula({
+        matricula: newDataMatricula.newArray,
+        countMatriculados: newDataMatricula.matriculados,
+        countRetirados: newDataMatricula.retirados,
+      });
+
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
+      Toast.fire({
+        icon: "success",
+        title: `Retiro registrado con fecha ${getDateStringFormat(
+          new Date(dischargeDate),
+          true
+        )}`,
+      });
+    })
+    .catch((error) => {
+      updateStateMatricula({ errorMatricula: error });
     });
-    Toast.fire({
-      icon: "success",
-      title: `Retiro registrado con fecha ${getDateStringFormat(
-        new Date(dischargeDate),
-        true
-      )}`,
-    });
-  });
 };
 
 export default withDrawalMatricula;
