@@ -1,5 +1,7 @@
 import { MdFileDownload } from "react-icons/md";
 import InformationCountMH from "./InformationCountMH";
+import AmountToolpin from "./AmountToolpin";
+import { useState } from "react";
 
 const CardLetter = ({
   letterString,
@@ -21,6 +23,9 @@ const CardLetter = ({
     onDownloadClick(letterString);
   };
 
+  // manejo de la visibilidad del tolpin
+  const [isToolpinVisible, setIsToolpinVisible] = useState(false);
+
   const activeColorCourse = active
     ? "bg-blue-500 text-white hover:bg-blue-300 hover:text-white"
     : "text-gray-500 border-gray-600";
@@ -30,34 +35,40 @@ const CardLetter = ({
     : "bg-white border-gray-600";
 
   return (
-    <article
-      onClick={handleClick}
-      className={`relative flex justify-center items-center border rounded-md p-1
-        hover:shadow-md hover:scale-105 hover:text-blue-500 group
-        hover:shadow-blue-400 hover:border-blue-400 w-20 gap-3
-        cursor-pointer transition-all duration-300 ${activeColorCourse}`}
-    >
-      <span className="flex gap-1 text-2xl font-bold">{letterString}</span>
+    <div className="relative">
+      <article
+        onClick={handleClick}
+        className={`relative flex justify-center items-center border rounded-md p-1
+          hover:shadow-md hover:scale-105 hover:text-blue-500 group
+          hover:shadow-blue-400 hover:border-blue-400 w-20 gap-3
+          cursor-pointer transition-all duration-300 ${activeColorCourse}`}
+        onMouseEnter={() => setIsToolpinVisible(true)}
+        onMouseLeave={() => setIsToolpinVisible(false)}
+      >
+        <span className="flex gap-1 text-2xl font-bold">{letterString}</span>
 
-      <div className="relative flex flex-col text-lg">
-        <button
-          onClick={handleDowloadClick}
-          className={`absolute -top-4 left-2 p-1
-             border  rounded-full
-            ${activeColorDownload}
-            group-hover:border-blue-500 hover:bg-green-500 hover:text-white`}
-        >
-          <MdFileDownload />
-        </button>
-        <span className="mt-4">{countTotal}</span>
-      </div>
+        <div className="relative flex flex-col text-lg">
+          <button
+            onClick={handleDowloadClick}
+            className={`absolute -top-4 left-2 p-1
+               border  rounded-full
+              ${activeColorDownload}
+              group-hover:border-blue-500 hover:bg-green-500 hover:text-white`}
+          >
+            <MdFileDownload />
+          </button>
+          <span className="mt-4">{countTotal}</span>
+        </div>
+      </article>
 
-      <InformationCountMH
-        left={"-ml-[9rem]"}
+      <AmountToolpin
+        visible={isToolpinVisible}
         male={countMale}
         female={countFemale}
+        ejex={"right-[4.7rem]"}
+        ejey={"top-[0]"}
       />
-    </article>
+    </div>
   );
 };
 

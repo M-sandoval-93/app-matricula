@@ -55,6 +55,8 @@ const StudenStatusButton = ({ estado }) => {
         visible={isToolpinVisible}
         colorText={componentButton.colorText}
         background={componentButton.background}
+        ejex={"right-[4.5rem]"}
+        ejey={"top-[.3rem]"}
       />
     </div>
   );

@@ -1,10 +1,19 @@
-const InformativeToolpin = ({ text, visible, colorText, background }) => {
+const InformativeToolpin = ({
+  text,
+  visible,
+  colorText,
+  background,
+  ejex,
+  ejey,
+  sizeText,
+}) => {
+  // respaldo (right-[4.5rem] top-[.2rem])
   return (
     <div
-      className={`absolute p-2 right-[4.5rem] top-[.2rem] text-xs rounded-md
-          transition-all duration-300 whitespace-nowrap z-10
+      className={`absolute p-2 rounded-md z-10 font-semibold
+          transition-all duration-300 whitespace-nowrap text-[.9rem]
           ${visible ? "visible opacity-100" : "invisible opacity-0"}
-          ${colorText} ${background}`}
+          ${ejex} ${ejey} ${colorText} ${background}`}
     >
       {/* texto del toolpin */}
       {text}

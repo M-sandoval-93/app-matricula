@@ -4,29 +4,41 @@ import { MdClear } from "react-icons/md";
 import ListLetter from "./ListLetter";
 import { getReportCourses } from "../../utils/downloadFunctions";
 import useAuth from "../../hooks/useAuth";
+import InformativeToolpin from "../InformativeToolpin";
+import { useState } from "react";
 
 const HeaderTableCourse = ({ filter, updateStateCourse }) => {
   const { authPeriodo } = useAuth();
 
+  // manejo de la visibilidad del tolpin
+  const [isToolpinVisible, setIsToolpinVisible] = useState(false);
+
   return (
     <div className="relative flex gap-3 w-full items-center justify-between flex-wrap-reverse">
-      <div className="relative flex gap-3">
-        <button
-          onClick={() =>
-            getReportCourses({ periodo: authPeriodo, updateStateCourse })
-          }
-          className="px-2 py-1 border rounded-md hover:shadow-md hover:scale-105 group
-          text-green-700 border-green-700 hover:shadow-green-900 transition-all duration-300"
-        >
-          <BsFileEarmarkExcelFill size={35} />
-          <div
-            className={`invisible opacity-0 absolute p-2 ml-[2.6rem] -top-[2.3rem]
-            bg-cyan-100 text-blue-500 text-sm transition-all duration-300 z-50
-              group-hover:visible group-hover:opacity-100 whitespace-nowrap rounded-md`}
+      <div className="relative flex gap-3 items-center p-2">
+        <div className="relatice">
+          <button
+            onClick={() =>
+              getReportCourses({ periodo: authPeriodo, updateStateCourse })
+            }
+            onMouseEnter={() => setIsToolpinVisible(true)}
+            onMouseLeave={() => setIsToolpinVisible(false)}
+            className="px-3 py-1 border rounded-md hover:shadow-md hover:scale-105 group
+          text-green-500 border-green-300 hover:shadow-green-400 hover:bg-gray-100
+            transition-all duration-300"
           >
-            Descargar datos
-          </div>
-        </button>
+            <BsFileEarmarkExcelFill size={35} />
+          </button>
+
+          <InformativeToolpin
+            text={"Descargar reporte"}
+            visible={isToolpinVisible}
+            colorText={"text-green-500"}
+            background={"bg-green-100"}
+            ejex={"right-[6rem]"}
+            ejey={"-top-[1.8rem]"}
+          />
+        </div>
 
         <div className="relative flex items-center justify-end gap-2">
           <span className="absolute left-2 text-gray-400">

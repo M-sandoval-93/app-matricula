@@ -57,6 +57,8 @@ const SuspendStudentButton = ({ estado }) => {
         visible={istoolpinVisible}
         colorText={componentButton.color_text_toolpin}
         background={componentButton.background_toolpin}
+        ejex={"right-[4.5rem]"}
+        ejey={"top-[.3rem]"}
       />
     </div>
   );
