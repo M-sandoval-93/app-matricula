@@ -3,6 +3,8 @@ import apiPut from "../../api/apiPut";
 import useAuth from "../../hooks/useAuth";
 import useCourse from "../../hooks/useCourse";
 import { getDateStringFormat } from "../../utils/funciones";
+import { Select, SelectItem } from "@nextui-org/react";
+import { useState } from "react";
 
 const SelectCourse = ({
   idMatricula,
@@ -11,6 +13,7 @@ const SelectCourse = ({
   estado,
   updateStateCourse,
 }) => {
+  // variabels de contexto global
   const { authPeriodo, authClassStartDate } = useAuth();
   const { course, filterCourseContex, listCourseForGrade, updateDataCourse } =
     useCourse();
@@ -19,15 +22,17 @@ const SelectCourse = ({
   const currentDate = new Date(getDateStringFormat(new Date()));
   const classStartDate = new Date(authClassStartDate);
 
-  // función para obtener la lista de cursos según el grado
+  // estado del select
+  const [selectedLetter, setSelectedLetter] = useState(
+    new Set(value ? [value] : [])
+  );
+
+  // función para obtener la lista del curso, según el grado
   const listLetter = (grade) => {
     const list = listCourseForGrade.find((item) => item.grado === grade);
 
-    if (grade) {
-      const arrayLetter = JSON.parse(list?.letra);
-      arrayLetter.unshift("---");
-      return arrayLetter;
-    }
+    // condición para la obtención de la lista de cursos
+    if (grade) return JSON.parse(list?.letra);
 
     return [];
   };
@@ -53,11 +58,11 @@ const SelectCourse = ({
   };
 
   // función onchange para manejar la logica al cambiar la letra dentro de un grado
-  const handleChange = async (selectedLetter) => {
+  const handleChange = async (letter) => {
     // comprobar estado de la matricula, para poder hacer la asignación o cambio
     if (estado === "RETIRADO (A)") {
       updateStateCourse({
-        error: { message: "Advertencia: Estudiante retirado !" },
+        errorCourse: { message: "Advertencia: Estudiante retirado !" },
       });
       return;
     }
@@ -104,7 +109,7 @@ const SelectCourse = ({
       route: "course/updateLetterCourse",
       object: {
         idMatricula: idMatricula,
-        curso: selectedLetter,
+        curso: letter,
         periodo: authPeriodo,
         fechaAlta: dateOfAssignment,
       },
@@ -117,17 +122,20 @@ const SelectCourse = ({
         updateDataCourse({
           course: updatedArray({
             dataArray: course,
-            letter: selectedLetter,
+            letter: letter,
             numberList: numeroListaAsignado,
             dateString: getDateStringFormat(new Date(dateOfAssignment), true),
           }),
           filterCourseContex: updatedArray({
             dataArray: filterCourseContex,
-            letter: selectedLetter,
+            letter: letter,
             numberList: numeroListaAsignado,
             dateString: getDateStringFormat(new Date(dateOfAssignment), true),
           }),
         });
+
+        // actualización del state del curso para el select
+        setSelectedLetter([letter]);
 
         // texto a mostrar en el toast
         const textTitle = `Estudiante ${
@@ -150,23 +158,26 @@ const SelectCourse = ({
         });
       })
       .catch((error) => {
-        updateStateCourse({ error: error });
+        updateStateCourse({ errorCourse: error });
       });
   };
 
   return (
-    <select
-      className="relative border rounded-md px-2 py-1 hover:bg-gray-300 
-        focus:outline-none tracking-wider"
-      value={value || "---"}
-      onChange={(e) => handleChange(e.target.value)}
+    <Select
+      aria-label
+      placeholder="---"
+      size="sm"
+      variant="faded"
+      color="success"
+      selectedKeys={selectedLetter}
+      onSelectionChange={(e) => handleChange(e.currentKey)}
     >
-      {selectLetter.map((course, index) => (
-        <option key={index} value={course}>
-          {course}
-        </option>
+      {selectLetter.map((letter) => (
+        <SelectItem key={letter} value={letter}>
+          {letter}
+        </SelectItem>
       ))}
-    </select>
+    </Select>
   );
 };
 

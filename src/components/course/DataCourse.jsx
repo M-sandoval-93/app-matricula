@@ -18,25 +18,24 @@ export const columnsCourse = ({ updateStateCourse }) => {
     {
       name: "Rut",
       selector: (row) => row.rut,
-      width: "130px",
+      width: "120px",
     },
     {
       name: "Nombres estudiante",
       selector: (row) => row.nombres_estudiante,
-      width: "380px",
       sortable: true,
     },
     {
       name: "Grado",
       selector: (row) => row.grado,
-      width: "90px",
+      width: "100px",
       center: true,
       sortable: true,
     },
     {
       name: "Curso",
       selector: (row) => row.curso,
-      width: "90px",
+      width: "105px",
       center: true,
       cell: (row) => (
         <SelectCourse
@@ -71,6 +70,7 @@ export const columnsCourse = ({ updateStateCourse }) => {
     {
       name: "Suspensión",
       center: true,
+      width: "120px",
       grow: 2,
       cell: (row) => <SuspendStudentButton estado={row.estado} />,
     },
