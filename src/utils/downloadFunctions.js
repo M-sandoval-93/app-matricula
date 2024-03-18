@@ -51,6 +51,7 @@ export const exportCertificates = ({
   rut,
   authPeriodo,
   authPrivilege,
+  updateStateMatricula,
   updateDataMatricula,
   estado,
   curso,
@@ -64,24 +65,24 @@ export const exportCertificates = ({
 
   // condición para lanzar error por falta de privilegios
   if (!acceptedPrivilege.includes(authPrivilege)) {
-    updateDataMatricula({
-      error: { message: "Advertencia: Privilegios insuficientes !" },
+    updateStateMatricula({
+      errorMatricula: { message: "Advertencia: Privilegios insuficientes !" },
     });
     return;
   }
 
   // condición para lanzar error por estudiante retirado
   if (estado === "RETIRADO (A)") {
-    updateDataMatricula({
-      error: { message: "Advertencia: Estudiante retirado !" },
+    updateStateMatricula({
+      errorMatricula: { message: "Advertencia: Estudiante retirado !" },
     });
     return;
   }
 
   // condición para lanzar error por matricula sin curso asignado
   if (!curso) {
-    updateDataMatricula({
-      error: { message: "Matrícula sin curso asignado !!" },
+    updateStateMatricula({
+      errorMatricula: { message: "Matrícula sin curso asignado !!" },
     });
     return;
   }
@@ -101,27 +102,54 @@ export const exportCertificates = ({
 };
 
 // función para descargar reporte de cursos del periodo
-export const getReportCourses = ({ periodo, updateStateCourse }) => {
+export const getReportCourses = ({
+  periodo,
+  updateStateCourse,
+  setSpinner,
+}) => {
+  setSpinner(true);
+
   apiGetDocument({
     route: "report/getReportCourses",
     param: periodo,
-  }).then((response) => {
-    if (response.status === 200) {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", `ReporteCursos_${periodo}.xlsx`);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
-    } else {
-      updateStateCourse({ errorCourse: response.data });
-    }
-  });
+  })
+    .then((response) => {
+      if (response.status === 200) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `ReporteCursos_${periodo}.xlsx`);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url);
+      } else {
+        updateStateCourse({ errorCourse: response.data });
+      }
+    })
+    .catch((error) => {
+      updateStateCourse({ errorCourse: "error en la solicitud del reporte!" });
+    })
+    .finally(() => setSpinner(false));
 };
 
 // función para descargar reporte de curso
-export const getReportCourse = ({ periodo, course }) => {
+export const getReportCourse = ({
+  periodo,
+  course,
+  authPrivilege,
+  updateStateCourse,
+}) => {
+  // privilegios permitidos para utilizar el modal
+  const acceptedPrivilege = ["1", "2"];
+
+  // condición para lanzar error por falta de privilegios
+  if (!acceptedPrivilege.includes(authPrivilege)) {
+    updateStateCourse({
+      errorCourse: { message: "Advertencia: Privilegios insuficientes !" },
+    });
+    return;
+  }
+
   apiGetDocument({
     route: "report/getReportCourse",
     param: `${periodo}/${course}`,
@@ -135,8 +163,8 @@ export const getReportCourse = ({ periodo, course }) => {
       link.remove();
       window.URL.revokeObjectURL(url);
     } else {
-      // updateStateCourse({ errorCourse: response.data });
-      console.log("error");
+      updateStateCourse({ errorCourse: response.data });
+      // console.log("error");
     }
   });
 };

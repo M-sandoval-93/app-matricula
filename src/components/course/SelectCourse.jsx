@@ -14,7 +14,7 @@ const SelectCourse = ({
   updateStateCourse,
 }) => {
   // variabels de contexto global
-  const { authPeriodo, authClassStartDate } = useAuth();
+  const { authPeriodo, authPrivilege, authClassStartDate } = useAuth();
   const { course, filterCourseContex, listCourseForGrade, updateDataCourse } =
     useCourse();
 
@@ -59,6 +59,17 @@ const SelectCourse = ({
 
   // función onchange para manejar la logica al cambiar la letra dentro de un grado
   const handleChange = async (letter) => {
+    // privilegios permitidos para asignar/cambiar curso
+    const acceptedPrivilege = ["1", "4"];
+
+    // condición para lanzar error por falta de privilegios
+    if (!acceptedPrivilege.includes(authPrivilege)) {
+      updateStateCourse({
+        errorCourse: { message: "Advertencia: Privilegios insuficientes !" },
+      });
+      return;
+    }
+
     // comprobar estado de la matricula, para poder hacer la asignación o cambio
     if (estado === "RETIRADO (A)") {
       updateStateCourse({

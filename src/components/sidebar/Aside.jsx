@@ -45,6 +45,7 @@ const Aside = () => {
 
         {(authPrivilege === "1" ||
           authPrivilege === "2" ||
+          authPrivilege === "3" ||
           authPrivilege === "4") && (
           <SidebarItem
             icon={<AssignmentIndIcon sx={{ fontSize: 30 }} />}

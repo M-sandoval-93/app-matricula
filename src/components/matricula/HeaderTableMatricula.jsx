@@ -32,6 +32,7 @@ const HeaderTableMatricula = ({ filter, updateStateMatricula }) => {
       </button>
 
       <div className="flex gap-3">
+        {/* boton de descarga del excel */}
         <button
           onClick={() => updateStateMatricula({ stateModalReport: true })}
           className="px-2 py-1 border rounded-md hover:shadow-md hover:scale-105 group
@@ -47,6 +48,7 @@ const HeaderTableMatricula = ({ filter, updateStateMatricula }) => {
           </div>
         </button>
 
+        {/* filtro de búsqueda */}
         <div className="relative flex items-center justify-end gap-2">
           <span className="absolute left-2 text-gray-400">
             <IoSearchSharp size={25} />

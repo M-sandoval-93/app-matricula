@@ -4,7 +4,7 @@ import CardLetter from "./CardLetter";
 import useAuth from "../../hooks/useAuth";
 import { getReportCourse } from "../../utils/downloadFunctions";
 
-const ListLetter = () => {
+const ListLetter = ({ updateStateCourse }) => {
   const {
     course,
     filterCourseContex,
@@ -15,7 +15,7 @@ const ListLetter = () => {
     updateDataCourse,
   } = useCourse();
 
-  const { authPeriodo } = useAuth();
+  const { authPeriodo, authPrivilege } = useAuth();
 
   // obtención del array con las letras del grado
   const letterArray = useMemo(() => {
@@ -89,7 +89,12 @@ const ListLetter = () => {
   // función para manejar el click en el boton de descarga de una tarjeta de letra
   const handleDownloadLetterCardClick = (clickedLetter) => {
     // alert(clickedLetter + authPeriodo);
-    getReportCourse({ periodo: authPeriodo, course: clickedLetter });
+    getReportCourse({
+      periodo: authPeriodo,
+      course: clickedLetter,
+      authPrivilege,
+      updateStateCourse,
+    });
   };
 
   // obtención del array de cursos al seleccionar un grado

@@ -1,13 +1,15 @@
-import img_03 from "../assets/lvl_03.jpg";
+import img_02 from "../assets/lvl_02.jpeg";
 import img_logo from "../assets/logo.png";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import LanguageIcon from "@mui/icons-material/Language";
 import FormLogin from "../components/FormLogin";
+import { getCurrentYear } from "../utils/funciones";
 
 const Login = () => {
+  const year = getCurrentYear(); // obtención del año actual
   return (
-    <div className="relative bg-gradient-to-tr from-cyan-200 to-blue-300 w-screen min-h-screen flex items-center justify-center overflow-y-auto">
+    <div className="relative bg-gradient-to-tr from-cyan-300 to-blue-400 w-screen min-h-screen flex items-center justify-center overflow-y-auto">
       <div className="relative bg-white w-full h-full rounded-xl flex shadow-xl max-w-6xl min-h-[40rem] max-h-[45rem] m-10 p-4 gap-2 lg:gap-4 opacity-95">
         <div className="relative w-full md:w-1/2 lg:w-3/5 sm:px-12">
           <div className="w-full flex justify-center items-center">
@@ -19,11 +21,11 @@ const Login = () => {
           </div>
 
           <h2 className="font-bold text-3xl text-blue-700 text-center mt-8">
-            MATRÍCULAS
+            Liceo Valentín Letelier Madariaga
           </h2>
 
           <p className="text-md sm:text-xl mt-4 text-center text-gray-500">
-            Registro de matriculas periodo 2024
+            Registro de matriculas periodo {year}
           </p>
 
           <FormLogin />
@@ -51,7 +53,7 @@ const Login = () => {
 
         <div className="hidden md:block w-full md:w-1/2 lg:w-2/5">
           <img
-            src={img_03}
+            src={img_02}
             alt="directora"
             className="h-full w-full rounded-xl"
           />

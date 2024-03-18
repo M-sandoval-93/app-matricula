@@ -6,6 +6,7 @@ import { getReportCourses } from "../../utils/downloadFunctions";
 import useAuth from "../../hooks/useAuth";
 import InformativeToolpin from "../InformativeToolpin";
 import { useState } from "react";
+import { Spinner } from "@nextui-org/react";
 
 const HeaderTableCourse = ({ filter, updateStateCourse }) => {
   const { authPeriodo } = useAuth();
@@ -13,21 +14,32 @@ const HeaderTableCourse = ({ filter, updateStateCourse }) => {
   // manejo de la visibilidad del tolpin
   const [isToolpinVisible, setIsToolpinVisible] = useState(false);
 
+  // integracion de spinner
+  const [spinner, setSpinner] = useState(false);
+
   return (
     <div className="relative flex gap-3 w-full items-center justify-between flex-wrap-reverse">
       <div className="relative flex gap-3 items-center p-2">
         <div className="relatice">
           <button
             onClick={() =>
-              getReportCourses({ periodo: authPeriodo, updateStateCourse })
+              getReportCourses({
+                periodo: authPeriodo,
+                updateStateCourse,
+                setSpinner,
+              })
             }
             onMouseEnter={() => setIsToolpinVisible(true)}
             onMouseLeave={() => setIsToolpinVisible(false)}
             className="px-3 py-1 border rounded-md hover:shadow-md hover:scale-105 group
-          text-green-500 border-green-300 hover:shadow-green-400 hover:bg-gray-100
+          text-green-600 border-green-400 hover:shadow-green-400 hover:bg-gray-100
             transition-all duration-300"
           >
-            <BsFileEarmarkExcelFill size={35} />
+            {spinner ? (
+              <Spinner color="success" />
+            ) : (
+              <BsFileEarmarkExcelFill size={35} />
+            )}
           </button>
 
           <InformativeToolpin
@@ -67,7 +79,7 @@ const HeaderTableCourse = ({ filter, updateStateCourse }) => {
 
       {/* Lista de letras por curso */}
       <div className="relative flex justify-end">
-        <ListLetter />
+        <ListLetter updateStateCourse={updateStateCourse} />
       </div>
     </div>
   );

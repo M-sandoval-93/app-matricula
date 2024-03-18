@@ -16,7 +16,7 @@ const withDrawalMatricula = async ({
   // control de privilegios
   if (!acceptedPrivilege.includes(authPrivilege)) {
     updateStateMatricula({
-      error: { message: "Advertencia: Privilegios insuficientes !" },
+      errorMatricula: { message: "Advertencia: Privilegios insuficientes !" },
     });
     return;
   }
