@@ -140,7 +140,7 @@ export const getReportCourse = ({
   updateStateCourse,
 }) => {
   // privilegios permitidos para utilizar el modal
-  const acceptedPrivilege = ["1", "2"];
+  const acceptedPrivilege = ["1", "2", "4"];
 
   // condición para lanzar error por falta de privilegios
   if (!acceptedPrivilege.includes(authPrivilege)) {
