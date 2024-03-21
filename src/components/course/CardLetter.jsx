@@ -20,7 +20,8 @@ const CardLetter = ({
   const handleDowloadClick = (event) => {
     // detener la propagación del evento, para que no afecte al article
     event.stopPropagation();
-    onDownloadClick(letterString);
+    // onDownloadClick(letterString);
+    alert("Mantenimiento !");
   };
 
   // manejo de la visibilidad del tolpin
