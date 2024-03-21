@@ -127,7 +127,38 @@ export const getReportCourses = ({
       }
     })
     .catch((error) => {
-      updateStateCourse({ errorCourse: "error en la solicitud del reporte!" });
+      updateStateCourse({ errorCourse: "Error en la solicitud del reporte!" });
+    })
+    .finally(() => setSpinner(false));
+};
+
+// función para descargar reporte de cambios de curso
+export const getReportChangeCourse = ({
+  periodo,
+  updateStateCourse,
+  setSpinner,
+}) => {
+  setSpinner(true);
+
+  apiGetDocument({
+    route: "report/getReportChangeCourse",
+    param: periodo,
+  })
+    .then((response) => {
+      if (response.status === 200) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `ReporteCambioCursos_${periodo}.xlsx`);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url);
+      } else {
+        updateStateCourse({ errorCourse: response.data });
+      }
+    })
+    .catch((error) => {
+      updateStateCourse({ errorCourse: "Error en la solicitud del reporte!" });
     })
     .finally(() => setSpinner(false));
 };

@@ -5,7 +5,10 @@ import { GiCardExchange } from "react-icons/gi";
 import { LiaSchoolSolid } from "react-icons/lia";
 
 import ListLetter from "./ListLetter";
-import { getReportCourses } from "../../utils/downloadFunctions";
+import {
+  getReportChangeCourse,
+  getReportCourses,
+} from "../../utils/downloadFunctions";
 import useAuth from "../../hooks/useAuth";
 import InformativeToolpin from "../InformativeToolpin";
 import { useState } from "react";
@@ -22,7 +25,7 @@ const HeaderTableCourse = ({ filter, updateStateCourse }) => {
   const { authPeriodo } = useAuth();
 
   // manejo de la visibilidad del tolpin
-  const [isToolpinVisible, setIsToolpinVisible] = useState(false);
+  // const [isToolpinVisible, setIsToolpinVisible] = useState(false);
 
   // manejo del estado del snipper
   const [spinner, setSpinner] = useState(false);
@@ -31,7 +34,12 @@ const HeaderTableCourse = ({ filter, updateStateCourse }) => {
   const downloadFunctions = {
     allCourse: () =>
       getReportCourses({ periodo: authPeriodo, updateStateCourse, setSpinner }),
-    changeCourse: () => alert("mantenimiento"),
+    changeCourse: () =>
+      getReportChangeCourse({
+        periodo: authPeriodo,
+        updateStateCourse,
+        setSpinner,
+      }),
   };
 
   // manejo del evento de seleccion del dropdown
@@ -45,40 +53,7 @@ const HeaderTableCourse = ({ filter, updateStateCourse }) => {
   return (
     <div className="relative flex gap-3 w-full items-center justify-between flex-wrap-reverse">
       <div className="relative flex gap-3 items-center p-2">
-        {/* btn para descarga de informes */}
-        {/* <div className="relatice">
-          <button
-            onClick={() =>
-              getReportCourses({
-                periodo: authPeriodo,
-                updateStateCourse,
-                setSpinner,
-              })
-            }
-            onMouseEnter={() => setIsToolpinVisible(true)}
-            onMouseLeave={() => setIsToolpinVisible(false)}
-            className="px-3 py-1 border rounded-md hover:shadow-md hover:scale-105 group
-          text-green-600 border-green-400 hover:shadow-green-400 hover:bg-gray-100
-            transition-all duration-300"
-          >
-            {spinner ? (
-              <Spinner color="success" />
-            ) : (
-              <BsFileEarmarkExcelFill size={35} />
-            )}
-          </button>
-
-          <InformativeToolpin
-            text={"Descargar reporte"}
-            visible={isToolpinVisible}
-            colorText={"text-green-500"}
-            background={"bg-green-100"}
-            ejex={"right-[6rem]"}
-            ejey={"-top-[1.8rem]"}
-          />
-        </div> */}
-
-        {/* probar dropdown */}
+        {/* Descarga de reportes en excel */}
         <Dropdown
           placement="bottom-start"
           showArrow
