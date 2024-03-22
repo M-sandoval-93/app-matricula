@@ -3,19 +3,8 @@ import apiPut from "../../api/apiPut";
 import useAuth from "../../hooks/useAuth";
 import useCourse from "../../hooks/useCourse";
 import { getDateStringFormat } from "../../utils/funciones";
-import {
-  Button,
-  Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  Select,
-  SelectItem,
-  useDisclosure,
-} from "@nextui-org/react";
-import { useCallback, useState } from "react";
+import { Input, Modal, ModalBody, ModalContent, ModalHeader, ModalFooter, Select, SelectItem, useDisclosure, Button } from "@nextui-org/react";
+import { useState } from "react";
 
 const SelectCourse = ({
   idMatricula,
@@ -33,25 +22,13 @@ const SelectCourse = ({
   const currentDate = new Date(getDateStringFormat(new Date()));
   const classStartDate = new Date(authClassStartDate);
 
-  // variables para uso del modal
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
-  // // estado del select
-  // const [selectedLetter, setSelectedLetter] = useState(
-  //   new Set(value ? [value] : [])
-  // );
 
-  // estados para el control de valores relacionados con la asignación de cursos
-  const [values, setValues] = useState({
-    selectedLetter: new Set(value ? [value] : []),
-    retirementDate: "",
-    admissionDate: "",
-  });
-
-  // actualizador de los valores de estado para la asignación de cursos
-  const updateValues = useCallback((newValue) => {
-    setValues((prevValue) => ({ ...prevValue, ...newValue }));
-  }, []);
+  // estado del select
+  const [selectedLetter, setSelectedLetter] = useState(
+    new Set(value ? [value] : [])
+  );
 
   // función para obtener la lista del curso, según el grado
   const listLetter = (grade) => {
@@ -106,6 +83,7 @@ const SelectCourse = ({
 
     // variable para la fecha de la asignación de curso
     let dateOfAssignment;
+    let dischargeDate;
 
     // condición para manejar solicitud de fecha de asignación
     if (classStartDate > currentDate) {
@@ -115,98 +93,137 @@ const SelectCourse = ({
       // Texto informativo para la asignación de fecha
       const dateAssignmentText = !value ? "asignación" : "cambio";
 
-      // modal para solicitar fecha de asignacion
-      const { value: date } = await Swal.fire({
+    //   // modal para solicitar fecha de asignacion
+    //   const { value: date } = await Swal.fire({
+    //     title: `Fecha de ${dateAssignmentText}`,
+    //     input: "date",
+    //     showCancelButton: true,
+    //     confirmButtonText: "Asignar",
+    //     cancelButtonText: "Cancelar",
+    //     width: 350,
+    //     allowOutsideClick: false,
+    //     preConfirm: (value) => {
+    //       if (!value) {
+    //         Swal.showValidationMessage("Seleccionar fecha válida!");
+    //       }
+    //     },
+    //     customClass: {
+    //       input: "input-date", // clase personalizada desde main.css
+    //     },
+    //   });
+
+      const {value: formDate} = await Swal.fire({
         title: `Fecha de ${dateAssignmentText}`,
-        input: "date",
-        showCancelButton: true,
-        confirmButtonText: "Asignar",
-        cancelButtonText: "Cancelar",
-        width: 350,
-        allowOutsideClick: false,
-        preConfirm: (value) => {
-          if (!value) {
-            Swal.showValidationMessage("Seleccionar fecha válida!");
+        html: `
+        <div class="flex">
+          <div class="relative flex flex-col text-left">
+            <label for="swal-fechaAlta" class="relative pl-10">Fecha de alta</label>
+            <input type="date" id="swal-fechaAlta" class="swal2-input input-date">
+          </div>
+
+          <div class="relative flex flex-col text-left">
+            <label for="swal-fechaBaja" class="relative pl-10">Fecha de alta</label>
+            <input type="date" id="swal-fechaBaja" class="swal2-input input-date">
+          </div>
+        </div>
+        `,
+        focusConfirm: false,
+        width: 630,
+        preConfirm: () => {
+
+          if (
+            !document.getElementById("swal-fechaAlta").value ||
+            !document.getElementById("swal-fechaBaja").value
+          ) {
+            Swal.showValidationMessage("Revise las fechas!");
           }
-        },
-        customClass: {
-          input: "input-date", // clase personalizada desde main.css
-        },
+
+          return {
+            fechaAlta: document.getElementById("swal-fechaAlta").value,
+            fechaBaja: document.getElementById("swal-fechaBaja").value
+          }
+        }
       });
 
-      // cancelacion de la asignación de fecha y curso
-      if (!date) return;
+      const {fechaAlta, fechaBaja} = formDate;
+      console.log(fechaAlta);
+      console.log(fechaBaja);
 
-      // asignación de la fecha ingresada
-      dateOfAssignment = date.replace(/-/g, "/");
+
     }
 
-    // petición put
-    apiPut({
-      route: "course/updateLetterCourse",
-      object: {
-        idMatricula: idMatricula,
-        curso: letter,
-        periodo: authPeriodo,
-        fechaAlta: dateOfAssignment,
-      },
-    })
-      .then((response) => {
-        const cursoAsignado = response?.data?.curso;
-        const numeroListaAsignado = response?.data?.numero_lista ?? "-";
+    //   // cancelacion de la asignación de fecha y curso
+    //   if (!date) return;
 
-        // actualización del array del sistema
-        updateDataCourse({
-          course: updatedArray({
-            dataArray: course,
-            letter: letter,
-            numberList: numeroListaAsignado,
-            dateString: getDateStringFormat(new Date(dateOfAssignment), true),
-          }),
-          filterCourseContex: updatedArray({
-            dataArray: filterCourseContex,
-            letter: letter,
-            numberList: numeroListaAsignado,
-            dateString: getDateStringFormat(new Date(dateOfAssignment), true),
-          }),
-        });
+    //   // asignación de la fecha ingresada
+    //   dateOfAssignment = date.replace(/-/g, "/");
 
-        // actualización del state del curso para el select
-        setSelectedLetter([letter]);
 
-        // texto a mostrar en el toast
-        const textTitle = `Estudiante ${
-          !value ? "asignado" : "cambiado"
-        } al ${cursoAsignado}`;
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-          },
-        });
-        Toast.fire({
-          icon: "success",
-          title: textTitle,
-        });
-      })
-      .catch((error) => {
-        updateStateCourse({ errorCourse: error });
-      });
+    
+
+
+    // // petición put
+    // apiPut({
+    //   route: "course/updateLetterCourse",
+    //   object: {
+    //     idMatricula: idMatricula,
+    //     curso: letter,
+    //     periodo: authPeriodo,
+    //     fechaAlta: dateOfAssignment,
+    //   },
+    // })
+    //   .then((response) => {
+    //     const cursoAsignado = response?.data?.curso;
+    //     const numeroListaAsignado = response?.data?.numero_lista ?? "-";
+
+    //     // actualización del array del sistema
+    //     updateDataCourse({
+    //       course: updatedArray({
+    //         dataArray: course,
+    //         letter: letter,
+    //         numberList: numeroListaAsignado,
+    //         dateString: getDateStringFormat(new Date(dateOfAssignment), true),
+    //       }),
+    //       filterCourseContex: updatedArray({
+    //         dataArray: filterCourseContex,
+    //         letter: letter,
+    //         numberList: numeroListaAsignado,
+    //         dateString: getDateStringFormat(new Date(dateOfAssignment), true),
+    //       }),
+    //     });
+
+    //     // actualización del state del curso para el select
+    //     setSelectedLetter([letter]);
+
+    //     // texto a mostrar en el toast
+    //     const textTitle = `Estudiante ${
+    //       !value ? "asignado" : "cambiado"
+    //     } al ${cursoAsignado}`;
+    //     const Toast = Swal.mixin({
+    //       toast: true,
+    //       position: "top-end",
+    //       showConfirmButton: false,
+    //       timer: 3000,
+    //       timerProgressBar: true,
+    //       didOpen: (toast) => {
+    //         toast.onmouseenter = Swal.stopTimer;
+    //         toast.onmouseleave = Swal.resumeTimer;
+    //       },
+    //     });
+    //     Toast.fire({
+    //       icon: "success",
+    //       title: textTitle,
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     updateStateCourse({ errorCourse: error });
+    //   });
   };
 
-  const testHandleSelect = (letter) => {
-    updateValues({ selectLetter: letter });
-    onOpen();
-  };
+  const testHandleSelect = () => {
 
-  const testHandleSubmit = async () => {
-    console.log("curso: ".values.selectedLetter);
-  };
+  }
+
 
   return (
     <>
@@ -216,9 +233,10 @@ const SelectCourse = ({
         size="sm"
         variant="faded"
         color="success"
-        selectedKeys={values.selectedLetter}
-        // onSelectionChange={(e) => handleChange(e.currentKey)}
-        onSelectionChange={(e) => testHandleSelect(e.currentKey)}
+        selectedKeys={selectedLetter}
+        onSelectionChange={(e) => handleChange(e.currentKey)}
+        // onSelectionChange={(e) => testHandleSelect(e.currentKey)}
+        // onSelectionChange={onOpen}
       >
         {selectLetter.map((letter) => (
           <SelectItem key={letter} value={letter}>
@@ -227,7 +245,7 @@ const SelectCourse = ({
         ))}
       </Select>
 
-      <Modal
+      {/* <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         placement="center"
@@ -248,8 +266,8 @@ const SelectCourse = ({
                     label="Fecha de baja"
                     labelPlacement="outside"
                     variant="faded"
-                    value={values.retirementDate}
-                    onValueChange={(e) => updateValues({ retirementDate: e })}
+                    // value={values.retirementDate}
+                    // onValueChange={(e) => updateValues({ retirementDate: e })}
                   />
 
                   <Input
@@ -257,8 +275,8 @@ const SelectCourse = ({
                     label="Fecha de alta"
                     labelPlacement="outside"
                     variant="faded"
-                    value={values.admissionDate}
-                    onValueChange={(e) => updateValues({ admissionDate: e })}
+                    // value={values.admissionDate}
+                    // onValueChange={(e) => updateValues({ admissionDate: e })}
                   />
                 </div>
               </ModalBody>
@@ -279,7 +297,7 @@ const SelectCourse = ({
             </>
           )}
         </ModalContent>
-      </Modal>
+      </Modal> */}
     </>
   );
 };
