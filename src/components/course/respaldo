@@ -1,0 +1,56 @@
+<Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        placement="center"
+        isDismissable={false}
+        backdrop="blur"
+        size="sx"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Asignación de curso
+              </ModalHeader>
+              <ModalBody className="">
+                <div className="flex gap-4 border rounded-xl p-4">
+                  <Input
+                    type="date"
+                    label="Fecha de baja"
+                    labelPlacement="outside"
+                    variant="faded"
+                    value={values.retirementDate}
+                    onValueChange={(e) => updateValues({ retirementDate: e })}
+                  />
+
+                  <Input
+                    type="date"
+                    label="Fecha de alta"
+                    labelPlacement="outside"
+                    variant="faded"
+                    value={values.admissionDate}
+                    onValueChange={(e) => updateValues({ admissionDate: e })}
+                  />
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="flat" onPress={onClose}>
+                  Cancelar
+                </Button>
+                <Button
+                  color="primary"
+                  onPress={() => {
+                    testHandleSubmit();
+                    onClose();
+                  }}
+                >
+                  Asignar
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+
+      <label for=""></label>
+      <input type="date" name="" id="">
