@@ -54,3 +54,112 @@
 
       <label for=""></label>
       <input type="date" name="" id="">
+
+
+
+
+
+
+
+
+
+      resaldo de modal con sweetAlert2
+      const {value: formDate} = await Swal.fire({
+        title: `Fecha de ${dateAssignmentText}`,
+        html: `
+        <div class="flex">
+          <div class="relative flex flex-col text-left">
+            <label for="swal-fechaAlta" class="relative pl-10">Fecha de alta</label>
+            <input type="date" id="swal-fechaAlta" class="swal2-input input-date">
+          </div>
+
+          <div class="relative flex flex-col text-left">
+            <label for="swal-fechaBaja" class="relative pl-10">Fecha de alta</label>
+            <input type="date" id="swal-fechaBaja" class="swal2-input input-date">
+          </div>
+        </div>
+        `,
+        focusConfirm: false,
+        width: 630,
+        preConfirm: () => {
+
+          if (
+            !document.getElementById("swal-fechaAlta").value ||
+            !document.getElementById("swal-fechaBaja").value
+          ) {
+            Swal.showValidationMessage("Revise las fechas!");
+          }
+
+          return {
+            fechaAlta: document.getElementById("swal-fechaAlta").value,
+            fechaBaja: document.getElementById("swal-fechaBaja").value
+          }
+        }
+      });
+
+      const {fechaAlta, fechaBaja} = formDate;
+      console.log(fechaAlta);
+      console.log(fechaBaja);
+
+
+
+
+para podemor modificasr el funcionamiento del select con la solicitud del modal
+
+COMPONENTE HIJO
+import React, { useState } from 'react';
+
+const MiComponente = ({ onDateSelected }) => {
+  const [inputValue, setInputValue] = useState('');
+
+  const handleChange = (event) => {
+    const newValue = event.target.value;
+    setInputValue(newValue);
+  };
+
+  const handleConfirm = () => {
+    // Llamar a la función de devolución de llamada con el valor seleccionado
+    onDateSelected(inputValue);
+  };
+
+  return (
+    <div>
+      <input
+        type="date"
+        value={inputValue}
+        onChange={handleChange}
+      />
+      <button onClick={handleConfirm}>Asignar</button>
+    </div>
+  );
+};
+
+export default MiComponente;
+
+COMPONENTE PADRE
+import React, { useState } from 'react';
+import MiComponente from './MiComponente';
+
+const PadreComponente = () => {
+  const [date, setDate] = useState('');
+
+  const handleDateSelected = (selectedDate) => {
+    // Almacena la fecha seleccionada en el estado del componente padre
+    setDate(selectedDate);
+  };
+
+  return (
+    <div>
+      <MiComponente onDateSelected={handleDateSelected} />
+      <p>Fecha seleccionada: {date}</p>
+    </div>
+  );
+};
+
+export default PadreComponente;
+
+
+
+
+
+
