@@ -82,7 +82,7 @@ const SelectCourse = ({
   // manejador para la selección de curso en select
   const handlerSelectedLetter = (letter) => {
     // condición para lanzar error por falta de privilegios
-    if (!["1", "4"].includes(authPrivilege)) {
+    if (!["1", "2"].includes(authPrivilege)) {
       updateStateCourse({
         errorCourse: { message: "Advertencia: Privilegios insuficientes !" },
       });
