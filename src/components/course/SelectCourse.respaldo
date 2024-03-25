@@ -1,0 +1,325 @@
+import Swal from "sweetalert2";
+import apiPut from "../../api/apiPut";
+import useAuth from "../../hooks/useAuth";
+import useCourse from "../../hooks/useCourse";
+import { getDateStringFormat } from "../../utils/funciones";
+import {
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  Select,
+  SelectItem,
+  useDisclosure,
+  Button,
+  Chip,
+} from "@nextui-org/react";
+import { useCallback, useMemo, useState } from "react";
+
+const SelectCourse = ({
+  idMatricula,
+  grado,
+  value,
+  estado,
+  updateStateCourse,
+}) => {
+  // variabels de contexto global
+  const { authPeriodo, authPrivilege, authClassStartDate } = useAuth();
+  const { course, filterCourseContex, listCourseForGrade, updateDataCourse } =
+    useCourse();
+
+  // datos para trabajar fecha de asignacion de curso
+  const currentDate = new Date(getDateStringFormat(new Date()));
+  const classStartDate = new Date(authClassStartDate);
+
+  // variables de estado para asignación y cambio de curso
+  const [values, setValues] = useState({
+    selectedLetter: new Set(value ? [value] : []),
+    temporarilySelectedLetter: new Set([]),
+    admissionDate: "",
+    invalidAdmissionDate: false,
+    withdrawalDate: "",
+    invalidWithdrawalDate: false,
+    setData: false,
+  });
+
+  // actualizador de estados
+  const updateValues = useCallback((newValue) => {
+    setValues((prevValue) => ({ ...prevValue, ...newValue }));
+  }, []);
+
+  // estados para el manejo del modal
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  // función para obtener la lista del curso, según el grado
+  const listLetter = (grade) => {
+    const list = listCourseForGrade.find((item) => item.grado === grade);
+
+    // condición para la obtención de la lista de cursos
+    if (grade) return JSON.parse(list?.letra);
+
+    return [];
+  };
+
+  // asignación de la lista de elementos para el select
+  const selectLetter = listLetter(grado) || [];
+
+  // función para actualizar array de course y filtro con nuevas letras de curso
+  const updatedArray = ({ dataArray, letter, numberList, dateString }) => {
+    const newArray = dataArray.map((item) => {
+      if (item.id === idMatricula) {
+        return {
+          ...item,
+          curso: letter,
+          n_lista: numberList,
+          fecha_alta: dateString,
+        };
+      }
+      return item;
+    });
+
+    return newArray;
+  };
+
+  // manejador para la selección de curso en select
+  const handlerSelectedLetter = (letter) => {
+    // condición para lanzar error por falta de privilegios
+    if (!["1", "4"].includes(authPrivilege)) {
+      updateStateCourse({
+        errorCourse: { message: "Advertencia: Privilegios insuficientes !" },
+      });
+      return;
+    }
+
+    // comprobar estado de la matricula, para poder hacer la asignación o cambio
+    if (estado === "RETIRADO (A)") {
+      updateStateCourse({
+        errorCourse: { message: "Advertencia: Estudiante retirado !" },
+      });
+      return;
+    }
+
+    // actualizar valores y resetear estados
+    updateValues({
+      temporarilySelectedLetter: letter,
+      admissionDate: "",
+      invalidAdmissionDate: false,
+      withdrawalDate: "",
+      invalidWithdrawalDate: false,
+    });
+
+    // abrir modal para selección de fechas
+    if (classStartDate < currentDate) {
+      onOpen();
+      return;
+    }
+
+    // trabajar
+    console.log("actualización y asignación de curso con fechas base");
+  };
+
+  // manejador para el modal de fechas de asignación / cambio
+  const handlerSelectedDate = async ({ onClose }) => {
+    updateValues({ setData: true });
+
+    if (!values.admissionDate) updateValues({ invalidAdmissionDate: true });
+    if (!values.withdrawalDate && value)
+      updateValues({ invalidWithdrawalDate: true });
+
+    if (!values.admissionDate || (!values.withdrawalDate && value)) {
+      console.log("Es necesario revisar las fechas");
+
+      return;
+    }
+
+    // petición put y actualización del valor del select
+    await apiPut({
+      route: "course/updateLetterCourse",
+      object: {
+        idMatricula,
+        curso: values.temporarilySelectedLetter,
+        periodo: authPeriodo,
+        fechaAlta: values.admissionDate,
+        fechaBaja: values.withdrawalDate,
+      },
+    })
+      .then((response) => {
+        console.log(response);
+        const assignedCourse = response?.data?.curso;
+        const assignedListNumber = response?.data?.numero_lista ?? "-";
+
+        // actualización del array del sistema
+        updateDataCourse({
+          // actualización de los datos base
+          course: updatedArray({
+            dataArray: course,
+            letter: assignedCourse,
+            numberList: assignedListNumber,
+            dateString: getDateStringFormat(
+              new Date(values.admissionDate),
+              true
+            ),
+          }),
+          // actualización de los datos filtrados
+          filterCourseContex: updatedArray({
+            dataArray: filterCourseContex,
+            letter: assignedCourse,
+            numberList: assignedListNumber,
+            dateString: getDateStringFormat(
+              new Date(values.admissionDate),
+              true
+            ),
+          }),
+        });
+
+        // actualizacón del state del select
+        updateValues({ selectedLetter: [assignedCourse] });
+
+        // texto del alert tosat
+        const textTitle = `Estudiante ${
+          !value ? "asignado" : "cambiado"
+        } al ${assignedCourse}`;
+
+        // alerta toast al finalizar el cambio/asignación del curso
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title: textTitle,
+        });
+      })
+      .catch((error) => {
+        // captura de error
+        updateStateCourse({ errorCourse: error });
+      })
+      .finally(() => updateValues({ setData: false }));
+
+    // cerrar modal
+    onClose();
+  };
+
+  // para manejo de validaciones
+  const isValidAlta = useMemo(() => {
+    if (!values.admissionDate && values.setData) return true;
+
+    updateValues({ setData: false });
+    return false;
+  }, [values.admissionDate, values.setData]);
+
+  // manejo de validacion
+  const isValidbaja = useMemo(() => {
+    if (!values.withdrawalDate && values.setData) return true;
+    updateValues({ setData: false });
+    return false;
+  }, [values.withdrawalDate, values.setData]);
+
+  return (
+    <>
+      <Select
+        aria-label
+        placeholder="---"
+        size="sm"
+        variant="faded"
+        color="success"
+        selectedKeys={values.selectedLetter}
+        onSelectionChange={(e) => handlerSelectedLetter(e.currentKey)}
+      >
+        {selectLetter.map((letter) => (
+          <SelectItem key={letter} value={letter}>
+            {letter}
+          </SelectItem>
+        ))}
+      </Select>
+
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        placement="center"
+        isDismissable={false}
+        backdrop="blur"
+        size="lg"
+      >
+        <ModalContent className="relatice p-2 bg-gray-100">
+          {(onClose) => (
+            <>
+              <ModalHeader className="text-2xl px-4 py-3">
+                Asignación de curso
+              </ModalHeader>
+              <ModalBody className="relative w-full rounded-md px-2">
+                <div className="relative flex gap-6 border rounded-xl py-6 p-6">
+                  <Input
+                    type="date"
+                    label="Fecha de baja"
+                    labelPlacement="outside"
+                    variant="faded"
+                    // isInvalid={isValidbaja && value}
+                    // errorMessage={isValidbaja && value && "Fecha requerida !"}
+                    value={values.withdrawalDate.replace(/\//g, "-")}
+                    onValueChange={(e) =>
+                      updateValues({ withdrawalDate: e.replace(/-/g, "/") })
+                    }
+                    classNames={{
+                      label: "text-lg",
+                      input: ["text-lg"],
+                    }}
+                    isDisabled={!value}
+                  />
+
+                  <Input
+                    type="date"
+                    label="Fecha de alta"
+                    labelPlacement="outside"
+                    variant="faded"
+                    // isInvalid={isValidAlta}
+                    // errorMessage={isValidAlta && "Fecha requerida !"}
+                    value={values.admissionDate.replace(/\//g, "-")}
+                    onValueChange={(e) =>
+                      updateValues({ admissionDate: e.replace(/-/g, "/") })
+                    }
+                    classNames={{
+                      label: "text-lg",
+                      input: ["text-lg"],
+                    }}
+                  />
+                </div>
+              </ModalBody>
+              <ModalFooter className="w-full px-2">
+                <div className="flex gap-4">
+                  <Button
+                    className="w-[8rem] text-lg"
+                    color="danger"
+                    variant="flat"
+                    onPress={onClose}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    className="w-[8rem] text-lg"
+                    color="primary"
+                    onPress={() => handlerSelectedDate({ onClose })}
+                    isDisabled={values.setData}
+                  >
+                    Asignar
+                  </Button>
+                </div>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    </>
+  );
+};
+
+export default SelectCourse;

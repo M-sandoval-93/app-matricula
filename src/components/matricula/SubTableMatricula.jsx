@@ -29,7 +29,7 @@ const SubTableMatricula = ({ data }) => {
                 {data.fecha_alta ?? "SIN REGISTRO"}
               </td>
               <td className="py-1 px-2 text-red-400 tracking-wide">
-                {data.fecha_baja ?? "SIN REGISTRO"}
+                {data.fecha_retiro ?? "SIN REGISTRO"}
               </td>
             </tr>
           </tbody>
