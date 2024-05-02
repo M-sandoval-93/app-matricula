@@ -5,6 +5,7 @@ import { LiaSchoolSolid } from "react-icons/lia";
 import { MdOutlineExitToApp } from "react-icons/md";
 import useAuth from "../hooks/useAuth";
 import { getCurrentYear, getReportMatricula } from "../utils/funciones";
+import { getReportWithdrawal } from "../utils/downloadFunctions";
 
 const ModalMatriculaReport = ({ stateMatricula, onCloseModal }) => {
   const { stateModalReport } = stateMatricula;
@@ -32,9 +33,9 @@ const ModalMatriculaReport = ({ stateMatricula, onCloseModal }) => {
     });
   };
 
-  const getReport = (event) => {
-    console.log(event);
-  };
+  // const getReport = (event) => {
+  //   console.log(event);
+  // };
 
   useEffect(() => {
     updateModalReport({
@@ -112,6 +113,7 @@ const ModalMatriculaReport = ({ stateMatricula, onCloseModal }) => {
       </section>
 
       <section className="relative flex justify-between items-center m-8  px-4">
+        {/* btn cambio de apoderados */}
         <button
           disabled={parseInt(authPeriodo) !== getCurrentYear() ? true : false}
           onClick={() => alert("Mantenimiento")}
@@ -145,6 +147,7 @@ const ModalMatriculaReport = ({ stateMatricula, onCloseModal }) => {
           </div>
         </button>
 
+        {/* btn registro matricula */}
         <button
           onClick={() =>
             getReportMatricula({
@@ -172,9 +175,10 @@ const ModalMatriculaReport = ({ stateMatricula, onCloseModal }) => {
           </div>
         </button>
 
+        {/* btn retiro estudiantes */}
         <button
           disabled={parseInt(authPeriodo) !== getCurrentYear() ? true : false}
-          onClick={() => alert("Mantenimiento")}
+          onClick={() => getReportWithdrawal({dateObject: modalReport, periodo: authPeriodo})}
           className={`relative flex items-center justify-center
             rounded-full w-10 h-10 p-1 shadow-md 
             transition-all duration-300 group

@@ -1,4 +1,5 @@
 import apiGetDocument from "../api/apiGetDocument";
+import { getCurrentYear } from "./funciones";
 
 // función para obtener certificado de alumno regular
 const regularStudentCertificate = ({
@@ -195,7 +196,49 @@ export const getReportCourse = ({
       window.URL.revokeObjectURL(url);
     } else {
       updateStateCourse({ errorCourse: response.data });
-      // console.log("error");
     }
   });
 };
+
+// function to download license plate withdrawal
+export const getReportWithdrawal = ({dateObject, periodo}) => {
+  const {fullPeriod, dateFrom, dateTo} = dateObject;
+
+  // comprobar la selección de fechas
+  if (!fullPeriod && (dateFrom === "" || dateTo === "")) {
+    Swal.fire({
+      icon: "warning",
+      title: "Excepción detectada",
+      text: "Seleccionar fechas",
+    });
+    return;
+  }
+
+  // asignación de las fechas desde y hasta
+  const from = fullPeriod ? "2023-01-01" : dateFrom;
+  const to = fullPeriod ? `${getCurrentYear()}-12-31` : dateTo;
+
+  // petición a la API
+  apiGetDocument({
+    route: "report/getReportWithdrawal",
+    param: `${from}/${to}/${periodo}`,
+  })
+    .then((response) => {
+      if (response.status === 200) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `ReporteRetiros_${periodo}.xlsx`);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url);
+      } else {
+        updateStateCourse({ errorCourse: response.data });
+      }
+    })
+    .catch((error) => {
+      updateStateCourse({ errorCourse: "Error en la solicitud del reporte!" });
+    })
+
+
+}
