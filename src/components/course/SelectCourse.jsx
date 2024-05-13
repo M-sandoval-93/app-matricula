@@ -26,7 +26,7 @@ const SelectCourse = ({
   estado,
   updateStateCourse,
 }) => {
-  // variabels de contexto global
+  // variables de contexto global
   const { authPeriodo, authPrivilege, authClassStartDate } = useAuth();
   const { course, filterCourseContex, listCourseForGrade, updateDataCourse } =
     useCourse();
