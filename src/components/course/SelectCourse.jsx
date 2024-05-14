@@ -305,6 +305,7 @@ const SelectCourse = ({
                       />
                     </div>
                   </ModalBody>
+                  
                   <ModalFooter className="w-full px-2">
                     <div className="flex gap-4">
                       <Button
