@@ -213,3 +213,32 @@ export const getReportProcessMatricula = ({ periodo }) => {
     // TRABAJAR EN EXPIRACION DEL TOKEN
     .catch((error) => console.log(error));
 };
+
+// función para obtener objeto de datos desde un google sheets
+export const getDataOfSheets = async (URL_CSV) => {
+  
+  try {
+    const response = await fetch(URL_CSV);
+    const result = await response.text();
+    const [encabezadoCSV, ...filasCSV] = result.split("\n").map(line => line.replace("\r", ""));
+
+    // dividir el encavezado y las filas por comas
+    const encabezadosArray = encabezadoCSV.split(",");
+    const filasArray = filasCSV.map(fila => fila.split(","));
+
+    const DataMatricula = filasArray.map(fila => {
+      let obj = {};
+      encabezadosArray.forEach((key, index) => {
+          obj[key] = fila[index];  // Asignar valor del array fila al encabezado correspondiente
+      });
+      return obj;
+    });
+
+    return DataMatricula
+
+  } catch (error) {
+    console.log(error);
+
+  }
+  
+}

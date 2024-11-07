@@ -7,14 +7,14 @@ const customStyle = {
   },
   headRow: {
     style: {
-      fontSize: ".9rem",
+      fontSize: ".8rem",
       "font-weight": "600",
       color: "rgb(37 99 235)",
     },
   },
   rows: {
     style: {
-      fontSize: ".8rem",
+      fontSize: ".7rem",
       "font-weight": "600",
     },
   },

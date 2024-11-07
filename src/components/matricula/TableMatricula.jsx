@@ -16,10 +16,12 @@ import ErrorHandler from "../ErrorHandler";
 import ModalMatriculaReport from "../../templates/ModalMatriculaReport";
 import useAuth from "../../hooks/useAuth";
 import customStyle from "../../style/styleDataTable";
+import { getDataOfSheets } from "../../utils/funciones";
+import { dataLoader } from "../../utils/dataLoadStudent";
 
 const TableMatricula = () => {
   // hook personalizados para trabajar con el contexto de matricula
-  const { authPeriodo } = useAuth();
+  const { authPeriodo, authProcesoMatricula } = useAuth();
   const { matricula, updateDataMatricula } = useMatricula();
 
   // estado para las variables del modulo de matricula
@@ -75,7 +77,14 @@ const TableMatricula = () => {
           countMatriculados: matriculados,
           countRetirados: retirados,
         });
-        updateStateMatricula({ loading: false });
+        
+        // obtener datos de matricula del formulario y almacenarlos en un contexto
+        if (authProcesoMatricula) {
+          dataLoader({updateStateMatricula: updateStateMatricula, updateDataMatricula: updateDataMatricula});
+        } else {
+          updateStateMatricula({loading: false});
+        }
+
       })
       .catch((error) => {
         updateStateMatricula({
@@ -83,15 +92,16 @@ const TableMatricula = () => {
           loading: false,
         });
       });
+
   }, [authPeriodo]);
 
+
+
   return (
-    <main className="relative rounded-md border border-gray-200 p-2 my-2">
-      <section>
+    <main className="relative flex flex-col rounded-md border border-gray-200 p-2 my-2">
+      <section >
         <DataTable
           customStyles={customStyle}
-          fixedHeader
-          fixedHeaderScrollHeight="540px"
           subHeader
           subHeaderComponent={HeaderTableMatricula({
             filter: stateMatricula.filter,

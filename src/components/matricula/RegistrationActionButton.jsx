@@ -31,6 +31,14 @@ const componentButtonActionMatricula = {
     hoverBackgroundDisabled: "hover:bg-gray-500",
     iconButton: <ImExit size={26} />,
   },
+  "Ficha matricula": {
+    colorText: "text-orange-500",
+    textDisabled: "text-gray-500",
+    background: "bg-orange-100",
+    hoverBackground: "hover:bg-orange-500",
+    hoverBackgroundDisabled: "hover:bg-gray-500",
+    iconButton: <FaFileDownload size={26} />,
+  }
 };
 
 const RegistrationActionButton = ({ title, onClick }) => {
@@ -53,7 +61,7 @@ const RegistrationActionButton = ({ title, onClick }) => {
         }
         onClick={onClick}
         className={`rounded-full hover:text-white transition-all duration-300
-        shadow-sm flex items-center justify-center w-16 h-10
+        shadow-sm flex items-center justify-center w-10 h-10
         ${
           title === "Baja de matrícula"
             ? !bloqueoPeriodoActual && authProcesoMatricula
@@ -72,6 +80,8 @@ const RegistrationActionButton = ({ title, onClick }) => {
         visible={istoolpinVisible}
         colorText={componentButton.colorText}
         background={componentButton.background}
+        ejex={"top-1"}
+        ejey={"right-12"}
       />
     </div>
   );

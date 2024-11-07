@@ -7,6 +7,7 @@ export const MatriculaProvider = ({ children }) => {
     matricula: [],
     countMatriculados: 0,
     countRetirados: 0,
+    dataFormMatricula: [],
   });
 
   // mejorar la actualizacion de los elementos mediante funcion de actualizacion usando objetos como parametros

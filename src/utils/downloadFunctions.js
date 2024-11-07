@@ -1,4 +1,5 @@
 import apiGetDocument from "../api/apiGetDocument";
+import { apiPostDocument } from "../api/apiPost";
 import { getCurrentYear } from "./funciones";
 
 // función para obtener certificado de alumno regular
@@ -25,6 +26,7 @@ const regularStudentCertificate = ({
   });
 };
 
+
 // función para obtener certificado de matricula
 const registrationCertificate = ({ rut, updateDataMatricula, authPeriodo }) => {
   apiGetDocument({
@@ -44,6 +46,26 @@ const registrationCertificate = ({ rut, updateDataMatricula, authPeriodo }) => {
     }
   });
 };
+
+// función para obtener ficha de matricula
+export const exportRegistrationForm = ({dataForm, rut}) => {
+  apiPostDocument({
+    route: "report/getRegistrationForm",
+    object: dataForm,
+  }).then((response) => {
+    if (response.status === 200) {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `ficha_matricula_${rut}.docx`);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } else {
+      updateDataMatricula({ error: response.data });
+    }
+  })
+} 
 
 // función para exportar certificados
 export const exportCertificates = ({

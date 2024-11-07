@@ -53,10 +53,9 @@ const SelectCourse = ({
   const listLetter = (grade) => {
     const list = listCourseForGrade.find((item) => item.grado === grade);
 
-    // condición para la obtención de la lista de cursos
-    if (grade) return JSON.parse(list?.letra);
+    // verificamos que el array contenga datos, de lo contrario devolvemos y un array vacio
+    return (grade && list && list.letra) ? JSON.parse(list?.letra) : [];
 
-    return [];
   };
 
   // asignación de la lista de elementos para el select
