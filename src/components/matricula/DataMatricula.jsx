@@ -25,10 +25,11 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
   const { matricula, updateDataMatricula, dataFormMatricula } = useMatricula();
 
   // función para descargar ficha de matricula
-  const getFichaMatricula = (rut, n_matricula, grado, authUserName) => {
+  const getFichaMatricula = (row, authUserName) => {
+    const {rut, matricula, grado, estudiante_nuevo} = row
     const fichaMatricula = dataFormMatricula.filter((ficha) => ficha["RUN (Ejemplo 12345678-9) ESTUDIANTE"] === rut);
 
-    console.log(dataFormMatricula)
+    
 
     // validamos que exista preMatricula, de lo contrario no descarga ficha
     if (!fichaMatricula[0]) {
@@ -43,9 +44,10 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
       return;
     }
 
-    fichaMatricula[0].n_matricula = n_matricula;
+    fichaMatricula[0].n_matricula = matricula;
     fichaMatricula[0].grado_curso = grado;
     fichaMatricula[0].funcionarioRegistrador = authUserName;
+    fichaMatricula[0].tipoMatricula = estudiante_nuevo === null ? true : estudiante_nuevo;
     exportRegistrationForm({dataForm: fichaMatricula[0], rut});
   }
 
@@ -131,7 +133,7 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
           {/* boton para descargar ficha de matricula */}
           <RegistrationActionButton 
             title={"Ficha matricula"} 
-            onClick={() => getFichaMatricula(row.rut, row.matricula, row.grado, authUserName)} 
+            onClick={() => getFichaMatricula(row, authUserName )} 
           />
 
           {/* boton para descargar certificado */}
