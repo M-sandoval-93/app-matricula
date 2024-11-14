@@ -30,6 +30,7 @@ const TableMatricula = () => {
     loading: false, // estado de la carga de datos
     stateModalMatricula: false, // estado del modal de matricula
     stateModalReport: false, // estado del modal de reportes
+    stateModalFileEdit: false, // estado del modal que registra si se modificó la ficha
     newMatricula: true, // estado para el ingreso de una matricula agregar/editar
     idMatricula: "", // id para modificar una matricula
     errorMatricula: null, // estado para el control de errores
@@ -136,6 +137,9 @@ const TableMatricula = () => {
         stateMatricula={stateMatricula}
         onCloseModal={onCloseModal}
       />
+
+      {/* Modal para registrar cambio a efectuar en la ficha ? hacer cambios */}
+
 
       {/* componente para manejar los errores */}
       <ErrorHandler error={stateMatricula.errorMatricula} />

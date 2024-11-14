@@ -2,7 +2,7 @@ import Swal from "sweetalert2";
 import apiPut from "../../api/apiPut";
 import useAuth from "../../hooks/useAuth";
 import useCourse from "../../hooks/useCourse";
-import { getDateStringFormat } from "../../utils/funciones";
+import { getCurrentDate, getDateStringFormat } from "../../utils/funciones";
 import {
   Input,
   Modal,
@@ -107,8 +107,58 @@ const SelectCourse = ({
       return;
     }
 
-    // trabajar
-    console.log("actualización y asignación de curso con fechas base");
+    // asignación de curso para periodo de matrícula
+    apiPut({
+      route: "course/updateLetterCourse",
+      object: {
+        idMatricula,
+        curso: letter,
+        periodo: authPeriodo,
+        fechaAlta: getCurrentDate()
+      },
+    }).then((response) => {
+      const assignedCourse = response?.data?.curso;
+      const assignedListNumber = "-";
+
+      // actualización del array del sistema
+      updateDataCourse({
+        // actualización de los datos base
+        course: updatedArray({
+          dataArray: course,
+          letter: assignedCourse,
+          numberList: assignedListNumber,
+          dateString: getDateStringFormat(new Date(classStartDate), true),
+        }),
+        // actualización de los datos filtrados
+        filterCourseContex: updatedArray({
+          dataArray: filterCourseContex,
+          letter: assignedCourse,
+          numberList: assignedListNumber,
+          dateString: getDateStringFormat(new Date(classStartDate), true),
+        }),
+      });
+
+      // actualización del state del select course
+      updateValuesLetter({ selectedLetter: [assignedCourse] });
+
+      // alerta toast al finalizar el cambio/asignación del curso
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
+      Toast.fire({
+        icon: "success",
+        title: `Estudiante asignado al ${assignedCourse}`,
+      });      
+    });
+
   };
 
   // esquema de validación de los campos
@@ -116,6 +166,7 @@ const SelectCourse = ({
     withdrawalDate: Yup.date(),
     admissionDate: Yup.date().required("Fecha de alta requerida !"),
   });
+
 
   // manejo de asignación / cambio curso
   const onSubmitSelectedDate =

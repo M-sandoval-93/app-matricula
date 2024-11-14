@@ -1,17 +1,16 @@
 import useAuth from "../../hooks/useAuth";
-import StudenStatusButton from "../StudentStatusButton";
 import withDrawalMatricula from "./withDrawalMatricula";
 
 // funciones
-import { functionSortStates } from "../../utils/sortFunctions";
 import { exportCertificates, exportRegistrationForm } from "../../utils/downloadFunctions";
 
 // iconos
 import RegistrationActionButton from "./RegistrationActionButton";
 import useMatricula from "../../hooks/useMatricula";
-import { Button, Chip } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import Swal from "sweetalert2";
 import { FaBan, FaCheck } from "react-icons/fa";
+import ButtonEditMatricula from "./ButtonEditMatricula";
 
 export const columnsMatricula = ({ updateStateMatricula }) => {
   const {
@@ -110,18 +109,23 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
       // width: "6rem",
       center: true,
     },
-    {
-      name: "Estado",
-      cell: (row) => <StudenStatusButton estado={row.estado} />,
-      // width: "6rem",
-      center: true,
-      sortFunction: functionSortStates,
-    },
+    // // no mostrar en proceso de matricula
+    // {
+    //   name: "Estado",
+    //   cell: (row) => <StudenStatusButton estado={row.estado} />,
+    //   center: true,
+    //   sortFunction: functionSortStates,
+    // },
     {
       name: "Pre Matricula",
       width: "7rem",
       center: true,
       cell: (row) => statePreMatricula(row.rut)
+    },
+    {
+      name: "Modificación",
+      center: true,
+      cell: (row) => <ButtonEditMatricula row={row} authPeriodo={authPeriodo} disable={row.tiene_detalle} />
     },
     {
       name: "Acciones",
