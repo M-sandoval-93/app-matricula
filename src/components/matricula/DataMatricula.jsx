@@ -11,6 +11,7 @@ import { Button } from "@nextui-org/react";
 import Swal from "sweetalert2";
 import { FaBan, FaCheck } from "react-icons/fa";
 import ButtonEditMatricula from "./ButtonEditMatricula";
+import apiGet from "../../api/apiGet";
 
 export const columnsMatricula = ({ updateStateMatricula }) => {
   const {
@@ -23,12 +24,18 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
   } = useAuth();
   const { matricula, updateDataMatricula, dataFormMatricula } = useMatricula();
 
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: "bg-blue-500 rounded-lg px-3 py-3 text-white mx-2",
+      cancelButton: "bg-red-500 rounded-lg px-3 py-3 text-white mx-2"
+    },
+    buttonsStyling: false,
+  });
+
   // función para descargar ficha de matricula
   const getFichaMatricula = (row, authUserName) => {
     const {rut, matricula, grado, estudiante_nuevo} = row
     const fichaMatricula = dataFormMatricula.filter((ficha) => ficha["RUN (Ejemplo 12345678-9) ESTUDIANTE"] === rut);
-
-    
 
     // validamos que exista preMatricula, de lo contrario no descarga ficha
     if (!fichaMatricula[0]) {
@@ -43,11 +50,40 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
       return;
     }
 
+    fichaMatricula[0].id_registro = row.id;
+    fichaMatricula[0].periodo = authPeriodo;
     fichaMatricula[0].n_matricula = matricula;
     fichaMatricula[0].grado_curso = grado;
     fichaMatricula[0].funcionarioRegistrador = authUserName;
     fichaMatricula[0].tipoMatricula = estudiante_nuevo === null ? true : estudiante_nuevo;
-    exportRegistrationForm({dataForm: fichaMatricula[0], rut});
+
+    apiGet({route: `matricula/checkDownloadFile/${row.id}/${authPeriodo}`}).then((response) => {
+      if(response.data) {
+        console.log("Ya se ha descargado la ficha");
+        swalWithBootstrapButtons.fire({
+          title: "Ficha ya descargada",
+          text: "Esta seguro que desea descargar nuevamente la ficha ?",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonText: "Descargar",
+          cancelButtonText: "Cancelar",
+          reverseButtons: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            exportRegistrationForm({dataForm: fichaMatricula[0], rut});
+            // console.log("se vuelve descargar la ficha");
+          } 
+        })
+      } else {
+        exportRegistrationForm({dataForm: fichaMatricula[0], rut});
+        // console.log("Se descarga la ficha");
+      }
+
+    });
+
+
+    // primero comprobar si la ficha ha sido descargada y luego si la afirmación es positiva, descargar
+
   }
 
   const statePreMatricula = (rut) => {    
