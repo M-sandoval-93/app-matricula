@@ -1,7 +1,9 @@
 import useAuth from "../../hooks/useAuth";
+import StudenStatusButton from "../StudentStatusButton";
 import withDrawalMatricula from "./withDrawalMatricula";
 
 // funciones
+import { functionSortStates } from "../../utils/sortFunctions";
 import { exportCertificates, exportRegistrationForm } from "../../utils/downloadFunctions";
 
 // iconos
@@ -71,19 +73,13 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
         }).then((result) => {
           if (result.isConfirmed) {
             exportRegistrationForm({dataForm: fichaMatricula[0], rut});
-            // console.log("se vuelve descargar la ficha");
           } 
         })
       } else {
         exportRegistrationForm({dataForm: fichaMatricula[0], rut});
-        // console.log("Se descarga la ficha");
       }
 
     });
-
-
-    // primero comprobar si la ficha ha sido descargada y luego si la afirmación es positiva, descargar
-
   }
 
   const statePreMatricula = (rut) => {    
@@ -117,64 +113,81 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
     {
       name: "1er apellido",
       selector: (row) => row.paterno,
-      // width: "8.2rem",
       sortable: true,
     },
     {
       name: "2do apellido",
       selector: (row) => row.materno,
-      // width: "8.2rem",
       sortable: true,
     },
     {
       name: "Nombres",
       selector: (row) => row.nombres,
-      // grow: 1,
       sortable: true,
     },
     {
       name: "Grado",
       selector: (row) => row.grado,
-      // width: "6rem",
       center: true,
       sortable: true,
     },
     {
       name: "Curso",
       selector: (row) => row.curso,
-      // width: "6rem",
       center: true,
     },
-    // // no mostrar en proceso de matricula
-    // {
-    //   name: "Estado",
-    //   cell: (row) => <StudenStatusButton estado={row.estado} />,
-    //   center: true,
-    //   sortFunction: functionSortStates,
-    // },
-    {
-      name: "Pre Matricula",
-      width: "7rem",
-      center: true,
-      cell: (row) => statePreMatricula(row.rut)
-    },
-    {
-      name: "Modificación",
-      center: true,
-      cell: (row) => <ButtonEditMatricula row={row} authPeriodo={authPeriodo} disable={row.tiene_detalle} />
-    },
+
+    // Condición para mostrar el estado de la matricula
+    ...(!authProcesoMatricula
+      ? [
+          {
+            name: "Estado",
+            cell: (row) => <StudenStatusButton estado={row.estado} />,
+            center: true,
+            sortFunction: functionSortStates,
+          },
+        ]
+      : []),
+ 
+    // condición para mostrar el estado de la prematricula
+    ...(authProcesoMatricula
+      ? [
+          {
+            name: "Pre Matricula",
+            width: "7rem",
+            center: true,
+            cell: (row) => statePreMatricula(row.rut)
+          },
+        ]
+      : []),
+
+
+      // Condición para mostrar el boton de modificacion"
+  ...(authProcesoMatricula
+    ? [
+        {
+          name: "Modificación",
+          center: true,
+          cell: (row) => <ButtonEditMatricula row={row} authPeriodo={authPeriodo} disable={row.tiene_detalle} />
+        },
+      ]
+    : []),
     {
       name: "Acciones",
       center: true,
-      // grow: 1,
       width: "20rem",
       cell: (row) => (
         <div className="relative flex gap-4">
           {/* boton para descargar ficha de matricula */}
-          <RegistrationActionButton 
-            title={"Ficha matricula"} 
-            onClick={() => getFichaMatricula(row, authUserName )} 
-          />
+
+          {
+            authProcesoMatricula && (
+              <RegistrationActionButton 
+                title={"Ficha matricula"} 
+                onClick={() => getFichaMatricula(row, authUserName )} 
+              />
+            )
+          }
 
           {/* boton para descargar certificado */}
           {
