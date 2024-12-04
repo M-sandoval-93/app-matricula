@@ -36,8 +36,8 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
 
   // función para descargar ficha de matricula
   const getFichaMatricula = (row, authUserName) => {
-    const {rut, matricula, grado, estudiante_nuevo} = row
-    const fichaMatricula = dataFormMatricula.filter((ficha) => ficha["RUN (Ejemplo 12345678-9) ESTUDIANTE"] === rut);
+    const { rut, matricula, grado, estudiante_nuevo } = row
+    const fichaMatricula = dataFormMatricula.filter((ficha) => ficha["RUN (Ejemplo 12345678-9) ESTUDIANTE"].toUpperCase() === rut.toUpperCase());
 
     // validamos que exista preMatricula, de lo contrario no descarga ficha
     if (!fichaMatricula[0]) {
@@ -59,9 +59,8 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
     fichaMatricula[0].funcionarioRegistrador = authUserName;
     fichaMatricula[0].tipoMatricula = estudiante_nuevo === null ? true : estudiante_nuevo;
 
-    apiGet({route: `matricula/checkDownloadFile/${row.id}/${authPeriodo}`}).then((response) => {
-      if(response.data) {
-        console.log("Ya se ha descargado la ficha");
+    apiGet({ route: `matricula/checkDownloadFile/${row.id}/${authPeriodo}` }).then((response) => {
+      if (response.data) {
         swalWithBootstrapButtons.fire({
           title: "Ficha ya descargada",
           text: "Esta seguro que desea descargar nuevamente la ficha ?",
@@ -72,28 +71,28 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
           reverseButtons: true,
         }).then((result) => {
           if (result.isConfirmed) {
-            exportRegistrationForm({dataForm: fichaMatricula[0], rut});
-          } 
+            exportRegistrationForm({ dataForm: fichaMatricula[0], rut });
+          }
         })
       } else {
-        exportRegistrationForm({dataForm: fichaMatricula[0], rut});
+        exportRegistrationForm({ dataForm: fichaMatricula[0], rut });
       }
 
     });
   }
 
-  const statePreMatricula = (rut) => {    
-    const fichaMatricula = dataFormMatricula.filter((ficha) => ficha["RUN (Ejemplo 12345678-9) ESTUDIANTE"] === rut);
+  const statePreMatricula = (rut) => {
+    const fichaMatricula = dataFormMatricula.filter((ficha) => ficha["RUN (Ejemplo 12345678-9) ESTUDIANTE"].toUpperCase() === rut.toUpperCase());
 
-    return fichaMatricula[0] 
+    return fichaMatricula[0]
       // ? <Chip radius="md" color="success">Ficha Completa</Chip>
       ? (<Button isIconOnly color="success" aria-label="ficha completa" radius="full" disabled>
-          <FaCheck size={20} />
-        </Button>)
+        <FaCheck size={20} />
+      </Button>)
       // : <Chip radius="md" color="danger">Sin Pre Matrícula</Chip>
       : (<Button isIconOnly color="danger" aria-label="ficha completa" radius="full" disabled>
-          <FaBan size={20} />
-        </Button>)
+        <FaBan size={20} />
+      </Button>)
   }
 
 
@@ -140,38 +139,38 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
     // Condición para mostrar el estado de la matricula
     ...(!authProcesoMatricula
       ? [
-          {
-            name: "Estado",
-            cell: (row) => <StudenStatusButton estado={row.estado} />,
-            center: true,
-            sortFunction: functionSortStates,
-          },
-        ]
+        {
+          name: "Estado",
+          cell: (row) => <StudenStatusButton estado={row.estado} />,
+          center: true,
+          sortFunction: functionSortStates,
+        },
+      ]
       : []),
- 
+
     // condición para mostrar el estado de la prematricula
     ...(authProcesoMatricula
       ? [
-          {
-            name: "Pre Matricula",
-            width: "7rem",
-            center: true,
-            cell: (row) => statePreMatricula(row.rut)
-          },
-        ]
+        {
+          name: "Pre Matricula",
+          width: "7rem",
+          center: true,
+          cell: (row) => statePreMatricula(row.rut)
+        },
+      ]
       : []),
 
 
-      // Condición para mostrar el boton de modificacion"
-  ...(authProcesoMatricula
-    ? [
+    // Condición para mostrar el boton de modificacion"
+    ...(authProcesoMatricula
+      ? [
         {
           name: "Modificación",
           center: true,
           cell: (row) => <ButtonEditMatricula row={row} authPeriodo={authPeriodo} disable={row.tiene_detalle} />
         },
       ]
-    : []),
+      : []),
     {
       name: "Acciones",
       center: true,
@@ -182,9 +181,9 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
 
           {
             authProcesoMatricula && (
-              <RegistrationActionButton 
-                title={"Ficha matricula"} 
-                onClick={() => getFichaMatricula(row, authUserName )} 
+              <RegistrationActionButton
+                title={"Ficha matricula"}
+                onClick={() => getFichaMatricula(row, authUserName)}
               />
             )
           }
@@ -210,7 +209,7 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
               />
             )
           }
-          
+
 
           {/* boton para editar una matricula */}
           {
@@ -235,7 +234,7 @@ export const columnsMatricula = ({ updateStateMatricula }) => {
               />
             )
           }
-          
+
 
           {/* boton para retirar una matricula */}
           <RegistrationActionButton
