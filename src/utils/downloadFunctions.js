@@ -103,12 +103,12 @@ export const exportCertificates = ({
   }
 
   // condición para lanzar error por matricula sin curso asignado
-  if (!curso) {
-    updateStateMatricula({
-      errorMatricula: { message: "Matrícula sin curso asignado !!" },
-    });
-    return;
-  }
+  // if (!curso) {
+  //   updateStateMatricula({
+  //     errorMatricula: { message: "Matrícula sin curso asignado !!" },
+  //   });
+  //   return;
+  // }
 
   if (bloqueoPeriodoActual || !authProcesoMatricula) {
     // condición para exportar certificado de matrícula hasta el último día de febrero
